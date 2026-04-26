@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thales Catão · Arquiteto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{
+      --bg:#f5f3ee;--surface:#eceae3;--text:#1a1916;--muted:#6b6860;
+      --accent:#C96A00;--accent-lt:#FEF0DE;--border:rgba(0,0,0,0.08);
+      --nav-bg:rgba(245,243,238,0.72);--card-bg:#ffffff;--shadow:0 2px 28px rgba(0,0,0,0.08);
+    }
+    @media(prefers-color-scheme:dark){:root{
+      --bg:#111210;--surface:#1c1d1a;--text:#e8e6df;--muted:#8a8880;
+      --accent:#F0922B;--accent-lt:#261600;--border:rgba(255,255,255,0.08);
+      --nav-bg:rgba(17,18,16,0.72);--card-bg:#1c1d1a;--shadow:0 2px 28px rgba(0,0,0,0.45);
+    }}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;transition:background .3s,color .3s;}
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:16px;left:50%;transform:translateX(-50%);
+      width:min(820px,calc(100% - 32px));
+      padding:0 22px;height:52px;display:flex;align-items:center;justify-content:space-between;
+      z-index:100;
+    }
+    /* The blur is now on a pseudo-element so it doesn't break the child dropdown's blur */
+    nav::before{
+      content:'';position:absolute;inset:0;
+      background:var(--nav-bg);
+      backdrop-filter:blur(22px) saturate(1.7);-webkit-backdrop-filter:blur(22px) saturate(1.7);
+      border:0.5px solid var(--border);border-radius:999px;
+      box-shadow:var(--shadow);z-index:-1;
+    }
+    .nav-logo{font-family:'Instrument Serif',serif;font-size:17px;color:var(--text);text-decoration:none;letter-spacing:-0.02em;white-space:nowrap;}
+    .nav-center{display:flex;gap:2px;list-style:none;align-items:center;}
+    .nav-center>li>a{text-decoration:none;font-size:13px;color:var(--muted);padding:6px 12px;border-radius:999px;transition:background .15s,color .15s;cursor:pointer;display:flex;align-items:center;gap:4px;}
+    .nav-center>li>a:hover{background:var(--surface);color:var(--text);}
+    .has-dropdown{position:relative;}
+    .chevron{font-size:9px;transition:transform .2s;display:inline-block;margin-top:1px;}
+    .has-dropdown.open .chevron{transform:rotate(180deg);}
+    
+    .dropdown-menu{
+      position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);
+      background:var(--nav-bg);backdrop-filter:blur(22px) saturate(1.7);-webkit-backdrop-filter:blur(22px) saturate(1.7);
+      border:0.5px solid var(--border);border-radius:20px;padding:12px;
+      min-width:190px;display:none;flex-direction:column;gap:6px;box-shadow:var(--shadow);
+    }
+    .has-dropdown.open .dropdown-menu{display:flex;}
+    .dropdown-menu a{padding:12px 16px;border-radius:12px;font-size:14px;color:var(--muted);text-decoration:none;transition:background .15s,color .15s;display:flex;align-items:center;gap:12px;white-space:nowrap;}
+    .dropdown-menu a:hover{background:var(--surface);color:var(--text);}
+    
+    .lang-switcher{display:flex;background:var(--surface);padding:2px;border-radius:999px;}
+    .lang-btn{border:none;background:none;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer;color:var(--muted);transition:all .2s;}
+    .lang-btn.active{background:var(--card-bg);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+    
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .mobile-menu-btn { display: none; background: none; border: none; font-size: 16px; color: var(--text); cursor: pointer; padding: 4px; }
+    
+    @media(max-width:650px){
+      .mobile-menu-btn { display: block; }
+      .nav-center {
+        display: none;
+        position: absolute; top: calc(100% + 12px); left: 0; right: 0;
+        background: var(--nav-bg); backdrop-filter: blur(22px) saturate(1.7); -webkit-backdrop-filter: blur(22px) saturate(1.7);
+        border: 0.5px solid var(--border); border-radius: 20px; padding: 12px;
+        flex-direction: column; box-shadow: var(--shadow);
+      }
+      .nav-center.open { display: flex; }
+      .nav-center > li { width: 100%; }
+      .nav-center > li > a { width: 100%; justify-content: space-between; padding: 12px 16px; font-size: 14px; border-radius: 12px; }
+      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; background: transparent; padding: 0 0 0 16px; display: none; min-width: auto; }
+      .has-dropdown.open .dropdown-menu { display: flex; }
+    }
+
+    /* ── HERO ── */
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1000px;margin:0 auto;padding:120px 24px 80px;}
+    .hero-tag{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-lt);padding:4px 14px;border-radius:999px;margin-bottom:28px;width:fit-content;}
+    .hero h1{font-family:'Instrument Serif',serif;font-size:clamp(44px,7vw,80px);line-height:1.06;letter-spacing:-.03em;margin-bottom:24px;}
+    .hero h1 em{font-style:italic;color:var(--accent);}
+    .hero-p{font-size:18px;color:var(--muted);max-width:500px;margin-bottom:40px;font-weight:300;}
+    .btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:12px 26px;border-radius:999px;font-size:14px;font-weight:500;text-decoration:none;transition:opacity .18s,transform .18s;}
+    .btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+    .btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);padding:12px 26px;border-radius:999px;font-size:14px;font-weight:400;text-decoration:none;border:0.5px solid var(--border);transition:background .18s,transform .18s;}
+    .btn-secondary:hover{background:var(--surface);transform:translateY(-1px);}
+    
+    hr{border:none;border-top:0.5px solid var(--border);max-width:1000px;margin:0 auto;}
+
+    /* ── PORTFOLIO (MINIMALIST) ── */
+    section{max-width:1000px;margin:0 auto;padding:80px 24px;}
+    section h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,56px);letter-spacing:-.02em;line-height:1.1;margin-bottom:48px;text-align:center;}
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 24px;
+      width: 100%;
+    }
+    @media(max-width: 768px) {
+      .visual-grid { grid-template-columns: 1fr; }
+    }
+    .portfolio-item {
+      display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--text);
+    }
+    .img-wrap {
+      border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: var(--surface); border: 0.5px solid var(--border);
+    }
+    .img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;
+    }
+    .portfolio-item:hover .img-wrap img {
+      transform: scale(1.03);
+    }
+    .portfolio-title {
+      font-size: 15px; font-weight: 500; text-align: center;
+    }
+
+    /* ── FOOTER ── */
+    footer{text-align:center;padding:40px 24px 80px;font-size:13px;color:var(--muted);}
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+    .hero-tag{animation:fadeUp .45s ease both;}
+    .hero h1{animation:fadeUp .45s .1s ease both;}
+    .hero-p{animation:fadeUp .45s .2s ease both;}
+    .btn-row{animation:fadeUp .45s .3s ease both;}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Thales Catão</a>
+  <ul class="nav-center" id="nav-center">
+    <li><a href="index.html#portfolio" data-k="nav.portfolio">Portfólio</a></li>
+    <li class="has-dropdown" id="dd-item">
+      <a id="dd-btn" tabindex="0">
+        <span data-k="nav.personal">Pessoal</span>
+        <span class="chevron">▾</span>
+      </a>
+      <div class="dropdown-menu">
+        <a href="workout.html">🏋️ <span data-k="nav.workout">Treino</span></a>
+        <a href="nutrition.html">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
+        <a href="music-theory.html">🎵 <span data-k="nav.music">Teoria Musical</span></a>
+      </div>
+    </li>
+    <li><a href="contact.html" data-k="nav.contact">Contato</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</nav>
+
+<div class="hero">
+  <span class="hero-tag" data-k="hero.tag">Arquiteto & Urbanista</span>
+  <h1 id="hero-h1">Olá, sou<br/><em>Thales Catão.</em></h1>
+  <p class="hero-p" data-k="hero.p">Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.</p>
+  <div class="btn-row">
+    <a class="btn-primary" href="#portfolio" data-k="hero.btn1">Ver portfólio →</a>
+    <a class="btn-secondary" href="contact.html" data-k="hero.btn2">Entrar em contato</a>
+  </div>
+</div>
+
+<hr/>
+
+<section id="portfolio">
+  <h2 data-k="nav.portfolio">Portfólio</h2>
+
+  <div class="visual-grid">
+    <a href="https://www.behance.net/gallery/231575487/Concrete-House" target="_blank" rel="noopener" class="portfolio-item">
+      <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/dd3792231575487.688b7b0720338.jpg" alt="Concrete House" loading="lazy"></div>
+      <div class="portfolio-title" data-k="proj1">Concrete House</div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/231638963/5-Bedroom-Christian-House" target="_blank" rel="noopener" class="portfolio-item">
+      <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/55e49f231638963.688caea0f0eb1.jpg" alt="5 Bedroom Christian House" loading="lazy"></div>
+      <div class="portfolio-title" data-k="proj2">5 Bedroom Christian House</div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/231850539/Compact-4-Bedroom-Modular-House" target="_blank" rel="noopener" class="portfolio-item">
+      <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/17a208231850539.6891156f375a2.jpg" alt="Compact 4 Bedroom Modular House" loading="lazy"></div>
+      <div class="portfolio-title" data-k="proj3">Compact 4 Bedroom Modular House</div>
+    </a>
+
+    <a href="https://www.behance.net/gallery/231516519/Guest-House" target="_blank" rel="noopener" class="portfolio-item">
+      <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/637d2b231516519.688a6fc0b274d.jpg" alt="Guest House" loading="lazy"></div>
+      <div class="portfolio-title" data-k="proj4">Guest House</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span data-k="footer">Feito com HTML & CSS puro · © 2026 Thales Catão</span>
+</footer>
+
+<script>
+const T={
+  pt:{
+    'nav.portfolio':'Portfólio','nav.personal':'Pessoal',
+    'nav.contact':'Contato','nav.workout':'Treino','nav.nutrition':'Nutrição','nav.music':'Teoria Musical',
+    'hero.tag':'Arquiteto & Urbanista',
+    'hero.h1':'Olá, sou<br/><em>Thales Catão.</em>',
+    'hero.p':'Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.',
+    'hero.btn1':'Ver portfólio →','hero.btn2':'Entrar em contato',
+    'proj1':'Concrete House', 'proj2':'5 Bedroom Christian House', 'proj3':'Compact 4 Bedroom Modular House', 'proj4':'Guest House',
+    'footer':'Feito com HTML & CSS puro · © 2026 Thales Catão',
+  },
+  en:{
+    'nav.portfolio':'Portfolio','nav.personal':'Personal',
+    'nav.contact':'Contact','nav.workout':'Workout','nav.nutrition':'Nutrition','nav.music':'Music Theory',
+    'hero.tag':'Architect & Urban Planner',
+    'hero.h1':'Hi, I\'m<br/><em>Thales Catão.</em>',
+    'hero.p':'Architect graduated in UFMG and Building Technician graduated in CEFET/MG, curious about Music, Nutrition, Gastronomy and Calisthenics, passionate about the truth.',
+    'hero.btn1':'See portfolio →','hero.btn2':'Get in touch',
+    'proj1':'Concrete House', 'proj2':'5 Bedroom Christian House', 'proj3':'Compact 4 Bedroom Modular House', 'proj4':'Guest House',
+    'footer':'Built with pure HTML & CSS · © 2026 Thales Catão',
+  }
+};
+
+const HTML_KEYS={'hero-h1':'hero.h1'};
+
+function safeGetLang() {
+  try { return localStorage.getItem('siteLang') || 'pt'; } 
+  catch(e) { return 'pt'; }
+}
+function safeSetLang(l) {
+  try { localStorage.setItem('siteLang', l); } 
+  catch(e) {}
+}
+
+const ddItem = document.getElementById('dd-item');
+const ddBtn = document.getElementById('dd-btn');
+const navCenter = document.getElementById('nav-center');
+const mobileBtn = document.getElementById('mobile-menu-btn');
+
+if (mobileBtn && navCenter) {
+  mobileBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    navCenter.classList.toggle('open');
+  });
+}
+
+if (ddItem && ddBtn) {
+  ddBtn.addEventListener('click', e => {
+    e.stopPropagation(); e.preventDefault();
+    ddItem.classList.toggle('open');
+  });
+}
+
+document.addEventListener('click', e => {
+  if (ddItem && !ddItem.contains(e.target)) ddItem.classList.remove('open');
+  if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target)) {
+    navCenter.classList.remove('open');
+  }
+});
+
+function setLang(l){
+  safeSetLang(l);
+  document.getElementById('btn-pt').classList.toggle('active',l==='pt');
+  document.getElementById('btn-en').classList.toggle('active',l==='en');
+  
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    const v=T[l][el.dataset.k];
+    if(v!==undefined) el.textContent=v;
+  });
+  
+  Object.entries(HTML_KEYS).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(el && T[l][key]) el.innerHTML=T[l][key];
+  });
+}
+
+const savedLang = safeGetLang();
+setLang(savedLang);
+</script>
+</body>
+</html>
