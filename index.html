@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Thales Catão · Arquiteto</title>
+  <title>Thales Catão</title>
+  <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -81,7 +82,11 @@
 
     /* ── HERO ── */
     .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1000px;margin:0 auto;padding:120px 24px 80px;}
-    .hero-tag{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-lt);padding:4px 14px;border-radius:999px;margin-bottom:28px;width:fit-content;}
+    
+    /* Updated .hero-tag for link behavior and subtle hover */
+    .hero-tag{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-lt);padding:4px 14px;border-radius:999px;margin-bottom:28px;width:fit-content;text-decoration:none;transition:opacity .2s ease;}
+    .hero-tag:hover{opacity:0.8;}
+    
     .hero h1{font-family:'Instrument Serif',serif;font-size:clamp(44px,7vw,80px);line-height:1.06;letter-spacing:-.03em;margin-bottom:24px;}
     .hero h1 em{font-style:italic;color:var(--accent);}
     .hero-p{font-size:18px;color:var(--muted);max-width:500px;margin-bottom:40px;font-weight:300;}
@@ -162,7 +167,7 @@
 </nav>
 
 <div class="hero">
-  <span class="hero-tag" data-k="hero.tag">Arquiteto & Urbanista</span>
+  <a href="https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4363158A8" target="_blank" rel="noopener" class="hero-tag" data-k="hero.tag">Arquiteto & Urbanista</a>
   <h1 id="hero-h1">Olá, sou<br/><em>Thales Catão.</em></h1>
   <p class="hero-p" data-k="hero.p">Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.</p>
   <div class="btn-row">
