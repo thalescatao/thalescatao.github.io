@@ -24,14 +24,12 @@
     html{scroll-behavior:smooth;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;transition:background .3s,color .3s;}
 
-    /* ── NAV ── */
     nav{
       position:fixed;top:16px;left:50%;transform:translateX(-50%);
       width:min(820px,calc(100% - 32px));
       padding:0 22px;height:52px;display:flex;align-items:center;justify-content:space-between;
       z-index:100;
     }
-    /* The blur is now on a pseudo-element so it doesn't break the child dropdown's blur */
     nav::before{
       content:'';position:absolute;inset:0;
       background:var(--nav-bg);
@@ -80,10 +78,7 @@
       .has-dropdown.open .dropdown-menu { display: flex; }
     }
 
-    /* ── HERO ── */
     .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1000px;margin:0 auto;padding:120px 24px 80px;}
-    
-    /* Updated .hero-tag for link behavior and subtle hover */
     .hero-tag{display:inline-block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-lt);padding:4px 14px;border-radius:999px;margin-bottom:28px;width:fit-content;text-decoration:none;transition:opacity .2s ease;}
     .hero-tag:hover{opacity:0.8;}
     
@@ -98,39 +93,19 @@
     
     hr{border:none;border-top:0.5px solid var(--border);max-width:1000px;margin:0 auto;}
 
-    /* ── PORTFOLIO (MINIMALIST) ── */
     section{max-width:1000px;margin:0 auto;padding:80px 24px;}
     section h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,56px);letter-spacing:-.02em;line-height:1.1;margin-bottom:48px;text-align:center;}
 
-    .visual-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 40px 24px;
-      width: 100%;
-    }
-    @media(max-width: 768px) {
-      .visual-grid { grid-template-columns: 1fr; }
-    }
-    .portfolio-item {
-      display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--text);
-    }
-    .img-wrap {
-      border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: var(--surface); border: 0.5px solid var(--border);
-    }
-    .img-wrap img {
-      width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;
-    }
-    .portfolio-item:hover .img-wrap img {
-      transform: scale(1.03);
-    }
-    .portfolio-title {
-      font-size: 15px; font-weight: 500; text-align: center;
-    }
+    .visual-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 24px; width: 100%; }
+    @media(max-width: 768px) { .visual-grid { grid-template-columns: 1fr; } }
+    .portfolio-item { display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: var(--text); }
+    .img-wrap { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: var(--surface); border: 0.5px solid var(--border); }
+    .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .portfolio-item:hover .img-wrap img { transform: scale(1.03); }
+    .portfolio-title { font-size: 15px; font-weight: 500; text-align: center; }
 
-    /* ── FOOTER ── */
     footer{text-align:center;padding:40px 24px 80px;font-size:13px;color:var(--muted);}
 
-    /* ── ANIMATIONS ── */
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
     .hero-tag{animation:fadeUp .45s ease both;}
     .hero h1{animation:fadeUp .45s .1s ease both;}
@@ -168,10 +143,10 @@
 
 <div class="hero">
   <a href="https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4363158A8" target="_blank" rel="noopener" class="hero-tag" data-k="hero.tag">Arquiteto & Urbanista</a>
-  <h1 id="hero-h1">Olá, sou<br/><em>Thales Catão.</em></h1>
+  <h1 data-k="hero.h1">Olá, sou<br/><em>Thales Catão.</em></h1>
   <p class="hero-p" data-k="hero.p">Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.</p>
   <div class="btn-row">
-    <a class="btn-primary" href="#portfolio" data-k="hero.btn1">Ver portfólio →</a>
+    <a class="btn-primary" href="#portfolio" data-k="hero.btn1">Ver portfólio &rarr;</a>
     <a class="btn-secondary" href="contact.html" data-k="hero.btn2">Entrar em contato</a>
   </div>
 </div>
@@ -205,62 +180,63 @@
 </section>
 
 <footer>
-  <span data-k="footer">Feito com HTML & CSS puro · © 2026 Thales Catão</span>
+  <span data-k="footer">Feito com HTML & CSS puro &middot; &copy; 2026 Thales Catão</span>
 </footer>
 
 <script>
-const T={
-  pt:{
-    'nav.portfolio':'Portfólio','nav.personal':'Pessoal',
-    'nav.contact':'Contato','nav.workout':'Treino','nav.nutrition':'Nutrição','nav.music':'Teoria Musical',
-    'hero.tag':'Arquiteto & Urbanista',
-    'hero.h1':'Olá, sou<br/><em>Thales Catão.</em>',
-    'hero.p':'Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.',
-    'hero.btn1':'Ver portfólio →','hero.btn2':'Entrar em contato',
-    'proj1':'Concrete House', 'proj2':'5 Bedroom Christian House', 'proj3':'Compact 4 Bedroom Modular House', 'proj4':'Guest House',
-    'footer':'Feito com HTML & CSS puro · © 2026 Thales Catão',
+const translations = {
+  pt: {
+    'nav.portfolio': 'Portfólio', 'nav.personal': 'Pessoal', 'nav.contact': 'Contato',
+    'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical',
+    'hero.tag': 'Arquiteto & Urbanista',
+    'hero.h1': 'Olá, sou<br/><em>Thales Catão.</em>',
+    'hero.p': 'Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.',
+    'hero.btn1': 'Ver portfólio &rarr;', 'hero.btn2': 'Entrar em contato',
+    'proj1': 'Concrete House', 'proj2': '5 Bedroom Christian House', 'proj3': 'Compact 4 Bedroom Modular House', 'proj4': 'Guest House',
+    'footer': 'Feito com HTML & CSS puro &middot; &copy; 2026 Thales Catão'
   },
-  en:{
-    'nav.portfolio':'Portfolio','nav.personal':'Personal',
-    'nav.contact':'Contact','nav.workout':'Workout','nav.nutrition':'Nutrition','nav.music':'Music Theory',
-    'hero.tag':'Architect & Urban Planner',
-    'hero.h1':'Hi, I\'m<br/><em>Thales Catão.</em>',
-    'hero.p':'Architect graduated from UFMG and Building Technician graduated from CEFET/MG, curious about Music, Nutrition, Gastronomy and Calisthenics, passionate about the truth.',
-    'hero.btn1':'See portfolio →','hero.btn2':'Get in touch',
-    'proj1':'Concrete House', 'proj2':'5 Bedroom Christian House', 'proj3':'Compact 4 Bedroom Modular House', 'proj4':'Guest House',
-    'footer':'Built with pure HTML & CSS · © 2026 Thales Catão',
+  en: {
+    'nav.portfolio': 'Portfolio', 'nav.personal': 'Personal', 'nav.contact': 'Contact',
+    'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory',
+    'hero.tag': 'Architect & Urban Planner',
+    'hero.h1': 'Hi, I\'m<br/><em>Thales Catão.</em>',
+    'hero.p': 'Architect graduated from UFMG and Building Technician graduated from CEFET/MG, curious about Music, Nutrition, Gastronomy and Calisthenics, passionate about the truth.',
+    'hero.btn1': 'See portfolio &rarr;', 'hero.btn2': 'Get in touch',
+    'proj1': 'Concrete House', 'proj2': '5 Bedroom Christian House', 'proj3': 'Compact 4 Bedroom Modular House', 'proj4': 'Guest House',
+    'footer': 'Built with pure HTML & CSS &middot; &copy; 2026 Thales Catão'
   }
 };
 
-const HTML_KEYS={'hero-h1':'hero.h1'};
-
-function safeGetLang() {
-  try { return localStorage.getItem('siteLang') || 'pt'; } 
-  catch(e) { return 'pt'; }
+function setLang(lang) {
+  try { localStorage.setItem('siteLang', lang); } catch(e) {}
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  
+  document.getElementById('btn-pt')?.classList.toggle('active', lang === 'pt');
+  document.getElementById('btn-en')?.classList.toggle('active', lang === 'en');
+  
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const key = el.getAttribute('data-k');
+    if (translations[lang] && translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
 }
-function safeSetLang(l) {
-  try { localStorage.setItem('siteLang', l); } 
-  catch(e) {}
-}
 
+// Navigation Events
 const ddItem = document.getElementById('dd-item');
 const ddBtn = document.getElementById('dd-btn');
 const navCenter = document.getElementById('nav-center');
 const mobileBtn = document.getElementById('mobile-menu-btn');
 
-if (mobileBtn && navCenter) {
-  mobileBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    navCenter.classList.toggle('open');
-  });
-}
+mobileBtn?.addEventListener('click', e => {
+  e.stopPropagation();
+  navCenter.classList.toggle('open');
+});
 
-if (ddItem && ddBtn) {
-  ddBtn.addEventListener('click', e => {
-    e.stopPropagation(); e.preventDefault();
-    ddItem.classList.toggle('open');
-  });
-}
+ddBtn?.addEventListener('click', e => {
+  e.stopPropagation(); e.preventDefault();
+  ddItem.classList.toggle('open');
+});
 
 document.addEventListener('click', e => {
   if (ddItem && !ddItem.contains(e.target)) ddItem.classList.remove('open');
@@ -269,23 +245,8 @@ document.addEventListener('click', e => {
   }
 });
 
-function setLang(l){
-  safeSetLang(l);
-  document.getElementById('btn-pt').classList.toggle('active',l==='pt');
-  document.getElementById('btn-en').classList.toggle('active',l==='en');
-  
-  document.querySelectorAll('[data-k]').forEach(el=>{
-    const v=T[l][el.dataset.k];
-    if(v!==undefined) el.textContent=v;
-  });
-  
-  Object.entries(HTML_KEYS).forEach(([id,key])=>{
-    const el=document.getElementById(id);
-    if(el && T[l][key]) el.innerHTML=T[l][key];
-  });
-}
-
-const savedLang = safeGetLang();
+// Initialization
+const savedLang = (() => { try { return localStorage.getItem('siteLang') || 'pt'; } catch(e) { return 'pt'; } })();
 setLang(savedLang);
 </script>
 </body>

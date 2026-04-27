@@ -25,7 +25,6 @@
     html{scroll-behavior:smooth;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;}
 
-    /* ── NAV ── */
     nav{
       position:fixed;top:16px;left:50%;transform:translateX(-50%);
       width:min(820px,calc(100% - 32px));
@@ -80,12 +79,10 @@
       .has-dropdown.open .dropdown-menu { display: flex; }
     }
 
-    /* ── MAIN & TITLE ── */
     main{max-width:720px;margin:0 auto;padding:110px 24px 80px;}
     h1{font-family:'Instrument Serif',serif;font-size:clamp(48px,8vw,80px);line-height:1.08;letter-spacing:-.03em;text-align:center;margin-bottom:56px;color:var(--accent);}
     h1 em{font-style:italic;}
 
-    /* ── SOCIAL GRID ── */
     .social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:56px;}
     .social-card{
       display:flex;align-items:center;gap:14px;background:var(--card-bg);border:0.5px solid var(--border);
@@ -97,7 +94,6 @@
     .social-info .name{font-size:14px;font-weight:500;line-height:1.2;}
     .social-info .handle{font-size:12px;color:var(--muted);}
 
-    /* ── VERIFICATION BOX ── */
     .verification-section{margin-bottom:48px;}
     .verification-section>p.intro{font-size:15px;color:var(--muted);font-weight:300;margin-bottom:24px;}
     .hold-btn {
@@ -114,7 +110,6 @@
     .hold-btn.success {background: var(--accent);color: #fff;border-color: var(--accent);cursor: default;transform: none;}
     .hold-btn.success .hold-bg { display: none; }
 
-    /* REVEALED CONTACTS */
     .contact-revealed{display:none;flex-direction:column;gap:12px;margin-top:12px;}
     #dynamic-contacts{display:flex;flex-direction:column;gap:12px;}
     .reveal-card{
@@ -164,7 +159,7 @@
 </nav>
 
 <main>
-   <h1 id="page-title"><em>Contato</em></h1>
+   <h1 data-k="title"><em>Contato</em></h1>
    
    <div class="social-grid">
     <a class="social-card" href="https://www.instagram.com/thalescatao/" target="_blank" rel="noopener">
@@ -205,63 +200,78 @@
 
     <div class="contact-revealed" id="contact-revealed">
       <p class="success-msg" id="success-msg" data-k="success.msg"></p>
-      <div id="dynamic-contacts"></div> </div>
+      <div id="dynamic-contacts"></div> 
+    </div>
   </div>
 </main>
 
-<footer><span data-k="footer">Feito com HTML & CSS puro · © 2026 Thales Catão</span></footer>
+<footer><span data-k="footer">Feito com HTML & CSS puro &middot; &copy; 2026 Thales Catão</span></footer>
 
 <script>
-let lang = 'pt';
-let isSuccess = false;
-
-const T = {
+const translations = {
   pt: {
-    'nav.portfolio':'Portfólio','nav.personal':'Pessoal',
-    'nav.contact':'Contato','nav.workout':'Treino','nav.nutrition':'Nutrição','nav.music':'Teoria Musical',
-    'title':'<em>Contato</em>',
-    'verify.intro':'Para evitar spam, confirme que você é humano pressionando e segurando o botão abaixo até o fim.',
-    'btn.hold':'Segure para revelar', 'btn.verified':'Verificado!',
-    'success.msg':'✅ Humano verificado! Aqui estão meus contatos diretos:',
-    'footer':'Feito com HTML & CSS puro · © 2026 Thales Catão',
-    'label.email':'E-mail', 'label.whatsapp':'WhatsApp'
+    'nav.portfolio': 'Portfólio', 'nav.personal': 'Pessoal', 'nav.contact': 'Contato',
+    'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical',
+    'title': '<em>Contato</em>',
+    'verify.intro': 'Para evitar spam, confirme que você é humano pressionando e segurando o botão abaixo até o fim.',
+    'btn.hold': 'Segure para revelar', 'btn.verified': 'Verificado!',
+    'success.msg': '✅ Humano verificado! Aqui estão meus contatos diretos:',
+    'label.email': 'E-mail', 'label.whatsapp': 'WhatsApp',
+    'footer': 'Feito com HTML & CSS puro &middot; &copy; 2026 Thales Catão'
   },
   en: {
-    'nav.portfolio':'Portfolio','nav.personal':'Personal',
-    'nav.contact':'Contact','nav.workout':'Workout','nav.nutrition':'Nutrition','nav.music':'Music Theory',
-    'title':'<em>Contact</em>',
-    'verify.intro':'To prevent spam, please confirm you are human by pressing and holding the button below until the end.',
-    'btn.hold':'Hold to reveal', 'btn.verified':'Verified!',
-    'success.msg':'✅ Human verified! Here is my direct contact info:',
-    'footer':'Built with pure HTML & CSS · © 2026 Thales Catão',
-    'label.email':'Email', 'label.whatsapp':'WhatsApp'
+    'nav.portfolio': 'Portfolio', 'nav.personal': 'Personal', 'nav.contact': 'Contact',
+    'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory',
+    'title': '<em>Contact</em>',
+    'verify.intro': 'To prevent spam, please confirm you are human by pressing and holding the button below until the end.',
+    'btn.hold': 'Hold to reveal', 'btn.verified': 'Verified!',
+    'success.msg': '✅ Human verified! Here is my direct contact info:',
+    'label.email': 'Email', 'label.whatsapp': 'WhatsApp',
+    'footer': 'Built with pure HTML & CSS &middot; &copy; 2026 Thales Catão'
   }
 };
 
-const HTML_KEYS = {'page-title': 'title'};
+let currentLang = 'pt';
+let isSuccess = false;
 
-/* ── SAFE LOCAL STORAGE ── */
-function safeGetLang() { try { return localStorage.getItem('siteLang') || 'pt'; } catch(e) { return 'pt'; } }
-function safeSetLang(l) { try { localStorage.setItem('siteLang', l); } catch(e) {} }
+function setLang(lang) {
+  currentLang = lang;
+  try { localStorage.setItem('siteLang', lang); } catch(e) {}
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
 
+  document.getElementById('btn-pt')?.classList.toggle('active', lang === 'pt');
+  document.getElementById('btn-en')?.classList.toggle('active', lang === 'en');
+  
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const key = el.getAttribute('data-k');
+    if (translations[lang] && translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  const holdText = document.getElementById('hold-text');
+  if (holdText) {
+    holdText.innerHTML = isSuccess ? translations[lang]['btn.verified'] : translations[lang]['btn.hold'];
+  }
+
+  if (isSuccess) renderContacts();
+}
+
+// Navigation Events
 const ddItem = document.getElementById('dd-item');
 const ddBtn = document.getElementById('dd-btn');
 const navCenter = document.getElementById('nav-center');
 const mobileBtn = document.getElementById('mobile-menu-btn');
 
-if (mobileBtn && navCenter) {
-  mobileBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    navCenter.classList.toggle('open');
-  });
-}
+mobileBtn?.addEventListener('click', e => {
+  e.stopPropagation();
+  navCenter.classList.toggle('open');
+});
 
-if (ddItem && ddBtn) {
-  ddBtn.addEventListener('click', e => {
-    e.stopPropagation(); e.preventDefault();
-    ddItem.classList.toggle('open');
-  });
-}
+ddBtn?.addEventListener('click', e => {
+  e.stopPropagation(); e.preventDefault();
+  ddItem.classList.toggle('open');
+});
 
 document.addEventListener('click', e => {
   if (ddItem && !ddItem.contains(e.target)) ddItem.classList.remove('open');
@@ -270,39 +280,7 @@ document.addEventListener('click', e => {
   }
 });
 
-function setLang(l){
-  lang = l;
-  safeSetLang(l);
-  
-  const btnPt = document.getElementById('btn-pt');
-  const btnEn = document.getElementById('btn-en');
-  if (btnPt) btnPt.classList.toggle('active', l === 'pt');
-  if (btnEn) btnEn.classList.toggle('active', l === 'en');
-  
-  document.querySelectorAll('[data-k]').forEach(el => {
-    const v = T[l][el.dataset.k];
-    if (v !== undefined) el.textContent = v;
-  });
-  
-  Object.entries(HTML_KEYS).forEach(([id, key]) => {
-    const el = document.getElementById(id);
-    if (el && T[l][key]) el.innerHTML = T[l][key];
-  });
-
-  const holdText = document.getElementById('hold-text');
-  if (holdText) {
-    if (isSuccess) holdText.textContent = T[l]['btn.verified'];
-    else holdText.textContent = T[l]['btn.hold'];
-  }
-
-  // Re-render contacts if language changes after verification
-  if(isSuccess) renderContacts();
-}
-
-setLang(safeGetLang());
-
-/* ── ENCODED DATA & RENDERING ── */
-// Base64 encoded contact information to hide from bots
+// Encoded Data
 const encEmail = "dGhhbGVzLmNmbUBnbWFpbC5jb20="; 
 const encPhoneLink = "NTUzMTk5Njc1MTA3OQ=="; 
 const encPhoneShow = "KzU1ICgzMSkgOTk2NzUtMTA3OQ=="; 
@@ -318,16 +296,16 @@ function renderContacts() {
   container.innerHTML = `
     <a class="reveal-card" href="mailto:${decEmail}">
       <i class="fa-solid fa-envelope"></i>
-      <div class="info"><div class="label">${T[lang]['label.email']}</div><div class="val">${decEmail}</div></div>
+      <div class="info"><div class="label">${translations[currentLang]['label.email']}</div><div class="val">${decEmail}</div></div>
     </a>
     <a class="reveal-card" href="https://api.whatsapp.com/send/?phone=${decPhoneLink}" target="_blank" rel="noopener">
       <i class="fa-brands fa-whatsapp"></i>
-      <div class="info"><div class="label">${T[lang]['label.whatsapp']}</div><div class="val">${decPhoneShow}</div></div>
+      <div class="info"><div class="label">${translations[currentLang]['label.whatsapp']}</div><div class="val">${decPhoneShow}</div></div>
     </a>
   `;
 }
 
-/* ── HOLD TO VERIFY LOGIC ── */
+// Hold to verify logic
 const holdBtn = document.getElementById('hold-btn');
 const holdBg = document.getElementById('hold-bg');
 const holdText = document.getElementById('hold-text');
@@ -354,12 +332,12 @@ function fill(time) {
   progress += deltaTime * 0.013; 
   if (progress >= 100) {
     progress = 100;
-    holdBg.style.width = '100%';
+    if(holdBg) holdBg.style.width = '100%';
     success();
     holdTimer = null;
     return;
   }
-  holdBg.style.width = progress + '%';
+  if(holdBg) holdBg.style.width = progress + '%';
   holdTimer = requestAnimationFrame(fill);
 }
 
@@ -373,11 +351,11 @@ function stopHold() {
 function success() {
   isSuccess = true;
   holdBtn.classList.add('success');
-  holdText.textContent = T[lang]['btn.verified'];
+  if(holdText) holdText.innerHTML = translations[currentLang]['btn.verified'];
   setTimeout(() => {
     if(wrap) wrap.style.display = 'none';
     if(revealed) {
-      if(successMsg) successMsg.textContent = T[lang]['success.msg'];
+      if(successMsg) successMsg.innerHTML = translations[currentLang]['success.msg'];
       renderContacts();
       revealed.style.display = 'flex';
     }
@@ -393,6 +371,10 @@ window.addEventListener('mouseup', stopHold);
 window.addEventListener('touchend', stopHold);
 window.addEventListener('touchcancel', stopHold);
 window.addEventListener('mouseleave', stopHold);
+
+// Initialization
+const savedLang = (() => { try { return localStorage.getItem('siteLang') || 'pt'; } catch(e) { return 'pt'; } })();
+setLang(savedLang);
 </script>
 </body>
 </html>
