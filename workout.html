@@ -36,7 +36,23 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root{--bg:#f5f3ee;--surface:#eceae3;--text:#1a1916;--muted:#6b6860;--accent:#C96A00;--accent-lt:#FEF0DE;--border:rgba(0,0,0,0.08);--nav-bg:rgba(245,243,238,0.72);--card-bg:#ffffff;--shadow:0 2px 24px rgba(0,0,0,0.08);}
-    @media(prefers-color-scheme:dark){:root{--bg:#111210;--surface:#1c1d1a;--text:#e8e6df;--muted:#8a8880;--accent:#F0922B;--accent-lt:#261600;--border:rgba(255,255,255,0.08);--nav-bg:rgba(17,18,16,0.72);--card-bg:#1c1d1a;--shadow:0 2px 24px rgba(0,0,0,0.4);}}
+    
+    @media(prefers-color-scheme:dark){
+      :root{--bg:#111210;--surface:#1c1d1a;--text:#e8e6df;--muted:#8a8880;--accent:#F0922B;--accent-lt:#261600;--border:rgba(255,255,255,0.08);--nav-bg:rgba(17,18,16,0.72);--card-bg:#1c1d1a;--shadow:0 2px 24px rgba(0,0,0,0.4);}
+      
+      /* UPDATED: In dark mode, restore container background to blend with the dimmed iframe */
+      .sheet-container {
+        background: var(--card-bg) !important;
+        border: 0.5px solid var(--border) !important;
+        box-shadow: var(--shadow) !important;
+      }
+      /* UPDATED: Disable multiply and dim the white background instead */
+      .sheet-container iframe {
+        mix-blend-mode: normal !important;
+        opacity: 0.88;
+      }
+    }
+    
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.7;}
     
@@ -100,8 +116,11 @@
     h1 a:hover{opacity:0.8;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:8px;}
     h1 em{font-style:italic;}
 
-    .sheet-container{flex-grow:1;border:0.5px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card-bg);box-shadow:var(--shadow);}
-    iframe{width:100%;height:100%;border:none;}
+    /* UPDATED: Removed background and borders so the light mode multiply effect works cleanly */
+    .sheet-container{flex-grow:1;border-radius:16px;overflow:hidden;background:transparent;}
+    
+    /* UPDATED: Added mix-blend-mode for light mode to absorb the site's background */
+    iframe{width:100%;height:100%;border:none;mix-blend-mode:multiply;transition:opacity 0.3s, mix-blend-mode 0.3s;}
   </style>
 </head>
 <body>
