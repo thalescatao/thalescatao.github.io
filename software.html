@@ -168,6 +168,26 @@
     h1, hr:first-of-type, h2:first-of-type {animation:fadeUp .4s ease both;}
     .software-grid{animation:fadeUp .4s .1s ease both;}
     hr:last-of-type, .unadvised-section {animation:fadeUp .4s .2s ease both;}
+
+    /* Mobile adjustments for the Recommendations grid */
+    @media (max-width: 500px) {
+      .software-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .software-card {
+        padding: 16px 8px;
+      }
+      .software-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+      }
+      .software-name {
+        font-size: 14px;
+      }
+      .software-desc {
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body>
