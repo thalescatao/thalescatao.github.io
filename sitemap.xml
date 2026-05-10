@@ -4,7 +4,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://thalescatao.github.io/</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,7 +12,7 @@
   <!-- Nutrition Page -->
   <url>
     <loc>https://thalescatao.github.io/nutrition.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,7 +20,7 @@
   <!-- Workout Page -->
   <url>
     <loc>https://thalescatao.github.io/workout.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -28,7 +28,23 @@
   <!-- Music Theory Page -->
   <url>
     <loc>https://thalescatao.github.io/music-theory.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Software Page -->
+  <url>
+    <loc>https://thalescatao.github.io/software.html</loc>
+    <lastmod>2026-05-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Natural Law Page -->
+  <url>
+    <loc>https://thalescatao.github.io/law.html</loc>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -36,7 +52,7 @@
   <!-- Contact Page -->
   <url>
     <loc>https://thalescatao.github.io/contact.html</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
