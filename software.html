@@ -75,18 +75,33 @@
     .nav-center>li>a:hover{background:var(--surface);color:var(--text);}
     .has-dropdown{position:relative;}
     .chevron{font-size:9px;transition:transform .2s;display:inline-block;margin-top:1px;}
-    .has-dropdown.open .chevron{transform:rotate(180deg);}
+    
+    /* Specific selector to prevent "more" arrow from rotating when main dropdown opens */
+    .has-dropdown.open > #dd-btn .chevron {transform:rotate(180deg);}
 
     .dropdown-menu{
       position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);
       background:var(--nav-bg);backdrop-filter:blur(22px) saturate(1.7);-webkit-backdrop-filter:blur(22px) saturate(1.7);
-      border:0.5px solid var(--border);border-radius:20px;padding:12px;
+      border:0.5px solid var(--border);border-radius:20px;padding:12px 12px 0 12px;
       min-width:190px;display:none;flex-direction:column;gap:6px;box-shadow:var(--shadow);
     }
     .has-dropdown.open .dropdown-menu{display:flex;}
     .dropdown-menu a{padding:12px 16px;border-radius:12px;font-size:14px;color:var(--muted);text-decoration:none;transition:background .15s,color .15s;display:flex;align-items:center;gap:12px;white-space:nowrap;}
     .dropdown-menu a:hover{background:var(--surface);color:var(--text);}
     
+    /* More Menu Styles inside Dropdown */
+    .more-container { display: flex; flex-direction: column; }
+    .more-menu { display: none; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+    .more-container.open .more-menu { display: flex; }
+    .more-toggle { 
+      display: flex; justify-content: center; align-items: center; 
+      margin: 0 -12px; height: 24px; cursor: pointer; 
+      border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; 
+      color: var(--muted); transition: background .15s, color .15s; 
+    }
+    .more-toggle:hover { background: var(--surface); color: var(--text); }
+    .more-container.open .more-toggle .chevron { transform: rotate(180deg); }
+
     .lang-switcher{display:flex;background:var(--surface);padding:2px;border-radius:999px;}
     .lang-btn{border:none;background:none;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer;color:var(--muted);transition:all .2s;}
     .lang-btn.active{background:var(--card-bg);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.05);}
@@ -106,8 +121,9 @@
       .nav-center.open { display: flex; }
       .nav-center > li { width: 100%; }
       .nav-center > li > a { width: 100%; justify-content: space-between; padding: 12px 16px; font-size: 14px; border-radius: 12px; }
-      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; background: transparent; padding: 0 0 0 16px; display: none; min-width: auto; }
+      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; background: transparent; padding: 0 0 0 16px; display: none; min-width: auto; gap: 6px; }
       .has-dropdown.open .dropdown-menu { display: flex; }
+      .more-toggle { margin: 0; border-radius: 12px; height: 32px; }
     }
 
     main{max-width:720px;margin:0 auto;padding:110px 24px 80px;}
@@ -206,7 +222,17 @@
         <a href="workout.html">🏋️ <span data-k="nav.workout">Treino</span></a>
         <a href="nutrition.html">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
         <a href="music-theory.html">🎵 <span data-k="nav.music">Teoria Musical</span></a>
-        <a href="software.html">💻 <span data-k="nav.software">Software</span></a>
+        
+        <div class="more-container" id="more-container">
+          <div class="more-menu" id="more-menu">
+            <a href="software.html">💻 <span data-k="nav.software">Software</span></a>
+            <a href="law.html">⚖️ <span data-k="nav.law">Direito Natural</span></a>
+          </div>
+          <div class="more-toggle" id="more-toggle" tabindex="0">
+            <span class="chevron">▾</span>
+          </div>
+        </div>
+
       </div>
     </li>
     <li><a href="contact.html" data-k="nav.contact">Contato</a></li>
@@ -308,7 +334,8 @@
 const translations = {
   pt: {
     'nav.portfolio': 'Portfólio', 'nav.personal': 'Pessoal', 'nav.contact': 'Contato',
-    'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical', 'nav.software': 'Software',
+    'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical', 
+    'nav.software': 'Software', 'nav.law': 'Direito Natural',
     'title': '<em>Software</em>',
     'headline.rec': 'Recomendados',
     'desc.brave': 'Navegador Web', 'desc.pdf': 'Visualizador PDF',
@@ -321,7 +348,8 @@ const translations = {
   },
   en: {
     'nav.portfolio': 'Portfolio', 'nav.personal': 'Personal', 'nav.contact': 'Contact',
-    'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory', 'nav.software': 'Software',
+    'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory', 
+    'nav.software': 'Software', 'nav.law': 'Natural Law',
     'title': '<em>Software</em>',
     'headline.rec': 'Recommendations',
     'desc.brave': 'Web Browser', 'desc.pdf': 'High Performance PDF Viewer',
@@ -355,6 +383,10 @@ const ddBtn = document.getElementById('dd-btn');
 const navCenter = document.getElementById('nav-center');
 const mobileBtn = document.getElementById('mobile-menu-btn');
 
+// Sub-dropdown references
+const moreToggle = document.getElementById('more-toggle');
+const moreContainer = document.getElementById('more-container');
+
 mobileBtn?.addEventListener('click', e => {
   e.stopPropagation();
   navCenter.classList.toggle('open');
@@ -365,8 +397,16 @@ ddBtn?.addEventListener('click', e => {
   ddItem.classList.toggle('open');
 });
 
+moreToggle?.addEventListener('click', e => {
+  e.stopPropagation(); e.preventDefault();
+  moreContainer.classList.toggle('open');
+});
+
 document.addEventListener('click', e => {
-  if (ddItem && !ddItem.contains(e.target)) ddItem.classList.remove('open');
+  if (ddItem && !ddItem.contains(e.target)) {
+    ddItem.classList.remove('open');
+    moreContainer?.classList.remove('open'); // Reset sub-menu when main menu closes
+  }
   if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target)) {
     navCenter.classList.remove('open');
   }
