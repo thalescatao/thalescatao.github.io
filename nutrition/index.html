@@ -21,38 +21,33 @@
   <meta charset="UTF-8" />
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Página Pessoal de Thales Catão com conteúdo sobre Direito Natural e a Teoria Geral da Morte.">
+  <meta name="description" content="Página Pessoal de Thales Catão com conteúdo sobre nutrição. Abordagem ancestral: low-carb, cetogênica, carnívora. Hunter-gatherer. Dieta de cura. Preparos tradicionais">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://thalescatao.github.io/law.html">
-  <meta property="og:title" content="Thales Catão | Law">
-  <meta property="og:description" content="Página Pessoal de Thales Catão com conteúdo sobre Direito Natural e a Teoria Geral da Morte.">
+  <meta property="og:url" content="https://thalescatao.github.io/nutrition/">
+  <meta property="og:title" content="Thales Catão | Nutrition">
+  <meta property="og:description" content="Página Pessoal de Thales Catão com conteúdo sobre nutrição. Abordagem ancestral: low-carb, cetogênica, carnívora. Hunter-gatherer. Dieta de cura. Preparos tradicionais">
   <meta property="og:image" content="https://thalescatao.github.io/favicon.png">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://thalescatao.github.io/law.html">
-  <meta name="twitter:title" content="Thales Catão | Law">  
-  <meta name="twitter:description" content="Página Pessoal de Thales Catão com conteúdo sobre Direito Natural e a Teoria Geral da Morte.">
+  <meta name="twitter:url" content="https://thalescatao.github.io/nutrition/">
+  <meta name="twitter:title" content="Thales Catão | Nutrition">  
+  <meta name="twitter:description" content="Página Pessoal de Thales Catão com conteúdo sobre nutrição. Abordagem ancestral: low-carb, cetogênica, carnívora. Hunter-gatherer. Dieta de cura. Preparos tradicionais">
   <meta name="twitter:image" content="https://thalescatao.github.io/favicon.png">
 
-  <title>Thales Catão | Law</title>
-  <link rel="canonical" href="https://thalescatao.github.io/law.html"/>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <title>Thales Catão | Nutrition</title>
+  <link rel="canonical" href="https://thalescatao.github.io/nutrition/"/>
+  <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    :root{
-      --bg:#f5f3ee;--surface:#eceae3;--text:#1a1916;--muted:#6b6860;
-      --accent:#C96A00;--accent-lt:#FEF0DE;--border:rgba(0,0,0,0.08);
-      --nav-bg:rgba(245,243,238,0.72);--card-bg:#ffffff;--shadow:0 2px 24px rgba(0,0,0,0.08);
-    }
+    :root{--bg:#f5f3ee;--surface:#eceae3;--text:#1a1916;--muted:#6b6860;--accent:#C96A00;--accent-lt:#FEF0DE;--border:rgba(0,0,0,0.08);--nav-bg:rgba(245,243,238,0.72);--card-bg:#ffffff;--shadow:0 2px 24px rgba(0,0,0,0.08);}
     
     @media(prefers-color-scheme:dark){
       :root{--bg:#111210;--surface:#1c1d1a;--text:#e8e6df;--muted:#8a8880;--accent:#F0922B;--accent-lt:#261600;--border:rgba(255,255,255,0.08);--nav-bg:rgba(17,18,16,0.72);--card-bg:#1c1d1a;--shadow:0 2px 24px rgba(0,0,0,0.4);}
-      /* Remove the invert filter in dark mode because the native document is already dark */
-      .doc-container iframe { filter: none; }
+      .doc-container iframe { filter: invert(0.9) hue-rotate(180deg); }
     }
     
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -136,82 +131,39 @@
       .has-dropdown.open .dropdown-menu { display: flex; }
       .more-container { width: 100%; }
       .more-toggle { width: 100%; margin: 0; border-radius: 0 0 12px 12px; height: 24px; align-self: stretch; }
-      .doc-container { height: 350px; } /* Half of 700px */
+      .doc-container { height: 700px; }
     }
 
     main{max-width:820px;margin:0 auto;padding:120px 24px 40px;min-height:100vh;display:flex;flex-direction:column;}
-    
-    .page-header{display:flex;flex-direction:column;align-items:stretch;text-align:left;margin-bottom:40px;}
-    h1{font-family:'Instrument Serif',serif;font-size:clamp(48px,8vw,80px);line-height:1.08;letter-spacing:-.03em;color:var(--accent);margin-bottom:18px;text-align:center;width:100%;}
+    .page-header{display:flex;flex-direction:column;align-items:stretch;text-align:left;margin-bottom:42px;}
+    .title-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:14px;width:100%;margin-bottom:18px;}
+    h1{grid-column:2;font-family:'Instrument Serif',serif;font-size:clamp(48px,8vw,80px);line-height:1.08;letter-spacing:-.03em;color:var(--accent);text-align:center;}
     h1 em{font-style:italic;}
+    .source-pill{grid-column:3;justify-self:start;display:inline-flex;align-items:center;justify-content:center;width:40px;height:26px;border-radius:999px;background:var(--accent-lt);color:var(--accent);text-decoration:none;transition:opacity .2s,transform .2s;}
+    .source-pill:hover{opacity:.82;transform:translateY(-1px);}
     .page-intro{width:100%;color:var(--muted);font-size:15px;line-height:1.7;text-align:justify;text-align-last:left;}
 
-    .doc-heading{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:32px;}
-    h2{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,56px);letter-spacing:-.02em;line-height:1.1;color:var(--text);text-align:left;}
-    .source-pill{display:inline-flex;align-items:center;justify-content:center;width:40px;height:26px;border-radius:999px;background:rgba(255,255,255,.86);color:#1a1916;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.08);transition:opacity .2s,transform .2s;}
-    .source-pill:hover{opacity:.84;transform:translateY(-1px);}
-
-    /* Adjusted height to 540px (half of 1080px) */
-    .doc-container{height: 540px; border:0.5px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card-bg);box-shadow:var(--shadow); transition: background 0.3s;}
+    .doc-container{height: 1080px; border:0.5px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card-bg);box-shadow:var(--shadow); transition: background 0.3s;}
     
-    /* Apply invert filter by default (for light mode) because the native document is dark */
-    iframe{width:100%;height:100%;border:none; transition: filter 0.3s; filter: invert(0.9) hue-rotate(180deg);}
+    iframe{width:100%;height:100%;border:none; transition: filter 0.3s;}
   </style>
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="index.html">Thales Catão</a>
-  <ul class="nav-center" id="nav-center">
-    <li><a href="index.html#portfolio" data-k="nav.portfolio">Portfólio</a></li>
-    <li class="has-dropdown" id="dd-item">
-      <a id="dd-btn" tabindex="0">
-        <span data-k="nav.personal">Pessoal</span>
-        <span class="chevron">▾</span>
-      </a>
-      <div class="dropdown-menu">
-        <a href="workout.html">🏋️ <span data-k="nav.workout">Treino</span></a>
-        <a href="nutrition.html">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
-        <a href="music-theory.html">🎵 <span data-k="nav.music">Teoria Musical</span></a>
-        
-        <div class="more-container" id="more-container">
-          <div class="more-menu" id="more-menu">
-            <a href="software.html">💻 <span data-k="nav.software">Software</span></a>
-            <a href="law.html">⚖️ <span data-k="nav.law">Direito Natural</span></a>
-          </div>
-          <div class="more-toggle" id="more-toggle" tabindex="0">
-            <span class="chevron">▾</span>
-          </div>
-        </div>
-
-      </div>
-    </li>
-    <li><a href="contact.html" data-k="nav.contact">Contato</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="lang-switcher">
-      <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-    </div>
-    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
+<div id="site-nav"></div>
 
 <main>
   <header class="page-header">
-    <h1><em data-k="title">Direito Natural</em></h1>
-    <p class="page-intro" data-k="intro">Corolários da ética. Em homenagem à Platão, Aristóteles e todos os grandes.</p>
+    <div class="title-row">
+      <h1><em data-k="title">Nutrição</em></h1>
+      <a class="source-pill" href="https://docs.google.com/document/d/15QmLIPPon85_db8sB0c133h01lGBJqPkz4gpwd3MQAc/view" target="_blank" rel="noopener" aria-label="Abrir documento de nutrição">
+        <i class="fa-solid fa-link" aria-hidden="true"></i>
+      </a>
+    </div>
+    <p class="page-intro" data-k="intro">Uma visão memética e qualitativa dos alimentos que existem no mundo baseada em experiências próprias, instintos e conhecimentos ancestrais.</p>
   </header>
-  
-  <div class="doc-heading">
-    <h2 data-k="headline.death">Teoria Geral da Morte</h2>
-    <a class="source-pill" href="https://docs.google.com/spreadsheets/d/17zLNuPOQivN2YDE8V33kUCuHmZRWV0gzCuFk6WW9W_A/view" target="_blank" rel="noopener" aria-label="Abrir planilha Teoria Geral da Morte">
-      <i class="fa-solid fa-link" aria-hidden="true"></i>
-    </a>
-  </div>
-  
   <div class="doc-container">
-    <iframe src="https://docs.google.com/spreadsheets/d/17zLNuPOQivN2YDE8V33kUCuHmZRWV0gzCuFk6WW9W_A/preview"></iframe>
+    <iframe src="https://docs.google.com/document/d/15QmLIPPon85_db8sB0c133h01lGBJqPkz4gpwd3MQAc/preview"></iframe>
   </div>
 </main>
 
@@ -219,19 +171,17 @@
 const translations = {
   pt: {
     'nav.portfolio': 'Portfólio', 'nav.personal': 'Pessoal', 'nav.contact': 'Contato',
-    'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical', 
+    'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical',
     'nav.software': 'Software', 'nav.law': 'Direito Natural',
-    'title': 'Direito Natural',
-    'intro': 'Corolários da ética. Em homenagem à Platão, Aristóteles e todos os grandes.',
-    'headline.death': 'Teoria Geral da Morte'
+    'title': 'Nutrição',
+    'intro': 'Uma visão memética e qualitativa dos alimentos que existem no mundo baseada em experiências próprias, instintos e conhecimentos ancestrais.'
   },
   en: {
     'nav.portfolio': 'Portfolio', 'nav.personal': 'Personal', 'nav.contact': 'Contact',
-    'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory', 
+    'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory',
     'nav.software': 'Software', 'nav.law': 'Natural Law',
-    'title': 'Natural Law',
-    'intro': 'Corollaries of ethics. In honor of Plato, Aristotle, and all the greats. No pressure.',
-    'headline.death': 'General Theory of Death'
+    'title': 'Nutrition',
+    'intro': 'A memetic and qualitative view of the foods across the world, based on my own experiences, natural instincts, and ancestral know-how.'
   }
 };
 
@@ -255,8 +205,6 @@ const ddItem = document.getElementById('dd-item');
 const ddBtn = document.getElementById('dd-btn');
 const navCenter = document.getElementById('nav-center');
 const mobileBtn = document.getElementById('mobile-menu-btn');
-
-// Sub-dropdown references
 const moreToggle = document.getElementById('more-toggle');
 const moreContainer = document.getElementById('more-container');
 
@@ -280,7 +228,7 @@ moreToggle?.addEventListener('click', e => {
 document.addEventListener('click', e => {
   if (ddItem && !ddItem.contains(e.target)) {
     ddItem.classList.remove('open');
-    moreContainer?.classList.remove('open'); // Reset sub-menu when main menu closes
+    moreContainer?.classList.remove('open');
   }
   if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target)) {
     navCenter.classList.remove('open');
@@ -293,5 +241,6 @@ document.addEventListener('click', e => {
 const savedLang = (() => { try { return localStorage.getItem('siteLang') || 'pt'; } catch(e) { return 'pt'; } })();
 setLang(savedLang);
 </script>
+<script src="../nav.js"></script>
 </body>
 </html>

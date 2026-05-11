@@ -24,20 +24,20 @@
   <meta name="description" content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://thalescatao.github.io/music-theory.html">
+  <meta property="og:url" content="https://thalescatao.github.io/music-theory/">
   <meta property="og:title" content="Thales Catão | Music">
   <meta property="og:description" content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
   <meta property="og:image" content="https://thalescatao.github.io/favicon.png">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://thalescatao.github.io/music-theory.html">
+  <meta name="twitter:url" content="https://thalescatao.github.io/music-theory/">
   <meta name="twitter:title" content="Thales Catão | Music">  
   <meta name="twitter:description" content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
   <meta name="twitter:image" content="https://thalescatao.github.io/favicon.png">
 
   <title>Thales Catão | Music</title>
-  <link rel="canonical" href="https://thalescatao.github.io/music-theory.html"/>
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="canonical" href="https://thalescatao.github.io/music-theory/"/>
+  <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -145,42 +145,7 @@
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="index.html">Thales Catão</a>
-  <ul class="nav-center" id="nav-center">
-    <li><a href="index.html#portfolio" data-k="nav.portfolio">Portfólio</a></li>
-    <li class="has-dropdown" id="dd-item">
-      <a id="dd-btn" tabindex="0">
-        <span data-k="nav.personal">Pessoal</span>
-        <span class="chevron">▾</span>
-      </a>
-      <div class="dropdown-menu">
-        <a href="workout.html">🏋️ <span data-k="nav.workout">Treino</span></a>
-        <a href="nutrition.html">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
-        <a href="music-theory.html">🎵 <span data-k="nav.music">Teoria Musical</span></a>
-        
-        <div class="more-container" id="more-container">
-          <div class="more-menu" id="more-menu">
-            <a href="software.html">💻 <span data-k="nav.software">Software</span></a>
-            <a href="law.html">⚖️ <span data-k="nav.law">Direito Natural</span></a>
-          </div>
-          <div class="more-toggle" id="more-toggle" tabindex="0">
-            <span class="chevron">▾</span>
-          </div>
-        </div>
-
-      </div>
-    </li>
-    <li><a href="contact.html" data-k="nav.contact">Contato</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="lang-switcher">
-      <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-    </div>
-    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
+<div id="site-nav"></div>
 
 <main>
   <header class="page-header">
@@ -271,5 +236,6 @@ document.addEventListener('click', e => {
 const savedLang = (() => { try { return localStorage.getItem('siteLang') || 'pt'; } catch(e) { return 'pt'; } })();
 setLang(savedLang);
 </script>
+<script src="../nav.js"></script>
 </body>
 </html>

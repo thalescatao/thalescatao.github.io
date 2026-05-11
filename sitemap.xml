@@ -11,7 +11,7 @@
 
   <!-- Nutrition Page -->
   <url>
-    <loc>https://thalescatao.github.io/nutrition.html</loc>
+    <loc>https://thalescatao.github.io/nutrition/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19,7 +19,7 @@
 
   <!-- Workout Page -->
   <url>
-    <loc>https://thalescatao.github.io/workout.html</loc>
+    <loc>https://thalescatao.github.io/workout/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -27,7 +27,7 @@
 
   <!-- Music Theory Page -->
   <url>
-    <loc>https://thalescatao.github.io/music-theory.html</loc>
+    <loc>https://thalescatao.github.io/music-theory/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -35,7 +35,7 @@
 
   <!-- Software Page -->
   <url>
-    <loc>https://thalescatao.github.io/software.html</loc>
+    <loc>https://thalescatao.github.io/software/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -43,7 +43,7 @@
 
   <!-- Natural Law Page -->
   <url>
-    <loc>https://thalescatao.github.io/law.html</loc>
+    <loc>https://thalescatao.github.io/law/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -51,7 +51,7 @@
 
   <!-- Contact Page -->
   <url>
-    <loc>https://thalescatao.github.io/contact.html</loc>
+    <loc>https://thalescatao.github.io/contact/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

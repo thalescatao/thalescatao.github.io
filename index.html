@@ -175,42 +175,7 @@
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="index.html">Thales Catão</a>
-  <ul class="nav-center" id="nav-center">
-    <li><a href="#portfolio" data-k="nav.portfolio">Portfólio</a></li>
-    <li class="has-dropdown" id="dd-item">
-      <a id="dd-btn" tabindex="0">
-        <span data-k="nav.personal">Pessoal</span>
-        <span class="chevron">▾</span>
-      </a>
-      <div class="dropdown-menu">
-        <a href="workout.html">🏋️ <span data-k="nav.workout">Treino</span></a>
-        <a href="nutrition.html">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
-        <a href="music-theory.html">🎵 <span data-k="nav.music">Teoria Musical</span></a>
-        
-        <div class="more-container" id="more-container">
-          <div class="more-menu" id="more-menu">
-            <a href="software.html">💻 <span data-k="nav.software">Software</span></a>
-            <a href="law.html">⚖️ <span data-k="nav.law">Direito Natural</span></a>
-          </div>
-          <div class="more-toggle" id="more-toggle" tabindex="0">
-            <span class="chevron">▾</span>
-          </div>
-        </div>
-
-      </div>
-    </li>
-    <li><a href="contact.html" data-k="nav.contact">Contato</a></li>
-  </ul>
-  <div class="nav-right">
-    <div class="lang-switcher">
-      <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-    </div>
-    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
+<div id="site-nav"></div>
 
 <div class="hero">
   <a href="https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4363158A8" target="_blank" rel="noopener" class="hero-tag" data-k="hero.tag">Arquiteto & Urbanista</a>
@@ -218,7 +183,7 @@
   <p class="hero-p" data-k="hero.p">Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.</p>
   <div class="btn-row">
     <a class="btn-primary" href="#portfolio" data-k="hero.btn1">Ver portfólio &rarr;</a>
-    <a class="btn-secondary" href="contact.html" data-k="hero.btn2">Entrar em contato</a>
+    <a class="btn-secondary" href="contact/" data-route="contact" data-k="hero.btn2">Entrar em contato</a>
   </div>
 </div>
 
@@ -336,5 +301,6 @@ document.addEventListener('click', e => {
 const savedLang = (() => { try { return localStorage.getItem('siteLang') || 'pt'; } catch(e) { return 'pt'; } })();
 setLang(savedLang);
 </script>
+<script src="nav.js"></script>
 </body>
 </html>
