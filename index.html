@@ -109,23 +109,33 @@
     .lang-btn.active{background:var(--card-bg);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.05);}
     
     .nav-right { display: flex; align-items: center; gap: 8px; }
-    .mobile-menu-btn { display: none; background: none; border: none; font-size: 16px; color: var(--text); cursor: pointer; padding: 4px; }
+    .mobile-menu-btn { display: none; position: relative; width: 28px; height: 28px; background: none; border: none; color: var(--text); cursor: pointer; padding: 0; }
+    .mobile-menu-btn span { position: absolute; left: 5px; width: 18px; height: 1.5px; background: currentColor; border-radius: 999px; transition: transform .22s ease, opacity .16s ease, top .22s ease; }
+    .mobile-menu-btn span:nth-child(1) { top: 8px; }
+    .mobile-menu-btn span:nth-child(2) { top: 13px; }
+    .mobile-menu-btn span:nth-child(3) { top: 18px; }
+    .mobile-menu-btn.active span:nth-child(1) { top: 13px; transform: rotate(45deg); }
+    .mobile-menu-btn.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .mobile-menu-btn.active span:nth-child(3) { top: 13px; transform: rotate(-45deg); }
     
     @media(max-width:650px){
       .mobile-menu-btn { display: block; }
       .nav-center {
         display: none;
-        position: absolute; top: calc(100% + 12px); left: 0; right: 0;
+        position: absolute; top: calc(100% + 12px); left: auto; right: 0;
+        width: max-content; min-width: 190px; max-width: calc(100vw - 32px);
         background: var(--nav-bg); backdrop-filter: blur(22px) saturate(1.7); -webkit-backdrop-filter: blur(22px) saturate(1.7);
         border: 0.5px solid var(--border); border-radius: 20px; padding: 12px;
-        flex-direction: column; box-shadow: var(--shadow);
+        flex-direction: column; align-items: stretch; box-shadow: var(--shadow);
       }
       .nav-center.open { display: flex; }
       .nav-center > li { width: 100%; }
       .nav-center > li > a { width: 100%; justify-content: space-between; padding: 12px 16px; font-size: 14px; border-radius: 12px; }
-      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; background: transparent; padding: 0 0 0 16px; display: none; min-width: auto; gap: 6px; }
+      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; align-self: stretch; width: 100%; max-width: 100%; box-shadow: none; border: none; background: transparent; padding: 4px 0 0; display: none; min-width: 0; gap: 6px; align-items: stretch; }
+      .dropdown-menu a { width: 100%; justify-content: flex-start; }
       .has-dropdown.open .dropdown-menu { display: flex; }
-      .more-toggle { margin: 0; border-radius: 12px; height: 32px; }
+      .more-container { width: 100%; }
+      .more-toggle { width: 100%; margin: 0; border-radius: 0 0 12px 12px; height: 24px; align-self: stretch; }
     }
 
     .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1000px;margin:0 auto;padding:120px 24px 80px;}
@@ -198,7 +208,7 @@
       <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
       <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
     </div>
-    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -295,7 +305,9 @@ const moreContainer = document.getElementById('more-container');
 
 mobileBtn?.addEventListener('click', e => {
   e.stopPropagation();
-  navCenter.classList.toggle('open');
+  const isOpen = navCenter.classList.toggle('open');
+  mobileBtn.classList.toggle('active', isOpen);
+  mobileBtn.setAttribute('aria-expanded', String(isOpen));
 });
 
 ddBtn?.addEventListener('click', e => {
@@ -315,6 +327,8 @@ document.addEventListener('click', e => {
   }
   if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target)) {
     navCenter.classList.remove('open');
+    mobileBtn.classList.remove('active');
+    mobileBtn.setAttribute('aria-expanded', 'false');
   }
 });
 

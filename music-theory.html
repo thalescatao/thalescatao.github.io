@@ -99,32 +99,45 @@
     .lang-btn.active{background:var(--card-bg);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.05);}
     
     .nav-right { display: flex; align-items: center; gap: 8px; }
-    .mobile-menu-btn { display: none; background: none; border: none; font-size: 16px; color: var(--text); cursor: pointer; padding: 4px; }
+    .mobile-menu-btn { display: none; position: relative; width: 28px; height: 28px; background: none; border: none; color: var(--text); cursor: pointer; padding: 0; }
+    .mobile-menu-btn span { position: absolute; left: 5px; width: 18px; height: 1.5px; background: currentColor; border-radius: 999px; transition: transform .22s ease, opacity .16s ease, top .22s ease; }
+    .mobile-menu-btn span:nth-child(1) { top: 8px; }
+    .mobile-menu-btn span:nth-child(2) { top: 13px; }
+    .mobile-menu-btn span:nth-child(3) { top: 18px; }
+    .mobile-menu-btn.active span:nth-child(1) { top: 13px; transform: rotate(45deg); }
+    .mobile-menu-btn.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .mobile-menu-btn.active span:nth-child(3) { top: 13px; transform: rotate(-45deg); }
     
     @media(max-width:650px){
       .mobile-menu-btn { display: block; }
       .nav-center {
         display: none;
-        position: absolute; top: calc(100% + 12px); left: 0; right: 0;
+        position: absolute; top: calc(100% + 12px); left: auto; right: 0;
+        width: max-content; min-width: 190px; max-width: calc(100vw - 32px);
         background: var(--nav-bg); backdrop-filter: blur(22px) saturate(1.7); -webkit-backdrop-filter: blur(22px) saturate(1.7);
         border: 0.5px solid var(--border); border-radius: 20px; padding: 12px;
-        flex-direction: column; box-shadow: var(--shadow);
+        flex-direction: column; align-items: stretch; box-shadow: var(--shadow);
       }
       .nav-center.open { display: flex; }
       .nav-center > li { width: 100%; }
       .nav-center > li > a { width: 100%; justify-content: space-between; padding: 12px 16px; font-size: 14px; border-radius: 12px; }
-      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; background: transparent; padding: 0 0 0 16px; display: none; min-width: auto; gap: 6px; }
+      .dropdown-menu { position: relative; top: 0; left: 0; transform: none; align-self: stretch; width: 100%; max-width: 100%; box-shadow: none; border: none; background: transparent; padding: 4px 0 0; display: none; min-width: 0; gap: 6px; align-items: stretch; }
+      .dropdown-menu a { width: 100%; justify-content: flex-start; }
       .has-dropdown.open .dropdown-menu { display: flex; }
-      .more-toggle { margin: 0; border-radius: 12px; height: 32px; }
+      .more-container { width: 100%; }
+      .more-toggle { width: 100%; margin: 0; border-radius: 0 0 12px 12px; height: 24px; align-self: stretch; }
       
       .sheet-container { height: 700px; }
     }
 
     main{max-width:1000px;margin:0 auto;padding:120px 24px 40px;min-height:100vh;display:flex;flex-direction:column;}
-    h1{font-family:'Instrument Serif',serif;font-size:clamp(48px,8vw,80px);line-height:1.08;letter-spacing:-.03em;text-align:center;margin-bottom:48px;color:var(--accent);}
-    h1 a{color:var(--accent);text-decoration:none;transition:opacity .2s;}
-    h1 a:hover{opacity:0.8;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:8px;}
+    .page-header{display:flex;flex-direction:column;align-items:stretch;text-align:left;margin-bottom:42px;}
+    .title-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:14px;width:100%;margin-bottom:18px;}
+    h1{grid-column:2;font-family:'Instrument Serif',serif;font-size:clamp(48px,8vw,80px);line-height:1.08;letter-spacing:-.03em;color:var(--accent);text-align:center;}
     h1 em{font-style:italic;}
+    .source-pill{grid-column:3;justify-self:start;display:inline-flex;align-items:center;justify-content:center;width:40px;height:26px;border-radius:999px;background:var(--accent-lt);color:var(--accent);text-decoration:none;transition:opacity .2s,transform .2s;}
+    .source-pill:hover{opacity:.82;transform:translateY(-1px);}
+    .page-intro{width:100%;color:var(--muted);font-size:15px;line-height:1.7;text-align:justify;text-align-last:left;}
 
     .sheet-container{height: 1080px; border:0.5px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card-bg);box-shadow:var(--shadow);}
     iframe{width:100%;height:100%;border:none;}
@@ -165,12 +178,20 @@
       <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
       <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
     </div>
-    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <main>
-  <h1><a href="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/view" target="_blank" rel="noopener"><em data-k="title">Teoria Musical</em></a></h1>
+  <header class="page-header">
+    <div class="title-row">
+      <h1><em data-k="title">Teoria Musical</em></h1>
+      <a class="source-pill" href="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/view" target="_blank" rel="noopener" aria-label="Abrir planilha de teoria musical">
+        <i class="fa-solid fa-link" aria-hidden="true"></i>
+      </a>
+    </div>
+    <p class="page-intro" data-k="intro">Um apanhado do coisas que "escrevi" enquanto estudava instrumentos, em ordem do fundamental ao avançado e que me ajudaram a internalizar os conceitos e ordenar os diversos materiais que utilizei como fonte.</p>
+  </header>
   <div class="sheet-container">
     <iframe src="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/preview"></iframe>
   </div>
@@ -182,13 +203,15 @@ const translations = {
     'nav.portfolio': 'Portfólio', 'nav.personal': 'Pessoal', 'nav.contact': 'Contato',
     'nav.workout': 'Treino', 'nav.nutrition': 'Nutrição', 'nav.music': 'Teoria Musical',
     'nav.software': 'Software', 'nav.law': 'Direito Natural',
-    'title': 'Teoria Musical'
+    'title': 'Teoria Musical',
+    'intro': 'Um apanhado do coisas que "escrevi" enquanto estudava instrumentos, em ordem do fundamental ao avançado e que me ajudaram a internalizar os conceitos e ordenar os diversos materiais que utilizei como fonte.'
   },
   en: {
     'nav.portfolio': 'Portfolio', 'nav.personal': 'Personal', 'nav.contact': 'Contact',
     'nav.workout': 'Workout', 'nav.nutrition': 'Nutrition', 'nav.music': 'Music Theory',
     'nav.software': 'Software', 'nav.law': 'Natural Law',
-    'title': 'Music Theory'
+    'title': 'Music Theory',
+    'intro': 'A compilation of things I "wrote" while studying instruments, ordered from basic to advanced, which helped me internalize concepts and bring order to the many materials I used as reference.'
   }
 };
 
@@ -217,7 +240,9 @@ const moreContainer = document.getElementById('more-container');
 
 mobileBtn?.addEventListener('click', e => {
   e.stopPropagation();
-  navCenter.classList.toggle('open');
+  const isOpen = navCenter.classList.toggle('open');
+  mobileBtn.classList.toggle('active', isOpen);
+  mobileBtn.setAttribute('aria-expanded', String(isOpen));
 });
 
 ddBtn?.addEventListener('click', e => {
@@ -237,6 +262,8 @@ document.addEventListener('click', e => {
   }
   if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target)) {
     navCenter.classList.remove('open');
+    mobileBtn.classList.remove('active');
+    mobileBtn.setAttribute('aria-expanded', 'false');
   }
 });
 
