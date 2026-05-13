@@ -5,25 +5,25 @@
 
   const routes = isFile
     ? {
-        home: rootPrefix + 'index.html',
-        portfolio: isNestedFile ? rootPrefix + 'index.html#portfolio' : '#portfolio',
-        workout: rootPrefix + 'workout/index.html',
-        nutrition: rootPrefix + 'nutrition/index.html',
-        music: rootPrefix + 'music-theory/index.html',
-        software: rootPrefix + 'software/index.html',
-        law: rootPrefix + 'law/index.html',
-        contact: rootPrefix + 'contact/index.html'
-      }
+      home: rootPrefix + 'index.html',
+      portfolio: isNestedFile ? rootPrefix + 'index.html#portfolio' : '#portfolio',
+      workout: rootPrefix + 'workout/index.html',
+      nutrition: rootPrefix + 'nutrition/index.html',
+      music: rootPrefix + 'music-theory/index.html',
+      software: rootPrefix + 'software/index.html',
+      law: rootPrefix + 'law/index.html',
+      contact: rootPrefix + 'contact/index.html'
+    }
     : {
-        home: '/',
-        portfolio: '/#portfolio',
-        workout: '/workout/',
-        nutrition: '/nutrition/',
-        music: '/music-theory/',
-        software: '/software/',
-        law: '/law/',
-        contact: '/contact/'
-      };
+      home: '/',
+      portfolio: '/#portfolio',
+      workout: '/workout/',
+      nutrition: '/nutrition/',
+      music: '/music-theory/',
+      software: '/software/',
+      law: '/law/',
+      contact: '/contact/'
+    };
 
   const navCss = `
     nav{
