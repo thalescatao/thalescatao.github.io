@@ -116,36 +116,21 @@
       text-align-last: left;
     }
 
-    /* Removed background and borders so the light mode multiply effect works cleanly */
     .sheet-container {
       height: 630px;
       border-radius: 16px;
       overflow: hidden;
-      background: transparent;
     }
 
-    /* Added mix-blend-mode for light mode to absorb the site's background */
     iframe {
       width: 100%;
       height: 100%;
       border: none;
-      mix-blend-mode: multiply;
-      transition: opacity 0.3s, mix-blend-mode 0.3s;
     }
 
-    @media(prefers-color-scheme:dark) {
-
-      /* In dark mode, restore container background to blend with the dimmed iframe */
+    @media(max-width:650px) {
       .sheet-container {
-        background: var(--card-bg) !important;
-        border: 0.5px solid var(--border) !important;
-        box-shadow: var(--shadow) !important;
-      }
-
-      /* Disable multiply and dim the white background instead */
-      .sheet-container iframe {
-        mix-blend-mode: normal !important;
-        opacity: 0.88;
+        height: 660px;
       }
     }
   </style>
