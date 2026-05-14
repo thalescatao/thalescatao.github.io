@@ -21,16 +21,19 @@
   <meta charset="UTF-8" />
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
+  <meta name="description"
+    content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thalescatao.github.io/music-theory/">
   <meta property="og:title" content="Thales Catão | Music">
-  <meta property="og:description" content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
+  <meta property="og:description"
+    content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
   <meta property="og:image" content="https://thalescatao.github.io/favicon.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://thalescatao.github.io/music-theory/">
   <meta name="twitter:title" content="Thales Catão | Music">
-  <meta name="twitter:description" content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
+  <meta name="twitter:description"
+    content="Página Pessoal de Thales Catão com conteúdo sobre teoria musical. Notas, frequência, comprimento de onda, amplitude, escalas, melodia, ritmo, campo harmônico, instrumentos, etc...">
   <meta name="twitter:image" content="https://thalescatao.github.io/favicon.png">
 
   <title>Thales Catão | Music</title>
@@ -38,21 +41,101 @@
   <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="../global.css" />
   <style>
-    main { max-width:1000px; margin:0 auto; padding:120px 24px 40px; min-height:100vh; display:flex; flex-direction:column; }
-    .page-header { display:flex; flex-direction:column; align-items:stretch; text-align:left; margin-bottom:42px; }
-    .title-row { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:14px; width:100%; margin-bottom:18px; }
-    h1 { grid-column:2; font-family:'Instrument Serif',serif; font-size:clamp(48px,8vw,80px); line-height:1.08; letter-spacing:-.03em; color:var(--accent); text-align:center; }
-    h1 em { font-style:italic; }
-    .source-pill { grid-column:3; justify-self:start; display:inline-flex; align-items:center; justify-content:center; width:40px; height:26px; border-radius:999px; background:var(--accent-lt); color:var(--accent); text-decoration:none; transition:opacity .2s,transform .2s; }
-    .source-pill:hover { opacity:.82; transform:translateY(-1px); }
-    .page-intro { width:100%; color:var(--muted); font-size:15px; line-height:1.7; text-align:justify; text-align-last:left; }
-    .sheet-container { height:1080px; border:0.5px solid var(--border); border-radius:16px; overflow:hidden; background:var(--card-bg); box-shadow:var(--shadow); }
-    iframe { width:100%; height:100%; border:none; }
-    @media(max-width:650px) { .sheet-container { height:700px; } }
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 24px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      text-align: left;
+      margin-bottom: 42px;
+    }
+
+    .title-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      grid-column: 2;
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    h1 em {
+      font-style: italic;
+    }
+
+    .source-pill {
+      grid-column: 3;
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--accent-lt);
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .source-pill:hover {
+      opacity: .82;
+      transform: translateY(-1px);
+    }
+
+    .page-intro {
+      width: 100%;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      text-align: justify;
+      text-align-last: left;
+    }
+
+    .sheet-container {
+      height: 1089px;
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @media(max-width:650px) {
+      .sheet-container {
+        height: 700px;
+      }
+    }
   </style>
 </head>
 
@@ -64,7 +147,9 @@
     <header class="page-header">
       <div class="title-row">
         <h1><em data-k="title">Teoria Musical</em></h1>
-        <a class="source-pill" href="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/view" target="_blank" rel="noopener" aria-label="Abrir planilha de teoria musical">
+        <a class="source-pill"
+          href="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/view"
+          target="_blank" rel="noopener" aria-label="Abrir planilha de teoria musical">
           <i class="fa-solid fa-link" aria-hidden="true"></i>
         </a>
       </div>
@@ -73,7 +158,8 @@
         utilizei como fonte.</p>
     </header>
     <div class="sheet-container">
-      <iframe src="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/preview"></iframe>
+      <iframe
+        src="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/preview"></iframe>
     </div>
   </main>
 
