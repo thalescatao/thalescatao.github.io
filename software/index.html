@@ -20,17 +20,20 @@
 
   <meta charset="UTF-8" />
   <meta name="google" content="notranslate">
-  <meta name="description" content="Página pessoal de Thales Catão com recomendações de software para Windows. Para usuários comuns, profissionais e avançados.">
+  <meta name="description"
+    content="Página pessoal de Thales Catão com recomendações de software para Windows. Para usuários comuns, profissionais e avançados.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://thalescatao.github.io/software/">
   <meta property="og:title" content="Thales Catão | Software">
-  <meta property="og:description" content="Página pessoal de Thales Catão com recomendações de software para Windows. Para usuários comuns, profissionais e avançados.">
+  <meta property="og:description"
+    content="Página pessoal de Thales Catão com recomendações de software para Windows. Para usuários comuns, profissionais e avançados.">
   <meta property="og:image" content="https://thalescatao.github.io/favicon.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://thalescatao.github.io/software/">
   <meta name="twitter:title" content="Thales Catão | Software">
-  <meta name="twitter:description" content="Página pessoal de Thales Catão com recomendações de software para Windows. Para usuários comuns, profissionais e avançados.">
+  <meta name="twitter:description"
+    content="Página pessoal de Thales Catão com recomendações de software para Windows. Para usuários comuns, profissionais e avançados.">
   <meta name="twitter:image" content="https://thalescatao.github.io/favicon.png">
 
   <title>Thales Catão | Software</title>
@@ -38,36 +41,180 @@
   <link rel="icon" type="image/png" href="../favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="../global.css" />
   <style>
-    main { max-width:720px; margin:0 auto; padding:110px 24px 80px; }
-    h1 { font-family:'Instrument Serif',serif; font-size:clamp(48px,8vw,80px); line-height:1.08; letter-spacing:-.03em; text-align:center; margin-bottom:32px; color:var(--accent); }
-    h1 em { font-style:italic; }
-    h2 { font-family:'Instrument Serif',serif; font-size:clamp(32px,5vw,56px); letter-spacing:-.02em; line-height:1.1; margin-bottom:32px; text-align:left; }
-    .software-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
-    .software-card { display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--card-bg); border:0.5px solid var(--border); border-radius:16px; padding:24px 16px; text-decoration:none; color:var(--text); text-align:center; transition:transform .2s,box-shadow .2s,border-color .2s; aspect-ratio:1; }
-    .software-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--accent); }
-    .software-icon { font-size:64px; color:var(--accent); margin-bottom:16px; transition:transform 0.2s; }
-    .software-card:hover .software-icon { transform:scale(1.05); }
-    .software-name { font-size:16px; font-weight:500; margin-bottom:4px; line-height:1.2; user-select:text; -webkit-user-select:text; cursor:text; }
-    .software-desc { font-size:12px; color:var(--muted); line-height:1.4; user-select:text; -webkit-user-select:text; cursor:text; }
-    hr { border:none; border-top:0.5px solid var(--border); margin:64px auto; }
-    .unadvised-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
-    .unadvised-card { display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--surface); border:0.5px solid var(--border); border-radius:16px; padding:24px 16px; color:var(--muted); opacity:0.8; aspect-ratio:1; }
-    .unadvised-icon { font-size:56px; margin-bottom:16px; line-height:1; }
-    .unadvised-name { font-size:14px; font-weight:500; text-align:center; user-select:text; -webkit-user-select:text; cursor:text; }
-    footer { padding:40px 24px; }
-    h1, hr:first-of-type, h2:first-of-type { animation:fadeUp .4s ease both; }
-    .software-grid { animation:fadeUp .4s .1s ease both; }
-    hr:last-of-type, .unadvised-section { animation:fadeUp .4s .2s ease both; }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 110px 24px 80px;
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      text-align: center;
+      margin-bottom: 32px;
+      color: var(--accent);
+    }
+
+    h1 em {
+      font-style: italic;
+    }
+
+    h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .software-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .software-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-decoration: none;
+      color: var(--text);
+      text-align: center;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      aspect-ratio: 1;
+    }
+
+    .software-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
+
+    .software-icon {
+      font-size: 64px;
+      color: var(--accent);
+      margin-bottom: 16px;
+      transition: transform 0.2s;
+    }
+
+    .software-card:hover .software-icon {
+      transform: scale(1.05);
+    }
+
+    .software-name {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      line-height: 1.2;
+      user-select: text;
+      -webkit-user-select: text;
+      cursor: text;
+    }
+
+    .software-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      user-select: text;
+      -webkit-user-select: text;
+      cursor: text;
+    }
+
+    hr {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 64px auto;
+    }
+
+    .unadvised-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .unadvised-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 16px;
+      color: var(--muted);
+      opacity: 0.8;
+      aspect-ratio: 1;
+    }
+
+    .unadvised-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .unadvised-name {
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      user-select: text;
+      -webkit-user-select: text;
+      cursor: text;
+    }
+
+    footer {
+      padding: 40px 24px;
+    }
+
+    h1,
+    hr:first-of-type,
+    h2:first-of-type {
+      animation: fadeUp .4s ease both;
+    }
+
+    .software-grid {
+      animation: fadeUp .4s .1s ease both;
+    }
+
+    hr:last-of-type,
+    .unadvised-section {
+      animation: fadeUp .4s .2s ease both;
+    }
+
     @media(max-width:500px) {
-      .software-grid { grid-template-columns:repeat(2,1fr); }
-      .software-card { padding:16px 8px; }
-      .software-icon { font-size:40px; margin-bottom:12px; }
-      .software-name { font-size:14px; }
-      .software-desc { font-size:11px; }
+      .software-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .software-card {
+        padding: 16px 8px;
+      }
+
+      .software-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+      }
+
+      .software-name {
+        font-size: 14px;
+      }
+
+      .software-desc {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
@@ -86,47 +233,62 @@
     <div class="software-grid">
       <a class="software-card" href="https://apps.microsoft.com/detail/XP8C9QZMS2PC1T" target="_blank" rel="noopener">
         <i class="software-icon fa-brands fa-brave"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XP8C9QZMS2PC1T', '_blank');">Brave Browser</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XP8C9QZMS2PC1T', '_blank');">
+          Brave Browser</div>
         <div class="software-desc" data-k="desc.brave">Navegador Web</div>
       </a>
       <a class="software-card" href="https://apps.microsoft.com/detail/XPDF9VL4D5XR9W" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-file-lines"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XPDF9VL4D5XR9W', '_blank');">PDF-XChange Editor</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XPDF9VL4D5XR9W', '_blank');">
+          PDF-XChange Editor</div>
         <div class="software-desc" data-k="desc.pdf">Visualizador PDF</div>
       </a>
       <a class="software-card" href="https://apps.microsoft.com/detail/XPDLH3XBZXQV23" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-file-word"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XPDLH3XBZXQV23', '_blank');">ONLYOFFICE</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XPDLH3XBZXQV23', '_blank');">
+          ONLYOFFICE</div>
         <div class="software-desc" data-k="desc.onlyoffice">Pacote Office</div>
       </a>
       <a class="software-card" href="https://apps.microsoft.com/detail/XPDM1ZW6815MQM" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-triangle-exclamation"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XPDM1ZW6815MQM', '_blank');">VLC Media Player</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://apps.microsoft.com/detail/XPDM1ZW6815MQM', '_blank');">
+          VLC Media Player</div>
         <div class="software-desc" data-k="desc.vlc">Reprodutor de Mídia</div>
       </a>
       <a class="software-card" href="https://www.photopea.com/" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-image"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://www.photopea.com/', '_blank');">Photopea</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://www.photopea.com/', '_blank');">Photopea</div>
         <div class="software-desc" data-k="desc.photopea">Editor de Fotos Online</div>
       </a>
       <a class="software-card" href="https://www.7-zip.org/download.html" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-file-zipper"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://www.7-zip.org/download.html', '_blank');">7-Zip</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://www.7-zip.org/download.html', '_blank');">7-Zip</div>
         <div class="software-desc" data-k="desc.7zip">Compactador de Arquivos</div>
       </a>
       <a class="software-card" href="https://github.com/clawsoftware/clawPDF" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-print"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://github.com/clawsoftware/clawPDF', '_blank');">clawPDF</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://github.com/clawsoftware/clawPDF', '_blank');">clawPDF
+        </div>
         <div class="software-desc" data-k="desc.clawpdf">Impressora Virtual</div>
       </a>
       <a class="software-card" href="https://www.qbittorrent.org/download" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-magnet"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://www.qbittorrent.org/download', '_blank');">qBittorrent</div>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://www.qbittorrent.org/download', '_blank');">qBittorrent
+        </div>
         <div class="software-desc" data-k="desc.qbittorrent">Cliente Torrent</div>
       </a>
       <a class="software-card" href="https://bt4gprx.com/" target="_blank" rel="noopener">
         <i class="software-icon fa-solid fa-globe"></i>
-        <div class="software-name" onclick="event.preventDefault(); window.open('https://bt4gprx.com/', '_blank');">BT4G</div>
+        <div class="software-name" onclick="event.preventDefault(); window.open('https://bt4gprx.com/', '_blank');">BT4G
+        </div>
         <div class="software-desc" data-k="desc.bt4g">Agregador de Torrent</div>
       </a>
     </div>
@@ -136,10 +298,22 @@
     <div class="unadvised-section">
       <h2 data-k="headline.unadv">Não Recomendado</h2>
       <div class="unadvised-grid">
-        <div class="unadvised-card"><div class="unadvised-icon">💩</div><div class="unadvised-name">uTorrent</div></div>
-        <div class="unadvised-card"><div class="unadvised-icon">💩</div><div class="unadvised-name">WinRAR</div></div>
-        <div class="unadvised-card"><div class="unadvised-icon">💩</div><div class="unadvised-name">Adobe Acrobat</div></div>
-        <div class="unadvised-card"><div class="unadvised-icon">💩</div><div class="unadvised-name">McAfee</div></div>
+        <div class="unadvised-card">
+          <div class="unadvised-icon">💩</div>
+          <div class="unadvised-name">uTorrent</div>
+        </div>
+        <div class="unadvised-card">
+          <div class="unadvised-icon">💩</div>
+          <div class="unadvised-name">WinRAR</div>
+        </div>
+        <div class="unadvised-card">
+          <div class="unadvised-icon">💩</div>
+          <div class="unadvised-name">Adobe Acrobat</div>
+        </div>
+        <div class="unadvised-card">
+          <div class="unadvised-icon">💩</div>
+          <div class="unadvised-name">McAfee</div>
+        </div>
       </div>
     </div>
   </main>
@@ -170,12 +344,6 @@
       }
     };
 
-    // Avoid link dragging when selecting text
-    document.querySelectorAll('.software-name, .software-desc').forEach(el => {
-      el.addEventListener('mousedown', function (e) {
-        e.stopPropagation();
-      });
-    });
   </script>
   <script src="../nav.js"></script>
 </body>
