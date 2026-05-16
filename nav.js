@@ -176,6 +176,24 @@
       try { return localStorage.getItem('siteLang') || 'pt'; } catch (e) { return 'pt'; }
     })();
     window.setLang(savedLang);
+
+    // ── Scroll Reveal (IntersectionObserver) ──
+    const revealEls = document.querySelectorAll('.reveal');
+    if (revealEls.length && 'IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      revealEls.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+      // Fallback: show everything if IntersectionObserver is not supported
+      revealEls.forEach(function (el) { el.classList.add('revealed'); });
+    }
   }
 
   if (document.readyState === 'loading') {
