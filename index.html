@@ -42,35 +42,191 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="global.css" />
   <style>
-    .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; max-width:1000px; margin:0 auto; padding:120px 24px 80px; }
-    .hero-tag { display:inline-block; font-size:12px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); background:var(--accent-lt); padding:4px 14px; border-radius:999px; margin-bottom:28px; width:fit-content; text-decoration:none; transition:opacity .2s ease; }
-    .hero-tag:hover { opacity:0.8; }
-    .hero h1 { font-family:'Instrument Serif',serif; font-size:clamp(44px,7vw,80px); line-height:1.06; letter-spacing:-.03em; margin-bottom:24px; }
-    .hero h1 em { font-style:italic; color:var(--accent); }
-    .hero-p { font-size:18px; color:var(--muted); max-width:500px; margin-bottom:40px; font-weight:300; }
-    .btn-row { display:flex; gap:12px; flex-wrap:wrap; }
-    .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; padding:12px 26px; border-radius:999px; font-size:14px; font-weight:500; text-decoration:none; transition:opacity .18s,transform .18s; }
-    .btn-primary:hover { opacity:.85; transform:translateY(-1px); }
-    .btn-secondary { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text); padding:12px 26px; border-radius:999px; font-size:14px; font-weight:400; text-decoration:none; border:0.5px solid var(--border); transition:background .18s,transform .18s; }
-    .btn-secondary:hover { background:var(--surface); transform:translateY(-1px); }
-    hr { border:none; border-top:0.5px solid var(--border); max-width:1000px; margin:0 auto; }
-    section { max-width:1000px; margin:0 auto; padding:80px 24px; }
-    section h2 { font-family:'Instrument Serif',serif; font-size:clamp(32px,5vw,56px); letter-spacing:-.02em; line-height:1.1; margin-bottom:48px; text-align:center; }
-    .visual-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:40px 24px; width:100%; }
-    @media(max-width:768px) { .visual-grid { grid-template-columns:1fr; } }
-    .portfolio-item { display:flex; flex-direction:column; gap:12px; text-decoration:none; color:var(--text); }
-    .img-wrap { border-radius:16px; overflow:hidden; aspect-ratio:4/3; background:var(--surface); border:0.5px solid var(--border); }
-    .img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease; }
-    .portfolio-item:hover .img-wrap img { transform:scale(1.03); }
-    .portfolio-title { font-size:15px; font-weight:500; text-align:center; }
-    .hero-tag { animation:fadeUp .45s ease both; }
-    .hero h1 { animation:fadeUp .45s .1s ease both; }
-    .hero-p { animation:fadeUp .45s .2s ease both; }
-    .btn-row { animation:fadeUp .45s .3s ease both; }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 24px 80px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-lt);
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+      width: fit-content;
+      text-decoration: none;
+      transition: opacity .2s ease;
+    }
+
+    .hero-tag:hover {
+      opacity: 0.8;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(44px, 7vw, 80px);
+      line-height: 1.06;
+      letter-spacing: -.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 500px;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity .18s, transform .18s;
+    }
+
+    .btn-primary:hover {
+      opacity: .85;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 400;
+      text-decoration: none;
+      border: 0.5px solid var(--border);
+      transition: background .18s, transform .18s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    hr {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    section h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 24px;
+      width: 100%;
+    }
+
+    @media(max-width:768px) {
+      .visual-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .portfolio-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .img-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+    }
+
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .portfolio-item:hover .img-wrap img {
+      transform: scale(1.03);
+    }
+
+    .portfolio-title {
+      font-size: 15px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .hero-tag {
+      animation: fadeUp .45s ease both;
+    }
+
+    .hero h1 {
+      animation: fadeUp .45s .1s ease both;
+    }
+
+    .hero-p {
+      animation: fadeUp .45s .2s ease both;
+    }
+
+    .btn-row {
+      animation: fadeUp .45s .3s ease both;
+    }
   </style>
 </head>
 
@@ -95,28 +251,38 @@
   <section id="portfolio">
     <h2 class="reveal" data-k="nav.portfolio">Portfólio</h2>
     <div class="visual-grid">
-      <a href="https://www.behance.net/gallery/231575487/Concrete-House" target="_blank" rel="noopener" class="portfolio-item reveal" style="--reveal-d:0.08s">
-        <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/dd3792231575487.688b7b0720338.jpg" alt="Concrete House" loading="lazy"></div>
+      <a href="https://www.behance.net/gallery/231575487/Concrete-House" target="_blank" rel="noopener"
+        class="portfolio-item reveal" style="--reveal-d:0.08s">
+        <div class="img-wrap"><img
+            src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/dd3792231575487.688b7b0720338.jpg"
+            alt="Concrete House" loading="lazy"></div>
         <div class="portfolio-title" data-k="proj1">Concrete House</div>
       </a>
-      <a href="https://www.behance.net/gallery/231638963/5-Bedroom-Christian-House" target="_blank" rel="noopener" class="portfolio-item reveal" style="--reveal-d:0.16s">
-        <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/55e49f231638963.688caea0f0eb1.jpg" alt="5 Bedroom Christian House" loading="lazy"></div>
+      <a href="https://www.behance.net/gallery/231638963/5-Bedroom-Christian-House" target="_blank" rel="noopener"
+        class="portfolio-item reveal" style="--reveal-d:0.16s">
+        <div class="img-wrap"><img
+            src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/55e49f231638963.688caea0f0eb1.jpg"
+            alt="5 Bedroom Christian House" loading="lazy"></div>
         <div class="portfolio-title" data-k="proj2">5 Bedroom Christian House</div>
       </a>
-      <a href="https://www.behance.net/gallery/231850539/Compact-4-Bedroom-Modular-House" target="_blank" rel="noopener" class="portfolio-item reveal" style="--reveal-d:0.24s">
-        <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/17a208231850539.6891156f375a2.jpg" alt="Compact 4 Bedroom Modular House" loading="lazy"></div>
+      <a href="https://www.behance.net/gallery/231850539/Compact-4-Bedroom-Modular-House" target="_blank" rel="noopener"
+        class="portfolio-item reveal" style="--reveal-d:0.24s">
+        <div class="img-wrap"><img
+            src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/17a208231850539.6891156f375a2.jpg"
+            alt="Compact 4 Bedroom Modular House" loading="lazy"></div>
         <div class="portfolio-title" data-k="proj3">Compact 4 Bedroom Modular House</div>
       </a>
-      <a href="https://www.behance.net/gallery/231516519/Guest-House" target="_blank" rel="noopener" class="portfolio-item reveal" style="--reveal-d:0.32s">
-        <div class="img-wrap"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/637d2b231516519.688a6fc0b274d.jpg" alt="Guest House" loading="lazy"></div>
+      <a href="https://www.behance.net/gallery/231516519/Guest-House" target="_blank" rel="noopener"
+        class="portfolio-item reveal" style="--reveal-d:0.32s">
+        <div class="img-wrap"><img
+            src="https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/637d2b231516519.688a6fc0b274d.jpg"
+            alt="Guest House" loading="lazy"></div>
         <div class="portfolio-title" data-k="proj4">Guest House</div>
       </a>
     </div>
   </section>
 
-  <footer class="reveal">
-    <span data-k="footer">Feito com 🧡 &middot; &copy; 2026 Thales Catão</span>
-  </footer>
+  <footer><span data-k="footer">Feito com 🧡 &middot; &copy; 2026 Thales Catão</span></footer>
 
   <script>
     window.pageTranslations = {
