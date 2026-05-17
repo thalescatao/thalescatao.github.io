@@ -101,6 +101,64 @@
     mount.id = 'site-nav';
     mount.innerHTML = navHtml;
 
+    // Inject structural grid background once globally
+    if (!document.getElementById('structural-bg')) {
+      const bg = document.createElement('div');
+      bg.id = 'structural-bg';
+      bg.className = 'structural-bg';
+      bg.innerHTML = `
+        <!-- Dynamic Ambient Blobs (Concept 1) -->
+        <div class="ambient-blob blob-orange"></div>
+        <div class="ambient-blob blob-clay"></div>
+
+        <svg class="structural-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Isometric guidelines -->
+          <path d="M-200,200 L1600,1100 M400,-200 L1800,500" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="2,8" />
+          
+          <!-- Dynamic coordinate node 1 (Top Left) -->
+          <circle r="2.5" fill="var(--accent)" opacity="0.6">
+            <animateMotion dur="50s" repeatCount="indefinite" path="M100,150 L500,350 L200,450 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 2 (Top Right) -->
+          <circle r="2" fill="var(--accent)" opacity="0.4">
+            <animateMotion dur="75s" repeatCount="indefinite" path="M850,120 L550,420 L750,300 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 3 (Upper Middle) -->
+          <circle r="2" fill="var(--accent)" opacity="0.55">
+            <animateMotion dur="65s" repeatCount="indefinite" path="M200,600 L800,850 L350,950 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 4 (Middle) -->
+          <circle r="2.5" fill="var(--accent)" opacity="0.5">
+            <animateMotion dur="90s" repeatCount="indefinite" path="M750,1100 L950,1400 L500,1300 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 5 (Lower Middle) -->
+          <circle r="2" fill="var(--accent)" opacity="0.45">
+            <animateMotion dur="70s" repeatCount="indefinite" path="M150,1550 L450,1850 L300,1700 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 6 (Lower Section) -->
+          <circle r="2.5" fill="var(--accent)" opacity="0.5">
+            <animateMotion dur="85s" repeatCount="indefinite" path="M800,2000 L550,2300 L850,2200 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 7 (Bottom Left) -->
+          <circle r="2" fill="var(--accent)" opacity="0.55">
+            <animateMotion dur="80s" repeatCount="indefinite" path="M150,2500 L500,2800 L250,2700 Z" />
+          </circle>
+          
+          <!-- Dynamic coordinate node 8 (Bottom Right) -->
+          <circle r="2.5" fill="var(--accent)" opacity="0.4">
+            <animateMotion dur="100s" repeatCount="indefinite" path="M750,2900 L900,3200 L650,3100 Z" />
+          </circle>
+        </svg>
+      `;
+      document.body.appendChild(bg);
+    }
+
     document.querySelectorAll('[data-route]').forEach(link => {
       const route = link.getAttribute('data-route');
       if (routes[route]) link.setAttribute('href', routes[route]);
