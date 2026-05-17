@@ -292,17 +292,29 @@
 
     .modal-content {
       display: grid;
-      grid-template-columns: 2.3fr 0.9fr;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
       min-height: 520px;
       height: 100%;
     }
 
     @media (max-width: 860px) {
+      .modal-container {
+        width: calc(100% - 24px);
+        max-height: calc(100vh - 24px);
+        border-radius: 16px;
+      }
+
       .modal-content {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         grid-template-rows: auto auto;
         overflow-y: auto;
-        max-height: calc(100vh - 48px);
+        overflow-x: hidden;
+        max-height: calc(100vh - 24px);
+      }
+
+      .modal-info-side {
+        padding: 24px 20px;
+        overflow-y: visible;
       }
     }
 
@@ -312,6 +324,9 @@
       flex-direction: column;
       background: #000;
       position: relative;
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
     }
 
     .gallery-viewport {
@@ -337,26 +352,27 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
+      width: auto;
+      height: auto;
       border: none;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: transparent;
       color: #fff;
-      font-size: 16px;
+      font-size: 28px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s, transform 0.2s;
+      transition: opacity 0.2s, transform 0.2s;
       z-index: 5;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      opacity: 0.75;
+      padding: 12px;
     }
 
     .gallery-nav:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: translateY(-50%) scale(1.05);
+      background: transparent;
+      opacity: 1;
+      transform: translateY(-50%) scale(1.15);
     }
 
     .prev-btn {
@@ -389,6 +405,8 @@
       background: var(--surface);
       overflow-x: auto;
       scroll-behavior: smooth;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .gallery-thumb-item {
@@ -627,12 +645,12 @@
         pt: {
           title: "Concrete House",
           typology: "Residencial",
-          desc: "<p>Concepção de residência contemporânea marcada pelo uso expressivo do concreto aparente, grandes vãos e uma forte integração com a natureza circundante. O partido arquitetônico valoriza a pureza volumétrica e a funcionalidade.</p><p>O projeto explora a modulação estrutural e detalhes de encaixe precisos, proporcionados por um rigoroso processo de modelagem BIM. O resultado é um lar que equilibra a solidez material com a leveza espacial.</p>"
+          desc: "<p>Residência contemporânea marcada pelo uso expressivo do concreto aparente, vãos generosos e forte integração com a natureza. O partido valoriza a pureza volumétrica e a funcionalidade, para modulação estrutural precisa e eficiência construtiva.</p>"
         },
         en: {
           title: "Concrete House",
           typology: "Residential",
-          desc: "<p>Contemporary residence design characterized by the expressive use of raw concrete, large spans, and a strong integration with the surrounding nature. The architectural concept values volumetric purity and functionality.</p><p>The project explores structural modulation and precise construction detailing, achieved through a rigorous BIM modeling workflow. The result is a home that balances material solidity with spatial lightness.</p>"
+          desc: "<p>Contemporary residence characterized by the expressive use of raw concrete, generous spans, and integration with nature. The design emphasizes volumetric purity and functionality, ensuring precise structural modulation and construction efficiency.</p>"
         }
       },
       proj2: {
@@ -646,12 +664,12 @@
         pt: {
           title: "5 Bedroom Christian House",
           typology: "Residencial",
-          desc: "<p>Residência unifamiliar espaçosa projetada para atender às necessidades de uma grande família. O projeto equilibra áreas de convivência generosas com suítes privativas bem distribuídas, priorizando a iluminação natural e a ventilação cruzada.</p><p>Com um partido arquitetônico atemporal, a volumetria alia elementos tradicionais a linhas contemporâneas, resultando em uma estética elegante e acolhedora.</p>"
+          desc: "<p>Residência unifamiliar ampla projetada para uma grande família. O layout equilibra convívio social generoso com suítes privativas, priorizando luz natural e ventilação. A volumetria alia traços contemporâneos a elementos atemporais.</p>"
         },
         en: {
           title: "5 Bedroom Christian House",
           typology: "Residential",
-          desc: "<p>Spacious single-family residence designed to meet the dynamic needs of a large family. The layout balances generous social living spaces with well-distributed private suites, prioritizing natural lighting and cross ventilation.</p><p>With a timeless architectural concept, the volumetric design combines traditional elements with contemporary lines, resulting in an elegant and welcoming aesthetic.</p>"
+          desc: "<p>Spacious single-family home designed for a large family. The layout balances generous social spaces with private suites, prioritizing natural light and ventilation while combining contemporary and timeless lines.</p>"
         }
       },
       proj3: {
@@ -667,12 +685,12 @@
         pt: {
           title: "Compact 4 Bedroom Modular House",
           typology: "Residencial / Modular",
-          desc: "<p>Estudo de habitação modular que otimiza a área construída sem comprometer o conforto. O projeto foca na racionalização construtiva, permitindo montagem rápida com desperdício mínimo e alta eficiência termoacústica.</p><p>A distribuição interna inteligente cria uma sensação de amplitude através de ambientes integrados e do uso estratégico de marcenaria funcional.</p>"
+          desc: "<p>Habitação modular planejada para otimizar área construída com máximo conforto. Foco em racionalização construtiva, montagem rápida, desperdício mínimo e alta eficiência térmica. Os ambientes integrados criam excelente amplitude.</p>"
         },
         en: {
           title: "Compact 4 Bedroom Modular House",
           typology: "Residential / Modular",
-          desc: "<p>Modular housing study optimizing built area without compromising on spatial comfort. The design focuses on building rationalization, enabling fast assembly with minimal waste and high thermoacoustic efficiency.</p><p>The intelligent internal distribution creates a sense of spaciousness through integrated environments and the strategic use of functional millwork.</p>"
+          desc: "<p>Modular home designed to optimize footprint and maximize comfort. Focuses on constructive rationalization, fast assembly, minimal waste, and thermal efficiency with open, highly functional integrated spaces.</p>"
         }
       },
       proj4: {
@@ -688,12 +706,12 @@
         pt: {
           title: "Guest House",
           typology: "Residencial / Lazer",
-          desc: "<p>Anexo residencial concebido como refúgio acolhedor para hóspedes e área de lazer integrada. O partido utiliza materiais aconchegantes como madeira e pedra, estabelecendo um diálogo harmônico com o jardim.</p><p>A transparência das fachadas de vidro permite a fusão completa entre o interior e as varandas externas, criando o espaço ideal para relaxamento.</p>"
+          desc: "<p>Propriedade residencial concebida como refúgio para hóspedes, convivência e lazer. A geometria simples proporciona um dialogo que integra perfeitamente o interior as áreas externas. Além de conciliar iluminação natural, ventilação cruzada e privacidade.</p>"
         },
         en: {
           title: "Guest House",
           typology: "Residential / Leisure",
-          desc: "<p>Residential annex conceived as a cozy retreat for guests and an integrated leisure area. The architectural design uses warm materials like wood and stone, establishing a harmonic dialogue with the garden.</p><p>The transparency of the glass facades allows complete fusion between the interior and the external verandas, creating the perfect space for relaxation.</p>"
+          desc: "<p>A residential property designed as a haven for guests, socializing, and leisure. The simple geometry creates a beautiful dialogue that seamlessly integrates the interior with the outdoor areas, while balancing natural lighting, cross-ventilation and privacy.</p>"
         }
       }
     };
