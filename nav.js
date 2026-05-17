@@ -145,14 +145,14 @@
             <animateMotion dur="85s" repeatCount="indefinite" path="M800,2000 L550,2300 L850,2200 Z" />
           </circle>
           
-          <!-- Dynamic coordinate node 7 (Bottom Left) -->
+          <!-- Dynamic coordinate node 7 (Lower Section Left) -->
           <circle r="2" fill="var(--accent)" opacity="0.55">
-            <animateMotion dur="80s" repeatCount="indefinite" path="M150,2500 L500,2800 L250,2700 Z" />
+            <animateMotion dur="80s" repeatCount="indefinite" path="M150,1800 L500,2100 L250,1950 Z" />
           </circle>
           
-          <!-- Dynamic coordinate node 8 (Bottom Right) -->
+          <!-- Dynamic coordinate node 8 (Lower Section Right) -->
           <circle r="2.5" fill="var(--accent)" opacity="0.4">
-            <animateMotion dur="100s" repeatCount="indefinite" path="M750,2900 L900,3200 L650,3100 Z" />
+            <animateMotion dur="100s" repeatCount="indefinite" path="M750,2150 L900,2380 L650,2250 Z" />
           </circle>
         </svg>
       `;
