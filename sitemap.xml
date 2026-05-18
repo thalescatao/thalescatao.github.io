@@ -21,7 +21,7 @@
     <image:image>
       <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/17a208231850539.6891156f375a2.jpg</image:loc>
       <image:title>4 Bedroom Modular House - Thales Catão</image:title>
-      <image:caption>Compact 4 Bedroom Modular House - Tileable modular residential architecture by Thales Catão</image:caption>
+      <image:caption>4 Bedroom Modular House - Tileable modular residential architecture by Thales Catão</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/637d2b231516519.688a6fc0b274d.jpg</image:loc>
@@ -43,7 +43,7 @@
   <!-- Nutrition Page -->
   <url>
     <loc>https://thalescatao.github.io/nutrition/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -51,7 +51,7 @@
   <!-- Workout Page -->
   <url>
     <loc>https://thalescatao.github.io/workout/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -59,7 +59,7 @@
   <!-- Music Theory Page -->
   <url>
     <loc>https://thalescatao.github.io/music-theory/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -67,7 +67,7 @@
   <!-- Software Page -->
   <url>
     <loc>https://thalescatao.github.io/software/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -75,7 +75,7 @@
   <!-- Natural Law Page -->
   <url>
     <loc>https://thalescatao.github.io/law/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -83,7 +83,7 @@
   <!-- Contact Page -->
   <url>
     <loc>https://thalescatao.github.io/contact/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
