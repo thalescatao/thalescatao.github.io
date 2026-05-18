@@ -486,6 +486,22 @@ footer {
   }
 }
 
+/* Mobile Performance Tuning: Retain the beautiful color glows but bypass heavy blur filters and animations to keep it locked at 60fps */
+@media (max-width: 650px) {
+  .ambient-blob {
+    display: block !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    animation: none !important; /* Stop dynamic compositing repaint loops */
+    opacity: 0.18 !important; /* Subtle static glow */
+  }
+  @media (prefers-color-scheme: dark) {
+    .ambient-blob {
+      opacity: 0.12 !important; /* Elegant smoked dark mode static glow */
+    }
+  }
+}
+
 @keyframes organic-morph-1 {
   0% {
     transform: translate(0, 0) scale(1) rotate(0deg);

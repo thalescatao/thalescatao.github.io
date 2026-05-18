@@ -158,9 +158,6 @@
           
           <!-- Fill background with hardware-accelerated dot grid pattern -->
           <rect width="100%" height="100%" fill="url(#dot-grid)" class="grid-rect" />
-
-          <!-- Isometric guidelines -->
-          <path d="M-200,200 L1600,1100 M400,-200 L1800,500" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="2,8" />
           
           ${nodesHtml}
         </svg>
