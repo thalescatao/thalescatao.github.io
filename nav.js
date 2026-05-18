@@ -177,16 +177,30 @@
       mobileBtn.setAttribute('aria-expanded', String(isOpen));
     });
 
-    ddBtn?.addEventListener('click', e => {
+    const toggleDropdown = e => {
       e.stopPropagation();
       e.preventDefault();
       ddItem.classList.toggle('open');
+    };
+
+    ddBtn?.addEventListener('click', toggleDropdown);
+    ddBtn?.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        toggleDropdown(e);
+      }
     });
 
-    moreToggle?.addEventListener('click', e => {
+    const toggleMore = e => {
       e.stopPropagation();
       e.preventDefault();
       moreContainer.classList.toggle('open');
+    };
+
+    moreToggle?.addEventListener('click', toggleMore);
+    moreToggle?.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        toggleMore(e);
+      }
     });
 
     document.addEventListener('click', e => {

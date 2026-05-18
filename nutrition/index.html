@@ -166,7 +166,11 @@
         ancestrais. Ouça os sinais do seu corpo.</p>
     </header>
     <div class="doc-container">
-      <iframe src="https://docs.google.com/document/d/15QmLIPPon85_db8sB0c133h01lGBJqPkz4gpwd3MQAc/preview"></iframe>
+      <div class="iframe-spinner">
+        <div class="s-spinner"></div>
+      </div>
+      <iframe src="https://docs.google.com/document/d/15QmLIPPon85_db8sB0c133h01lGBJqPkz4gpwd3MQAc/preview"
+        onload="this.previousElementSibling.classList.add('loaded')"></iframe>
     </div>
   </main>
 

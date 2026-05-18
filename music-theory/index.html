@@ -159,8 +159,12 @@
       </p>
     </header>
     <div class="sheet-container">
+      <div class="iframe-spinner">
+        <div class="s-spinner"></div>
+      </div>
       <iframe
-        src="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/preview"></iframe>
+        src="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/preview"
+        onload="this.previousElementSibling.classList.add('loaded')"></iframe>
     </div>
   </main>
 

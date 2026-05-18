@@ -104,9 +104,16 @@ nav::before {
   gap: 4px;
 }
 
-.nav-center>li>a:hover {
+.nav-center>li>a:hover,
+.nav-center>li>a:focus-visible,
+.has-dropdown.open>#dd-btn {
   background: var(--surface);
   color: var(--text);
+  outline: none;
+}
+
+.nav-center>li>a:focus-visible {
+  box-shadow: 0 0 0 1.5px var(--accent);
 }
 
 .has-dropdown {
@@ -523,5 +530,44 @@ footer {
 
   100% {
     transform: translate(0, 0) scale(1) rotate(-360deg);
+  }
+}
+
+/* Sutil Iframe Loading Spinner */
+.sheet-container,
+.doc-container {
+  position: relative;
+  background: var(--card-bg);
+}
+
+.iframe-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  z-index: 5;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.iframe-spinner.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.s-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: s-spin 0.8s linear infinite;
+}
+
+@keyframes s-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
