@@ -63,6 +63,21 @@
       }
     }
 
+    /* Mobile Performance Tuning: Bypass backdrop-filter on small screens to eliminate pinch-to-zoom latency */
+    @media (max-width: 650px) {
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.85);
+        --glass-bg-hover: rgba(255, 255, 255, 0.92);
+        --glass-blur: none;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --glass-bg: rgba(24, 25, 22, 0.88);
+          --glass-bg-hover: rgba(24, 25, 22, 0.94);
+        }
+      }
+    }
+
     main {
       max-width: 720px;
       margin: 0 auto;
