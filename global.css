@@ -461,6 +461,7 @@ footer {
   left: -200px; /* Pinned half off-screen on the left */
   border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; /* Pre-defined beautiful organic geometry */
   animation: organic-morph-1 45s infinite ease-in-out;
+  opacity: 0.21; /* 25% more transparent than standard blob default (0.28 * 0.75 = 0.21) */
 }
 
 .blob-clay {
@@ -479,6 +480,9 @@ footer {
   }
   .ambient-blob {
     opacity: 0.18; /* Adjusted for dark mode contrast */
+  }
+  .blob-orange {
+    opacity: 0.14; /* 25% more transparent than dark mode blob default (0.18 * 0.75 = 0.135) */
   }
 }
 
