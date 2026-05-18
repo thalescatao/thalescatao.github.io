@@ -112,6 +112,15 @@
         <div class="ambient-blob blob-clay"></div>
 
         <svg class="structural-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dot-grid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="1" fill="var(--border)" />
+            </pattern>
+          </defs>
+          
+          <!-- Fill background with hardware-accelerated dot grid pattern -->
+          <rect width="100%" height="100%" fill="url(#dot-grid)" class="grid-rect" />
+
           <!-- Isometric guidelines -->
           <path d="M-200,200 L1600,1100 M400,-200 L1800,500" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="2,8" />
           

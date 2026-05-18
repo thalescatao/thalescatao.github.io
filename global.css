@@ -416,13 +416,14 @@ footer {
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 24px 24px;
+}
+
+.grid-rect {
   opacity: 0.55;
 }
 
 @media (prefers-color-scheme: dark) {
-  .structural-bg {
+  .grid-rect {
     opacity: 0.38;
   }
 }
