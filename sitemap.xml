@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   
   <!-- Homepage -->
   <url>
     <loc>https://thalescatao.github.io/</loc>
-    <lastmod>2026-05-11</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/dd3792231575487.688b7b0720338.jpg</image:loc>
+      <image:title>Concrete House - Thales Catão</image:title>
+      <image:caption>Concrete House - Modern minimalist concrete residential architecture by Thales Catão</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/55e49f231638963.688caea0f0eb1.jpg</image:loc>
+      <image:title>5 Bedroom Christian House - Thales Catão</image:title>
+      <image:caption>5 Bedroom Christian House - Contemporary luxury residential house design by Thales Catão</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/17a208231850539.6891156f375a2.jpg</image:loc>
+      <image:title>4 Bedroom Modular House - Thales Catão</image:title>
+      <image:caption>Compact 4 Bedroom Modular House - Tileable modular residential architecture by Thales Catão</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/637d2b231516519.688a6fc0b274d.jpg</image:loc>
+      <image:title>Guest House - Thales Catão</image:title>
+      <image:caption>Guest House - Modern backyard guest pavilion and leisure annex by Thales Catão</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/130f4e231484041.688a043b9da4a.jpg</image:loc>
+      <image:title>Gym - Thales Catão</image:title>
+      <image:caption>Gym - Minimalist industrial fitness center and leisure architecture by Thales Catão</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/63fa03232065799.6894b260e1a12.jpg</image:loc>
+      <image:title>Tiny Cabin - Thales Catão</image:title>
+      <image:caption>Tiny Cabin - Eco-friendly modular wooden cabin and minimalist forest retreat by Thales Catão</image:caption>
+    </image:image>
   </url>
 
   <!-- Nutrition Page -->

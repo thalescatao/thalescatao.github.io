@@ -25,7 +25,6 @@
       contact: '/contact/'
     };
 
-  // Shared navigation translations (so pages don't need to repeat these)
   const navTranslations = {
     pt: {
       'nav.portfolio': 'Portfólio',
@@ -101,9 +100,7 @@
     mount.id = 'site-nav';
     mount.innerHTML = navHtml;
 
-    // Inject structural grid background once globally
     if (!document.getElementById('structural-bg')) {
-      // Determine screen dimensions dynamically
       const screenWidth = window.innerWidth || 1200;
       const scrollHeight = Math.max(
         document.body?.scrollHeight || 0,
@@ -112,14 +109,12 @@
         2500
       );
 
-      // Generate 8 dynamic coordinate nodes with random triangular paths and subtle opacities
       let nodesHtml = '';
       const numNodes = 8;
       for (let i = 0; i < numNodes; i++) {
         const yMin = (i * scrollHeight) / numNodes;
         const yMax = ((i + 1) * scrollHeight) / numNodes;
 
-        // Generate three random points for the triangular loop (spawns within browser margins)
         const x1 = Math.floor(Math.random() * (screenWidth - 80)) + 40;
         const y1 = Math.floor(Math.random() * (yMax - yMin)) + yMin;
 
@@ -130,9 +125,9 @@
         const y3 = Math.floor(Math.random() * (yMax - yMin)) + yMin;
 
         const path = `M${x1},${y1} L${x2},${y2} L${x3},${y3} Z`;
-        const dur = Math.floor(Math.random() * 50) + 50; // 50s to 100s duration (extremely slow & fluid)
-        const r = (Math.random() * 1.0 + 1.5).toFixed(1); // 1.5px to 2.5px radius
-        const opacity = (Math.random() * 0.17 + 0.18).toFixed(2); // Subtle opacity: 0.18 to 0.35
+        const dur = Math.floor(Math.random() * 50) + 50;
+        const r = (Math.random() * 1.0 + 1.5).toFixed(1);
+        const opacity = (Math.random() * 0.17 + 0.18).toFixed(2);
 
         nodesHtml += `
           <circle r="${r}" fill="var(--accent)" opacity="${opacity}">
@@ -145,7 +140,6 @@
       bg.id = 'structural-bg';
       bg.className = 'structural-bg';
       bg.innerHTML = `
-        <!-- Dynamic Ambient Blobs (Concept 1) -->
         <div class="ambient-blob blob-orange"></div>
         <div class="ambient-blob blob-clay"></div>
 
@@ -156,7 +150,6 @@
             </pattern>
           </defs>
           
-          <!-- Fill background with hardware-accelerated dot grid pattern -->
           <rect width="100%" height="100%" fill="url(#dot-grid)" class="grid-rect" />
           
           ${nodesHtml}
@@ -206,12 +199,10 @@
       }
     });
 
-    // Fix: Added :not(#dd-btn) to prevent the dropdown button from closing the mobile menu
     document.querySelectorAll('#nav-center a:not(#dd-btn)').forEach(link => {
       link.addEventListener('click', closeMobileMenu);
     });
 
-    // Global setLang — merges nav translations with page-specific ones
     window.setLang = function (lang) {
       try { localStorage.setItem('siteLang', lang); } catch (e) { }
       document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
@@ -219,7 +210,6 @@
       document.getElementById('btn-pt')?.classList.toggle('active', lang === 'pt');
       document.getElementById('btn-en')?.classList.toggle('active', lang === 'en');
 
-      // Merge nav translations with page-specific translations
       const pageT = window.pageTranslations || {};
       const merged = Object.assign({}, navTranslations[lang] || {}, pageT[lang] || {});
 
@@ -230,7 +220,6 @@
         }
       });
 
-      // Call page-specific handler if defined (e.g. contact page's reveal logic)
       if (typeof window.onLangChange === 'function') {
         window.onLangChange(lang);
       }
@@ -241,7 +230,6 @@
     })();
     window.setLang(savedLang);
 
-    // ── Scroll Reveal (IntersectionObserver) ──
     const revealEls = document.querySelectorAll('.reveal');
     if (revealEls.length && 'IntersectionObserver' in window) {
       const revealObserver = new IntersectionObserver(function (entries) {
@@ -255,7 +243,6 @@
 
       revealEls.forEach(function (el) { revealObserver.observe(el); });
     } else {
-      // Fallback: show everything if IntersectionObserver is not supported
       revealEls.forEach(function (el) { el.classList.add('revealed'); });
     }
   }

@@ -1,4 +1,3 @@
-/* ── Global Design Tokens ── */
 :root {
   --bg: #f5f3ee;
   --surface: #eceae3;
@@ -27,7 +26,6 @@
   }
 }
 
-/* ── Reset ── */
 *,
 *::before,
 *::after {
@@ -50,7 +48,6 @@ body {
   position: relative;
 }
 
-/* ── Navigation ── */
 nav {
   position: fixed;
   top: 16px;
@@ -123,7 +120,6 @@ nav::before {
   margin-top: 1px;
 }
 
-/* Specific selector to prevent "more" arrow from rotating when main dropdown opens */
 .has-dropdown.open>#dd-btn .chevron {
   transform: rotate(180deg);
 }
@@ -168,7 +164,6 @@ nav::before {
   color: var(--text);
 }
 
-/* More Menu Styles inside Dropdown */
 .more-container {
   display: flex;
   flex-direction: column;
@@ -207,7 +202,6 @@ nav::before {
   transform: rotate(180deg);
 }
 
-/* ── Language Switcher ── */
 .lang-switcher {
   display: flex;
   background: var(--surface);
@@ -239,7 +233,6 @@ nav::before {
   gap: 8px;
 }
 
-/* ── Mobile Menu Button ── */
 .mobile-menu-btn {
   display: none;
   position: relative;
@@ -289,7 +282,6 @@ nav::before {
   transform: rotate(-45deg);
 }
 
-/* ── Mobile Nav Breakpoint ── */
 @media(max-width:650px) {
   .mobile-menu-btn {
     display: block;
@@ -371,7 +363,6 @@ nav::before {
   }
 }
 
-/* ── Footer ── */
 footer {
   text-align: center;
   padding: 40px 24px 80px;
@@ -379,7 +370,6 @@ footer {
   color: var(--muted);
 }
 
-/* ── Shared Animation ── */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -392,7 +382,6 @@ footer {
   }
 }
 
-/* ── Scroll Reveal ── */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -409,7 +398,6 @@ footer {
   transform: none;
 }
 
-/* ── Structural Grid Background (Concept 3) ── */
 .structural-bg {
   position: absolute;
   inset: 0;
@@ -434,43 +422,41 @@ footer {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  /* Promote to a separate GPU layer to avoid paint interference with text and interactive content */
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-/* ── Ambient Fluid Blobs (Concept 1) ── */
 .ambient-blob {
-  position: absolute; /* Keep static in relation to the page scrolling */
-  filter: blur(40px); /* Gentler blur: combined with radial-gradient, this completely eliminates 8-bit color banding */
+  position: absolute;
+  filter: blur(40px);
   -webkit-filter: blur(40px);
-  opacity: 0.28; /* Calibrated opacity for a silky-smooth, premium fade to nothing */
+  opacity: 0.28;
   pointer-events: none;
-  z-index: -3; /* Sits behind text & grids */
-  will-change: transform; /* Optimized: removed border-radius to prevent heavy CPU rasterization on every frame */
+  z-index: -3;
+  will-change: transform;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
 .blob-orange {
   width: 650px;
-  height: 450px; /* Non-uniform dimensions for organic shape */
+  height: 450px;
   background: radial-gradient(ellipse at center, var(--accent) 0%, transparent 65%);
   top: 15%;
-  left: -200px; /* Pinned half off-screen on the left */
-  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; /* Pre-defined beautiful organic geometry */
+  left: -200px;
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
   animation: organic-morph-1 45s infinite ease-in-out;
-  opacity: 0.14; /* 50% more transparent than standard blob default (0.28 * 0.50 = 0.14) */
+  opacity: 0.14;
 }
 
 .blob-clay {
   width: 800px;
-  height: 550px; /* Non-uniform dimensions for organic shape */
+  height: 550px;
   background: radial-gradient(ellipse at center, #dfdacb 0%, transparent 65%);
   top: 40%;
-  right: -250px; /* Pinned half off-screen on the right */
-  border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%; /* Pre-defined beautiful organic geometry */
+  right: -250px;
+  border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
   animation: organic-morph-2 55s infinite ease-in-out;
 }
 
@@ -479,25 +465,24 @@ footer {
     background: radial-gradient(ellipse at center, #2b1f10 0%, transparent 65%);
   }
   .ambient-blob {
-    opacity: 0.18; /* Adjusted for dark mode contrast */
+    opacity: 0.18;
   }
   .blob-orange {
-    opacity: 0.14; /* 25% more transparent than dark mode blob default (0.18 * 0.75 = 0.135) */
+    opacity: 0.14;
   }
 }
 
-/* Mobile Performance Tuning: Retain the beautiful color glows but bypass heavy blur filters and animations to keep it locked at 60fps */
 @media (max-width: 650px) {
   .ambient-blob {
     display: block !important;
     filter: none !important;
     -webkit-filter: none !important;
-    animation: none !important; /* Stop dynamic compositing repaint loops */
-    opacity: 0.18 !important; /* Subtle static glow */
+    animation: none !important;
+    opacity: 0.18 !important;
   }
   @media (prefers-color-scheme: dark) {
     .ambient-blob {
-      opacity: 0.12 !important; /* Elegant smoked dark mode static glow */
+      opacity: 0.12 !important;
     }
   }
 }
