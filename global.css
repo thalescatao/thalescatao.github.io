@@ -9,6 +9,7 @@
   --nav-bg: rgba(245, 243, 238, 0.72);
   --card-bg: #ffffff;
   --shadow: 0 2px 28px rgba(0, 0, 0, 0.08);
+  --body-pb: 140px;
 }
 
 @media(prefers-color-scheme:dark) {
@@ -46,6 +47,9 @@ body {
   line-height: 1.7;
   transition: background .3s, color .3s;
   position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: var(--body-pb);
 }
 
 nav {
@@ -375,6 +379,10 @@ footer {
   padding: 40px 24px 80px;
   font-size: 13px;
   color: var(--muted);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 @keyframes fadeUp {
@@ -414,12 +422,12 @@ footer {
 }
 
 .grid-rect {
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 @media (prefers-color-scheme: dark) {
   .grid-rect {
-    opacity: 0.38;
+    opacity: 0.4;
   }
 }
 
@@ -460,16 +468,18 @@ footer {
 .blob-clay {
   width: 800px;
   height: 550px;
-  background: radial-gradient(ellipse at center, #dfdacb 0%, transparent 65%);
+  background: radial-gradient(ellipse at center, #e9d9c6 0%, transparent 65%);
   top: 40%;
   right: -250px;
   border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
   animation: organic-morph-2 55s infinite ease-in-out;
+  opacity: 0.4;
 }
 
 @media (prefers-color-scheme: dark) {
   .blob-clay {
-    background: radial-gradient(ellipse at center, #2b1f10 0%, transparent 65%);
+    background: radial-gradient(ellipse at center, #533f27 0%, transparent 65%);
+    opacity: 0.5;
   }
 
   .ambient-blob {
