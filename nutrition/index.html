@@ -156,9 +156,15 @@
       }
     }
 
-    @media(max-width:650px) {
+    @media(max-width:801px) {
       .doc-container {
-        height: 700px;
+        height: clamp(1140px, calc(1259.55px - 14.925vw), 1170px);
+      }
+    }
+
+    @media(max-width:600px) {
+      .doc-container {
+        height: clamp(1170px, calc(2820px - 275vw), 1500px);
       }
     }
   </style>
