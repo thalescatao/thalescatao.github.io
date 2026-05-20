@@ -1,0 +1,16 @@
+{
+  "name": "Thales Catão",
+  "short_name": "Thales",
+  "description": "Portfólio Profissional de Thales Catão",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f3ee",
+  "theme_color": "#f5f3ee",
+  "icons": [
+    {
+      "src": "favicon/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
