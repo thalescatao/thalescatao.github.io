@@ -328,18 +328,18 @@ nav::before {
     overflow: visible;
   }
 
-  /* Fixed to viewport; right-aligned, as narrow as content */
+  /* Anchored to navbar box — right edge flush, same gap as desktop personal dropdown */
   .nav-center {
     display: none;
-    position: fixed;
-    top: calc(16px + var(--nav-height) + 12px);
+    position: absolute;
+    top: calc(100% + var(--nav-item-half));
     left: auto;
-    right: 16px;
+    right: 0;
     transform: none;
     width: max-content;
     min-width: 0;
     max-width: calc(100vw - 32px);
-    z-index: 110;
+    z-index: 1;
     list-style: none;
     margin: 0;
     padding: 0;

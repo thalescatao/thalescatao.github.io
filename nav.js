@@ -171,6 +171,7 @@
     const mobileBtn = document.getElementById('mobile-menu-btn');
     const moreToggle = document.getElementById('more-toggle');
     const moreContainer = document.getElementById('more-container');
+    const langSwitcher = document.querySelector('.lang-switcher');
 
     mobileBtn?.addEventListener('click', e => {
       e.stopPropagation();
@@ -206,11 +207,12 @@
     });
 
     document.addEventListener('click', e => {
-      if (ddItem && !ddItem.contains(e.target)) {
+      const clickedLang = langSwitcher?.contains(e.target);
+      if (ddItem && !ddItem.contains(e.target) && !clickedLang) {
         ddItem.classList.remove('open');
         moreContainer?.classList.remove('open');
       }
-      if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target)) {
+      if (navCenter && !navCenter.contains(e.target) && mobileBtn && !mobileBtn.contains(e.target) && !clickedLang) {
         closeMobileMenu();
       }
     });
