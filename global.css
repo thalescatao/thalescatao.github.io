@@ -10,6 +10,10 @@
   --card-bg: #ffffff;
   --shadow: 0 2px 28px rgba(0, 0, 0, 0.08);
   --body-pb: 140px;
+  --nav-height: 52px;
+  --nav-item-half: 26px;
+  --nav-radius: 999px;
+  --nav-corner: calc(var(--nav-height) / 2);
 }
 
 @media(prefers-color-scheme:dark) {
@@ -59,7 +63,7 @@ nav {
   transform: translateX(-50%);
   width: min(820px, calc(100% - 32px));
   padding: 0 22px;
-  height: 52px;
+  height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -74,7 +78,7 @@ nav::before {
   backdrop-filter: blur(12px) saturate(1.6);
   -webkit-backdrop-filter: blur(12px) saturate(1.6);
   border: 0.5px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--nav-radius);
   box-shadow: var(--shadow);
   z-index: -1;
 }
@@ -135,31 +139,26 @@ nav::before {
   transform: rotate(180deg);
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%);
+/* Shared panel chrome — corner radius matches navbar ends (26px), not a vertical pill */
+.nav-panel {
   background: var(--nav-bg);
   backdrop-filter: blur(12px) saturate(1.6);
   -webkit-backdrop-filter: blur(12px) saturate(1.6);
   border: 0.5px solid var(--border);
-  border-radius: 20px;
-  padding: 12px 12px 0 12px;
-  min-width: 190px;
-  display: none;
-  flex-direction: column;
-  gap: 6px;
+  border-radius: var(--nav-corner);
   box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
 }
 
-.has-dropdown.open .dropdown-menu {
-  display: flex;
-}
-
+.nav-panel-row,
 .dropdown-menu a {
-  padding: 12px 16px;
-  border-radius: 12px;
+  height: var(--nav-height);
+  padding: 0 16px;
+  border-radius: 0;
   font-size: 14px;
   color: var(--muted);
   text-decoration: none;
@@ -168,23 +167,44 @@ nav::before {
   align-items: center;
   gap: 12px;
   white-space: nowrap;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.dropdown-menu a:hover {
+.nav-panel-row:hover,
+.nav-panel-row:focus-visible,
+.dropdown-menu a:hover,
+.dropdown-menu a:focus-visible {
   background: var(--surface);
   color: var(--text);
+  outline: none;
+}
+
+.dropdown-menu.nav-panel {
+  position: absolute;
+  top: calc(100% + var(--nav-item-half));
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  min-width: 0;
+  display: none;
+}
+
+.has-dropdown.open>.dropdown-menu.nav-panel {
+  display: flex;
 }
 
 .more-container {
   display: flex;
   flex-direction: column;
+  gap: 0;
 }
 
 .more-menu {
   display: none;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 6px;
+  gap: 0;
+  margin: 0;
 }
 
 .more-container.open .more-menu {
@@ -195,18 +215,24 @@ nav::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 -12px;
-  height: 24px;
+  margin: 0;
+  width: 100%;
+  height: var(--nav-item-half);
+  flex-shrink: 0;
   cursor: pointer;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-radius: 0;
+  border: none;
+  background: none;
   color: var(--muted);
   transition: background .15s, color .15s;
+  box-sizing: border-box;
 }
 
-.more-toggle:hover {
+.more-toggle:hover,
+.more-toggle:focus-visible {
   background: var(--surface);
   color: var(--text);
+  outline: none;
 }
 
 .more-container.open .more-toggle .chevron {
@@ -298,79 +324,172 @@ nav::before {
     display: block;
   }
 
+  nav {
+    overflow: visible;
+  }
+
+  /* Fixed to viewport; right-aligned, as narrow as content */
   .nav-center {
     display: none;
-    position: absolute;
-    top: calc(100% + 12px);
+    position: fixed;
+    top: calc(16px + var(--nav-height) + 12px);
     left: auto;
-    right: 0;
+    right: 16px;
+    transform: none;
     width: max-content;
-    min-width: 190px;
+    min-width: 0;
     max-width: calc(100vw - 32px);
-    background: var(--nav-bg);
-    backdrop-filter: blur(12px) saturate(1.6);
-    -webkit-backdrop-filter: blur(12px) saturate(1.6);
-    border: 0.5px solid var(--border);
-    border-radius: 20px;
-    padding: 12px;
-    flex-direction: column;
+    z-index: 110;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
     align-items: stretch;
-    box-shadow: var(--shadow);
   }
 
   .nav-center.open {
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px) saturate(1.6);
+    -webkit-backdrop-filter: blur(12px) saturate(1.6);
+    border: 0.5px solid var(--border);
+    border-radius: var(--nav-corner);
+    box-shadow: var(--shadow);
   }
 
   .nav-center>li {
     width: 100%;
+    margin: 0;
+    padding: 0;
   }
 
-  .nav-center>li>a {
+  .nav-center>li>a,
+  .nav-center .has-dropdown>#dd-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     width: 100%;
     justify-content: space-between;
-    padding: 12px 16px;
+    padding: 0 16px;
     font-size: 14px;
-    border-radius: 12px;
+    font-weight: 400;
+    line-height: 1;
+    border-radius: 0;
+    height: var(--nav-height);
+    min-height: var(--nav-height);
+    background: none;
+    color: var(--muted);
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
   }
 
-  .dropdown-menu {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-    align-self: stretch;
-    width: 100%;
-    max-width: 100%;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-    padding: 4px 0 0;
-    display: none;
-    min-width: 0;
-    gap: 6px;
-    align-items: stretch;
+  .nav-center>li>a:hover,
+  .nav-center>li>a:focus-visible,
+  .nav-center .has-dropdown>#dd-btn:hover,
+  .nav-center .has-dropdown>#dd-btn:focus-visible {
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
   }
 
-  .dropdown-menu a {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .has-dropdown.open .dropdown-menu {
+  /* Personal block: Pessoal + submenu grouped (neutral gray highlight) */
+  .nav-center .has-dropdown {
+    position: static;
     display: flex;
+    flex-direction: column;
+    margin: 6px;
+    width: calc(100% - 12px);
+    align-self: center;
+    border: 0.5px solid var(--border);
+    border-radius: var(--nav-corner);
+    background: color-mix(in srgb, var(--surface) 50%, var(--nav-bg));
+    box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--muted) 10%, transparent);
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+
+  .nav-center .has-dropdown.open {
+    border-color: color-mix(in srgb, var(--muted) 28%, var(--border));
+    background: color-mix(in srgb, var(--surface) 68%, var(--nav-bg));
+    box-shadow:
+      inset 0 0 0 0.5px color-mix(in srgb, var(--muted) 14%, transparent),
+      0 0 0 0.5px var(--border);
+  }
+
+  .nav-center .has-dropdown.open>#dd-btn {
+    background: color-mix(in srgb, var(--surface) 85%, var(--nav-bg));
+    color: var(--text);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .nav-center .has-dropdown>#dd-btn:hover,
+  .nav-center .has-dropdown>#dd-btn:focus-visible {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  /* Keep submenu in layout (max-height) so panel width never jumps */
+  .nav-center .dropdown-menu.nav-panel {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height .25s ease, opacity .2s ease;
+  }
+
+  .nav-center .has-dropdown.open>.dropdown-menu.nav-panel {
+    max-height: 320px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-center .more-menu {
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height .25s ease, opacity .2s ease;
+  }
+
+  .nav-center .more-container.open .more-menu {
+    max-height: 120px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-center .has-dropdown .dropdown-menu a:hover,
+  .nav-center .has-dropdown .dropdown-menu a:focus-visible,
+  .nav-center .has-dropdown .more-toggle:hover,
+  .nav-center .has-dropdown .more-toggle:focus-visible {
+    background: var(--surface);
+    color: var(--text);
   }
 
   .more-container {
     width: 100%;
-  }
-
-  .more-toggle {
-    width: 100%;
-    margin: 0;
-    border-radius: 0 0 12px 12px;
-    height: 24px;
-    align-self: stretch;
   }
 }
 

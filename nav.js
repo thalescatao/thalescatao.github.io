@@ -56,11 +56,11 @@
       <ul class="nav-center" id="nav-center">
         <li><a href="${routes.portfolio}" data-k="nav.portfolio">Portfólio</a></li>
         <li class="has-dropdown" id="dd-item">
-          <a id="dd-btn" tabindex="0">
+          <a id="dd-btn" href="#" role="button" tabindex="0">
             <span data-k="nav.personal">Pessoal</span>
             <span class="chevron">▾</span>
           </a>
-          <div class="dropdown-menu">
+          <div class="dropdown-menu nav-panel">
             <a href="${routes.workout}">🏋️ <span data-k="nav.workout">Treino</span></a>
             <a href="${routes.nutrition}">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
             <a href="${routes.music}">🎵 <span data-k="nav.music">Teoria Musical</span></a>
@@ -93,6 +93,8 @@
     navCenter?.classList.remove('open');
     mobileBtn?.classList.remove('active');
     mobileBtn?.setAttribute('aria-expanded', 'false');
+    document.getElementById('dd-item')?.classList.remove('open');
+    document.getElementById('more-container')?.classList.remove('open');
   }
 
   function setupNav() {
