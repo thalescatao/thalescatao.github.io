@@ -87,15 +87,14 @@
     /* Mobile Performance Tuning: Bypass backdrop-filter on small screens to eliminate pinch-to-zoom latency */
     @media (max-width: 650px) {
       :root {
-        --glass-bg: rgba(255, 255, 255, 0.85);
-        --glass-bg-hover: rgba(255, 255, 255, 0.92);
         --glass-blur: none;
       }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --glass-bg: rgba(24, 25, 22, 0.88);
-          --glass-bg-hover: rgba(24, 25, 22, 0.94);
-        }
+
+      .social-card,
+      .hold-btn,
+      .reveal-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
       }
     }
 
@@ -274,17 +273,31 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      background: var(--accent-lt);
+      background: color-mix(in srgb, var(--accent-lt) 55%, transparent);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       border: 0.5px solid var(--accent);
+      box-shadow: var(--glass-shadow);
       border-radius: 16px;
       padding: 18px 22px;
       text-decoration: none;
       color: var(--text);
-      transition: opacity .15s;
+      transition: transform .2s, box-shadow .2s, border-color .2s, background-color .2s;
     }
 
     .reveal-card:hover {
-      opacity: .85;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.08), var(--glass-shadow);
+      background: color-mix(in srgb, var(--accent-lt) 75%, transparent);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .reveal-card {
+        background: color-mix(in srgb, var(--accent-lt) 65%, transparent);
+      }
+      .reveal-card:hover {
+        background: color-mix(in srgb, var(--accent-lt) 80%, transparent);
+      }
     }
 
     .reveal-card i {
