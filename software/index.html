@@ -117,6 +117,16 @@
       text-align: center;
       transition: transform .2s, box-shadow .2s, border-color .2s;
       aspect-ratio: 1;
+      position: relative;
+    }
+
+    .android-icon {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 14px;
+      color: var(--muted);
+      opacity: 0.5;
     }
 
     .software-card:hover {
@@ -307,6 +317,26 @@
         </div>
         <div class="software-desc" data-k="desc.bt4g">Agregador de Torrent</div>
       </a>
+      <a class="software-card" href="https://www.uderzo.it/main_products/space_sniffer/index.html" target="_blank" rel="noopener">
+        <i class="software-icon fa-solid fa-hard-drive"></i>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://www.uderzo.it/main_products/space_sniffer/index.html', '_blank');">SpaceSniffer</div>
+        <div class="software-desc" data-k="desc.spacesniffer">Veja o tamanho de Arquivos</div>
+      </a>
+      <a class="software-card" href="https://play.google.com/store/apps/details?id=de.smartchord.droid" target="_blank" rel="noopener">
+        <i class="software-icon fa-solid fa-music"></i>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://play.google.com/store/apps/details?id=de.smartchord.droid', '_blank');">smart Chords</div>
+        <div class="software-desc" data-k="desc.smartchords">Ferramentas Musicais</div>
+        <i class="android-icon fa-brands fa-android"></i>
+      </a>
+      <a class="software-card" href="https://play.google.com/store/apps/details?id=org.intoorbit.spectrum" target="_blank" rel="noopener">
+        <i class="software-icon fa-solid fa-wave-square"></i>
+        <div class="software-name"
+          onclick="event.preventDefault(); window.open('https://play.google.com/store/apps/details?id=org.intoorbit.spectrum', '_blank');">Spectroid</div>
+        <div class="software-desc" data-k="desc.spectroid">Espectrômetro de Áudio</div>
+        <i class="android-icon fa-brands fa-android"></i>
+      </a>
     </div>
 
     <hr class="reveal" />
@@ -345,7 +375,8 @@
         'desc.onlyoffice': 'Pacote Office', 'desc.vlc': 'Reprodutor de Mídia',
         'desc.photopea': 'Editor de Fotos Online', 'desc.7zip': 'Compactador de Arquivos',
         'desc.clawpdf': 'Impressora Virtual', 'desc.qbittorrent': 'Cliente Torrent',
-        'desc.bt4g': 'Agregador de Torrent',
+        'desc.bt4g': 'Agregador de Torrent', 'desc.spacesniffer': 'Veja o tamanho de Arquivos',
+        'desc.smartchords': 'Ferramentas Musicais', 'desc.spectroid': 'Espectrômetro de Áudio',
         'headline.unadv': 'Não Recomendado'
       },
       en: {
@@ -355,7 +386,8 @@
         'desc.onlyoffice': 'Office Suite', 'desc.vlc': 'Media Player',
         'desc.photopea': 'Online Photo Editor', 'desc.7zip': 'File archiver',
         'desc.clawpdf': 'Virtual Printer', 'desc.qbittorrent': 'Torrenting Client',
-        'desc.bt4g': 'Torrent Aggregator',
+        'desc.bt4g': 'Torrent Aggregator', 'desc.spacesniffer': 'File Size Visualizer',
+        'desc.smartchords': 'Music Toolbox', 'desc.spectroid': 'Audio Spectrometer',
         'headline.unadv': 'Unadvised'
       }
     };
