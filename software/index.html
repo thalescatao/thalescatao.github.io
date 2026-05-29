@@ -72,6 +72,7 @@
       max-width: 720px;
       margin: 0 auto;
       padding: 110px 24px 80px;
+      overflow: visible;
     }
 
     h1 {
@@ -99,25 +100,40 @@
 
     .software-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+    }
+
+    .unadvised-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .software-card,
+    .unadvised-card {
+      --card-text-lh: 1.25;
+      --card-line-h: calc(1em * var(--card-text-lh));
     }
 
     .software-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       background: var(--card-bg);
       border: 0.5px solid var(--border);
       border-radius: 16px;
-      padding: 24px 16px;
+      padding: 12px 10px 22px;
       text-decoration: none;
       color: var(--text);
       text-align: center;
       transition: transform .2s, box-shadow .2s, border-color .2s;
       aspect-ratio: 1;
+      min-width: 0;
       position: relative;
+      gap: 0;
     }
 
     .android-icon {
@@ -136,9 +152,16 @@
     }
 
     .software-icon {
-      font-size: 64px;
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 0;
+      margin: 0;
+      font-size: clamp(42px, 13vw, 72px);
       color: var(--accent);
-      margin-bottom: 16px;
+      line-height: 1;
       transition: transform 0.2s;
     }
 
@@ -146,64 +169,92 @@
       transform: scale(1.05);
     }
 
-    .software-name {
-      font-size: 16px;
-      font-weight: 500;
-      margin-bottom: 4px;
-      line-height: 1.2;
+    .software-name,
+    .software-desc,
+    .unadvised-name {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: var(--card-text-lh);
+      height: var(--card-line-h);
+      flex: 0 0 var(--card-line-h);
       user-select: text;
       -webkit-user-select: text;
       cursor: text;
+    }
+
+    .software-name {
+      font-size: clamp(14px, 3.8vw, 18px);
+      font-weight: 500;
+      margin: 0 0 3px;
+    }
+
+    .unadvised-name {
+      font-size: clamp(12px, 3.1vw, 16px);
+      font-weight: 500;
+      margin: 0 0 2px;
     }
 
     .software-desc {
-      font-size: 12px;
+      font-size: clamp(10px, 2.5vw, 12px);
       color: var(--muted);
-      line-height: 1.4;
-      user-select: text;
-      -webkit-user-select: text;
-      cursor: text;
+      margin: 0;
     }
 
-    hr {
+    main hr {
       border: none;
       border-top: 0.5px solid var(--border);
-      margin: 64px auto;
+      height: 0;
+      clear: both;
     }
 
-    .unadvised-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
+    main > hr:first-of-type {
+      margin: 0 0 40px;
+    }
+
+    hr.section-break {
+      margin: 64px 0;
+    }
+
+    .unadvised-section {
+      width: 100%;
+    }
+
+    .unadvised-section h2 {
+      margin-bottom: 32px;
     }
 
     .unadvised-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       background: var(--surface);
       border: 0.5px solid var(--border);
       border-radius: 16px;
-      padding: 24px 16px;
+      padding: 14px 10px 10px;
       color: var(--muted);
-      opacity: 0.8;
+      text-align: center;
       aspect-ratio: 1;
+      min-width: 0;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      gap: 0;
     }
 
     .unadvised-icon {
-      font-size: 56px;
-      margin-bottom: 16px;
+      flex: 1 1 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 0;
+      margin: 0 0 4px;
+      font-size: clamp(52px, 18vw, 72px);
       line-height: 1;
-    }
-
-    .unadvised-name {
-      font-size: 14px;
-      font-weight: 500;
-      text-align: center;
-      user-select: text;
-      -webkit-user-select: text;
-      cursor: text;
+      transition: transform .2s;
     }
 
     footer {
@@ -220,26 +271,37 @@
       animation: fadeUp .4s .1s ease both;
     }
 
-    @media(max-width:500px) {
+    /* Recommended: 3 cols → 2 cols below ~580px */
+    @media (max-width: 580px) {
       .software-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main > hr:first-of-type {
+        margin: 0 0 32px;
       }
 
       .software-card {
-        padding: 16px 8px;
+        padding: 10px 8px 18px;
       }
 
-      .software-icon {
-        font-size: 40px;
-        margin-bottom: 12px;
+      .unadvised-card {
+        padding: 12px 8px 8px;
+      }
+    }
+
+    /* Unadvised: 4 cols → 2 cols below ~536px */
+    @media (max-width: 536px) {
+      .unadvised-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .software-name {
-        font-size: 14px;
+      hr.section-break {
+        margin: 48px 0;
       }
 
-      .software-desc {
-        font-size: 11px;
+      .unadvised-icon {
+        font-size: clamp(56px, 22vw, 72px);
       }
     }
   </style>
@@ -339,9 +401,9 @@
       </a>
     </div>
 
-    <hr class="reveal" />
+    <hr class="section-break" />
 
-    <div class="unadvised-section reveal" style="--reveal-d: 0.1s">
+    <div class="unadvised-section reveal" style="--reveal-d: 0.08s">
       <h2 data-k="headline.unadv">Não Recomendado</h2>
       <div class="unadvised-grid">
         <div class="unadvised-card">
@@ -392,6 +454,10 @@
       }
     };
 
+    document.querySelectorAll('.software-name, .software-desc, .unadvised-name').forEach(function (el) {
+      var text = el.textContent.trim();
+      if (text) el.setAttribute('title', text);
+    });
   </script>
   <script src="../nav.js"></script>
 </body>
