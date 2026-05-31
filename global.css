@@ -99,10 +99,11 @@ nav::before {
 .nav-center>li>a {
   text-decoration: none;
   font-size: 13px;
+  font-weight: 400;
   color: var(--muted);
   padding: 6px 12px;
   border-radius: 999px;
-  transition: background .15s, color .15s;
+  transition: color .15s, font-weight .15s;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -112,8 +113,9 @@ nav::before {
 .nav-center>li>a:hover,
 .nav-center>li>a:focus-visible,
 .has-dropdown.open>#dd-btn {
-  background: var(--surface);
+  background: transparent;
   color: var(--text);
+  font-weight: 600;
   outline: none;
 }
 
@@ -426,8 +428,9 @@ nav::before {
   .nav-center>li>a:focus-visible,
   .nav-center .has-dropdown>#dd-btn:hover,
   .nav-center .has-dropdown>#dd-btn:focus-visible {
-    background: var(--surface);
+    background: transparent;
     color: var(--text);
+    font-weight: 600;
     outline: none;
   }
 
