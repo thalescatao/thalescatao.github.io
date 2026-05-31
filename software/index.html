@@ -135,7 +135,7 @@
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
-      border: 0.5px solid var(--border);
+      border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
       transition: transform .2s, border-color .2s, background-color .2s;
     }
 
@@ -224,7 +224,7 @@
 
     main hr {
       border: none;
-      border-top: 0.5px solid var(--border);
+      border-top: 0.5px solid var(--muted);
       height: 0;
       clear: both;
     }
