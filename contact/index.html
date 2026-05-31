@@ -123,17 +123,15 @@
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       border: 0.5px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
       border-radius: 16px;
       padding: 18px 20px;
       text-decoration: none;
       color: var(--text);
-      transition: transform .2s, box-shadow .2s, border-color .2s, background-color .2s;
+      transition: transform .2s, border-color .2s, background-color .2s;
     }
 
     .social-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 40px 0 color-mix(in srgb, var(--text) 8%, transparent), var(--glass-shadow);
       border-color: var(--accent);
       background: var(--glass-bg-hover);
     }
@@ -181,7 +179,6 @@
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       border: 0.5px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
       color: var(--text);
       padding: 18px 36px;
       border-radius: 999px;
@@ -191,7 +188,7 @@
       cursor: pointer;
       user-select: none;
       outline: none;
-      transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+      transition: transform 0.2s, background-color 0.2s;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -202,7 +199,6 @@
 
     .hold-btn:hover {
       background: var(--glass-bg-hover);
-      box-shadow: 0 12px 40px 0 color-mix(in srgb, var(--text) 8%, transparent), var(--glass-shadow);
     }
 
     .hold-btn:active {
@@ -267,17 +263,15 @@
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       border: 0.5px solid var(--accent);
-      box-shadow: var(--glass-shadow);
       border-radius: 16px;
       padding: 18px 22px;
       text-decoration: none;
       color: var(--text);
-      transition: transform .2s, box-shadow .2s, border-color .2s, background-color .2s;
+      transition: transform .2s, border-color .2s, background-color .2s;
     }
 
     .reveal-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 40px 0 color-mix(in srgb, var(--text) 8%, transparent), var(--glass-shadow);
       background: color-mix(in srgb, var(--accent-lt) 75%, transparent);
     }
 
