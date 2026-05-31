@@ -9,8 +9,6 @@
   --border: rgba(0, 0, 0, 0.08);
   --card-bg: #ffffff;
   --glass-bg: color-mix(in srgb, var(--card-bg) 55%, transparent);
-  --glass-bg-hover: color-mix(in srgb, var(--card-bg) 75%, transparent);
-  --glass-border: color-mix(in srgb, var(--card-bg) 85%, transparent);
   --body-pb: 140px;
   --nav-height: 52px;
   --nav-item-half: 26px;
@@ -28,7 +26,6 @@
     --on-accent: #1a1916;
     --border: rgba(255, 255, 255, 0.08);
     --card-bg: var(--surface);
-    --glass-border: color-mix(in srgb, var(--text) 12%, transparent);
   }
 }
 
