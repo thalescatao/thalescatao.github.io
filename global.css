@@ -3,7 +3,7 @@
   --surface: #eceae3;
   --text: #1a1916;
   --muted: #6b6860;
-  --accent: #C96A00;
+  --accent: #EC8716;
   --accent-lt: #FEF0DE;
   --border: rgba(0, 0, 0, 0.08);
   --nav-bg: rgba(245, 243, 238, 0.72);
@@ -22,7 +22,6 @@
     --surface: #1c1d1a;
     --text: #e8e6df;
     --muted: #8a8880;
-    --accent: #F0922B;
     --accent-lt: #261600;
     --border: rgba(255, 255, 255, 0.08);
     --nav-bg: rgba(17, 18, 16, 0.72);
