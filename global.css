@@ -11,10 +11,10 @@
   --glass-blur: blur(20px);
   --nav-height: 52px;
   --nav-half: 26px;
-  --type-hero: 70px;
-  --type-page-title: 66px;
-  --type-section-title: 46px;
-  --type-detail-title: 34px;
+  --type-hero: 66px;
+  --type-page-title: 60px;
+  --type-section-title: 42px;
+  --type-detail-title: 33px;
 }
 
 @media(prefers-color-scheme:dark) {
