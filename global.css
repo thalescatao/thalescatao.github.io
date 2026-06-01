@@ -22,7 +22,7 @@
     --bg: #121110;
     --surface: #252421;
     --text: #e8e5df;
-    --muted: #7e7a73;
+    --muted: #948f87;
     --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--bg));
   }
 }
