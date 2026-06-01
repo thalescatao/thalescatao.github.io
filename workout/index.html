@@ -82,8 +82,9 @@
     }
 
     .title-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      position: relative;
+      display: flex;
+      justify-content: center;
       align-items: center;
       gap: 14px;
       width: 100%;
@@ -91,7 +92,6 @@
     }
 
     h1 {
-      grid-column: 2;
       font-size: var(--type-page-title);
       line-height: 1.08;
       letter-spacing: -.03em;
@@ -100,8 +100,8 @@
     }
 
     .source-pill {
-      grid-column: 3;
-      justify-self: start;
+      position: absolute;
+      right: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
