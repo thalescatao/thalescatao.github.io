@@ -4,16 +4,17 @@
   --bg: #f5f2ee;
   --surface: #fffdf8;
   --text: #1a1916;
-  --muted: #6b6760;
+  --muted: #6b6860;
   --accent: #EC8716;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
   --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
   --glass-blur: blur(20px);
   --nav-height: 52px;
   --nav-half: 26px;
-  --type-title: 60px;
-  --type-subtitle: 42px;
-  --type-body: 33px;
+  --type-hero: 66px;
+  --type-page-title: 60px;
+  --type-section-title: 42px;
+  --type-detail-title: 33px;
 }
 
 @media(prefers-color-scheme:dark) {
