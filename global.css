@@ -4,7 +4,7 @@
   --bg: #f5f2ee;
   --surface: #fffdf8;
   --text: #1a1916;
-  --muted: #6b6760;
+  --muted: #6b6860;
   --accent: #EC8716;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
   --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
@@ -16,6 +16,7 @@
   --type-body-size: 18px;
   --type-body-color: var(--muted);
   --type-body-lh: 1.72;
+
 }
 
 @media(prefers-color-scheme:dark) {
