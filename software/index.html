@@ -64,23 +64,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="../global.css" />
   <style>
-    :root {
-      --glass-blur: blur(20px);
-      --body-pb: 84px;
-    }
-
-    @media (max-width: 650px) {
-      :root {
-        --glass-blur: none;
-      }
-
-      .software-card,
-      .unadvised-card {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-      }
-    }
-
     main {
       max-width: 720px;
       margin: 0 auto;
@@ -89,8 +72,7 @@
     }
 
     h1 {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(48px, 8vw, 80px);
+      font-size: var(--type-page-title);
       line-height: 1.08;
       letter-spacing: -.03em;
       text-align: center;
@@ -98,13 +80,8 @@
       color: var(--accent);
     }
 
-    h1 em {
-      font-style: italic;
-    }
-
     h2 {
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(32px, 5vw, 56px);
+      font-size: var(--type-section-title);
       letter-spacing: -.02em;
       line-height: 1.1;
       margin-bottom: 32px;
@@ -177,7 +154,7 @@
       width: 100%;
       min-height: 0;
       margin: 0;
-      font-size: clamp(42px, 13vw, 72px);
+      font-size: 64px;
       color: var(--accent);
       line-height: 1;
       transition: transform 0.2s;
@@ -205,19 +182,19 @@
     }
 
     .software-name {
-      font-size: clamp(14px, 3.8vw, 18px);
+      font-size: 16px;
       font-weight: 500;
       margin: 0 0 3px;
     }
 
     .unadvised-name {
-      font-size: clamp(12px, 3.1vw, 16px);
+      font-size: 14px;
       font-weight: 500;
       margin: 0 0 2px;
     }
 
     .software-desc {
-      font-size: clamp(10px, 2.5vw, 12px);
+      font-size: 12px;
       color: var(--muted);
       margin: 0;
     }
@@ -267,7 +244,7 @@
       width: 100%;
       min-height: 0;
       margin: 0 0 4px;
-      font-size: clamp(52px, 18vw, 72px);
+      font-size: 64px;
       line-height: 1;
       transition: transform .2s;
     }
@@ -316,7 +293,7 @@
       }
 
       .unadvised-icon {
-        font-size: clamp(56px, 22vw, 72px);
+        font-size: 64px;
       }
     }
   </style>

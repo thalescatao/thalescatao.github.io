@@ -1,25 +1,29 @@
 :root {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-serif: 'Instrument Serif', serif;
   --bg: #f5f2ee;
-  --surface: #ffffff;
+  --surface: #fffdf8;
   --text: #1a1916;
   --muted: #6b6860;
   --accent: #EC8716;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
-  --glass-bg: color-mix(in srgb, var(--surface) 55%, transparent);
-  --body-pb: 140px;
+  --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
+  --glass-blur: blur(20px);
   --nav-height: 52px;
-  --nav-item-half: 26px;
-  --nav-radius: 999px;
-  --nav-corner: calc(var(--nav-height) / 2);
+  --nav-half: 26px;
+  --type-hero: 70px;
+  --type-page-title: 66px;
+  --type-section-title: 46px;
+  --type-detail-title: 34px;
 }
 
 @media(prefers-color-scheme:dark) {
   :root {
     --bg: #121110;
-    --surface: #242220;
+    --surface: #252421;
     --text: #e8e5df;
-    --muted: #8a8880;
-    --accent-lt: color-mix(in srgb, var(--accent) 12%, var(--bg));
+    --muted: #7e7a73;
+    --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--bg));
   }
 }
 
@@ -35,8 +39,19 @@ html {
   scroll-behavior: smooth;
 }
 
+h1,
+h2,
+.project-detail-title {
+  font-family: var(--font-serif);
+}
+
+h1 em,
+h2 em {
+  font-style: italic;
+}
+
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
   font-size: 16px;
@@ -44,8 +59,7 @@ body {
   transition: background .3s, color .3s;
   position: relative;
   min-height: 100vh;
-  box-sizing: border-box;
-  padding-bottom: var(--body-pb);
+  padding-bottom: 84px;
 }
 
 nav {
@@ -66,16 +80,16 @@ nav::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
   backdrop-filter: blur(12px) saturate(1.6);
   -webkit-backdrop-filter: blur(12px) saturate(1.6);
   border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  border-radius: var(--nav-radius);
+  border-radius: var(--nav-half);
   z-index: -1;
 }
 
 .nav-logo {
-  font-family: 'Instrument Serif', serif;
+  font-family: var(--font-serif);
   font-size: 17px;
   color: var(--text);
   text-decoration: none;
@@ -126,15 +140,14 @@ nav::before {
   transform: rotate(180deg);
 }
 
-/* Shared panel chrome — corner radius matches navbar ends (26px), not a vertical pill */
+/* Shared panel chrome: corner radius matches navbar ends */
 .nav-panel {
   background: color-mix(in srgb, var(--surface) 72%, transparent);
   backdrop-filter: blur(12px) saturate(1.6);
   -webkit-backdrop-filter: blur(12px) saturate(1.6);
   border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
-  border-radius: var(--nav-corner);
+  border-radius: var(--nav-half);
   overflow: hidden;
-  padding: 0;
   flex-direction: column;
   align-items: stretch;
   gap: 0;
@@ -153,7 +166,6 @@ nav::before {
   align-items: center;
   gap: 12px;
   white-space: nowrap;
-  box-sizing: border-box;
   width: 100%;
 }
 
@@ -168,7 +180,7 @@ nav::before {
 
 .dropdown-menu.nav-panel {
   position: absolute;
-  top: calc(100% + var(--nav-item-half));
+  top: calc(100% + var(--nav-half));
   left: 50%;
   transform: translateX(-50%);
   width: max-content;
@@ -207,7 +219,6 @@ nav::before {
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin: 0;
   max-height: 0;
   opacity: 0;
   overflow: hidden;
@@ -230,9 +241,8 @@ nav::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
   width: 100%;
-  height: var(--nav-item-half);
+  height: var(--nav-half);
   flex-shrink: 0;
   cursor: pointer;
   border-radius: 0;
@@ -240,7 +250,6 @@ nav::before {
   background: none;
   color: var(--muted);
   transition: background .15s, color .15s;
-  box-sizing: border-box;
 }
 
 .more-toggle:hover,
@@ -271,7 +280,7 @@ nav::before {
   border-radius: 999px;
   cursor: pointer;
   color: var(--muted);
-  transition: all .2s;
+  transition: background .2s, color .2s;
 }
 
 .lang-btn.active {
@@ -335,6 +344,11 @@ nav::before {
 }
 
 @media(max-width:650px) {
+  :root {
+    --glass-blur: none;
+  }
+
+
   .mobile-menu-btn {
     display: block;
   }
@@ -343,21 +357,17 @@ nav::before {
     overflow: visible;
   }
 
-  /* Anchored to navbar box — right edge flush, same gap as desktop personal dropdown */
+  /* Anchored to navbar box: right edge flush, nav-half gap below */
   .nav-center {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: calc(100% + var(--nav-item-half));
-    left: auto;
+    top: calc(100% + var(--nav-half));
     right: 0;
     width: max-content;
     min-width: 0;
     max-width: calc(100vw - 32px);
     z-index: 1;
-    list-style: none;
-    margin: 0;
-    padding: 0;
     gap: 0;
     align-items: stretch;
     overflow: hidden;
@@ -365,16 +375,12 @@ nav::before {
     backdrop-filter: blur(12px) saturate(1.6);
     -webkit-backdrop-filter: blur(12px) saturate(1.6);
     border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
-    border-radius: var(--nav-corner);
+    border-radius: var(--nav-half);
     max-height: 0;
     opacity: 0;
     pointer-events: none;
     border-color: transparent;
-    box-shadow: none;
-    transition:
-      max-height .3s cubic-bezier(.16, 1, .3, 1),
-      opacity .2s ease,
-      border-color .15s ease,
+    transition: none;
   }
 
   .nav-center.open {
@@ -384,14 +390,11 @@ nav::before {
     border-color: color-mix(in srgb, var(--muted) 25%, transparent);
     transition:
       max-height .4s cubic-bezier(.16, 1, .3, 1),
-      opacity .15s ease,
-      border-color .08s ease,
+      opacity .15s ease;
   }
 
   .nav-center>li {
     width: 100%;
-    margin: 0;
-    padding: 0;
   }
 
   .nav-center>li>a,
@@ -403,16 +406,10 @@ nav::before {
     justify-content: space-between;
     padding: 0 16px;
     font-size: 14px;
-    font-weight: 400;
     line-height: 1;
     border-radius: 0;
     height: var(--nav-height);
-    min-height: var(--nav-height);
-    background: none;
     color: var(--muted);
-    text-decoration: none;
-    cursor: pointer;
-    box-sizing: border-box;
     white-space: nowrap;
   }
 
@@ -433,8 +430,8 @@ nav::before {
     margin: 6px;
     width: calc(100% - 12px);
     align-self: center;
-    border: 0.5px solid var(--muted);
-    border-radius: var(--nav-corner);
+    border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
+    border-radius: var(--nav-half);
     background: color-mix(in srgb, var(--surface) 72%, transparent);
     overflow: hidden;
     transition: border-color .2s, background .2s;
@@ -460,17 +457,12 @@ nav::before {
   /* Keep submenu in layout (max-height) so panel width never jumps */
   .nav-center .dropdown-menu.nav-panel {
     position: static;
-    top: auto;
-    left: auto;
-    right: auto;
     transform: none;
     width: 100%;
     min-width: 0;
     max-width: none;
-    margin: 0;
     border: none;
     border-radius: 0;
-    box-shadow: none;
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
