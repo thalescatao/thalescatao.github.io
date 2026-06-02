@@ -149,15 +149,15 @@
       letter-spacing: -.03em;
       margin-bottom: 24px;
       color: var(--text);
+      text-align: left;
     }
 
     .hero h1 em {
       color: var(--accent);
+      font-style: italic;
     }
 
     .hero-p {
-      font-size: 18px;
-      color: var(--muted);
       max-width: 500px;
       margin-bottom: 40px;
     }
@@ -173,11 +173,11 @@
       align-items: center;
       gap: 8px;
       background: var(--accent);
-      color: var(--surface);
       padding: 12px 26px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 500;
+      color: var(--bg);
       text-decoration: none;
       transition: transform .18s;
     }
@@ -226,8 +226,7 @@
 
     section h2 {
       font-size: var(--type-subtitle);
-      letter-spacing: -.02em;
-      line-height: 1.1;
+      color: var(--text);
       margin-bottom: 28px;
       text-align: center;
     }
@@ -263,7 +262,7 @@
       flex-direction: column;
       gap: 12px;
       text-decoration: none;
-      color: var(--text);
+      color: var(--muted);
     }
 
     .img-wrap {
@@ -285,18 +284,14 @@
     }
 
     .portfolio-title {
-      font-size: 15px;
       font-weight: 500;
       text-align: center;
     }
 
     .portfolio-desc {
-      font-size: var(--type-body);
-      color: var(--muted);
       text-align: center;
-      max-width: 750px;
-      margin: -8px auto 42px;
-      line-height: 1.7;
+      max-width: 780px;
+      margin: 0px auto 42px;
     }
 
     /* ── Lightbox Modal Styles ── */
@@ -546,6 +541,7 @@
 
     .project-detail-title {
       font-size: var(--type-subtitle);
+      font-family: var(--font-serif);
       line-height: 1.1;
       margin-bottom: 20px;
       color: var(--text);
@@ -603,7 +599,7 @@
     <p class="hero-p" data-k="hero.p">Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre
       Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.</p>
     <div class="btn-row">
-      <a class="btn-primary" href="#portfolio" data-k="hero.btn1">Ver portfólio &rarr;</a>
+      <a class="btn-primary" href="#portfolio" data-k="hero.btn1">Ver portfólio</a>
       <a class="btn-secondary" href="contact/" data-route="contact" data-k="hero.btn2">Entrar em contato</a>
     </div>
   </div>
@@ -715,7 +711,7 @@
         'hero.tag': 'Arquiteto & Urbanista',
         'hero.h1': 'Olá, sou<br/><em>Thales Catão.</em>',
         'hero.p': 'Arquiteto formado pela UFMG e Técnico em Edificações pelo CEFET/MG, curioso sobre Música, Nutrição, Gastronomia e Calistenia, apaixonado pela verdade.',
-        'hero.btn1': 'Ver portfólio &rarr;', 'hero.btn2': 'Entrar em contato',
+        'hero.btn1': 'Ver portfólio', 'hero.btn2': 'Entrar em contato',
         'proj1': 'Concrete House', 'proj2': '5 Bedroom Christian House',
         'proj3': '4 Bedroom Modular House', 'proj4': 'Guest House',
         'proj5': 'Gym', 'proj6': 'Tiny Cabin',
@@ -725,7 +721,7 @@
         'hero.tag': 'Architect & Urban Planner',
         'hero.h1': 'Hi, I\'m<br/><em>Thales Catão.</em>',
         'hero.p': 'Architect graduated from UFMG and Building Technician graduated from CEFET/MG, curious about Music, Nutrition, Gastronomy and Calisthenics, passionate about the truth.',
-        'hero.btn1': 'See portfolio &rarr;', 'hero.btn2': 'Get in touch',
+        'hero.btn1': 'See portfolio', 'hero.btn2': 'Get in touch',
         'proj1': 'Concrete House', 'proj2': '5 Bedroom Christian House',
         'proj3': '4 Bedroom Modular House', 'proj4': 'Guest House',
         'proj5': 'Gym', 'proj6': 'Tiny Cabin',
