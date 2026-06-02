@@ -68,6 +68,10 @@
       max-width: 720px;
     }
 
+    h2 {
+      margin-bottom: 30px;
+    }
+
     .software-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -181,7 +185,7 @@
 
     main hr {
       border: none;
-      border-top: 0.5px solid var(--muted);
+      border-top: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
       height: 0;
       clear: both;
     }
@@ -196,10 +200,6 @@
 
     .unadvised-section {
       width: 100%;
-    }
-
-    .unadvised-section h2 {
-      margin-bottom: 32px;
     }
 
     .unadvised-card {

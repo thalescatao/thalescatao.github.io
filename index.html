@@ -179,10 +179,11 @@
       font-weight: 500;
       color: var(--bg);
       text-decoration: none;
-      transition: transform .18s;
+      transition: background .4s, transform .2s;
     }
 
     .btn-primary:hover {
+      background: color-mix(in srgb, var(--accent) 80%, #fff);
       transform: translateY(-1px);
     }
 
@@ -198,7 +199,7 @@
       font-weight: 400;
       text-decoration: none;
       border: 0.5px solid var(--muted);
-      transition: background .18s, transform .18s;
+      transition: background .4s, transform .2s;
     }
 
     .btn-secondary:hover {
@@ -208,8 +209,8 @@
 
     hr {
       border: none;
-      border-top: 0.5px solid var(--muted);
-      max-width: 1000px;
+      border-top: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
+      max-width: 900px;
       margin: 0 auto;
     }
 
