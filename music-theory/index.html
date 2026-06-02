@@ -82,12 +82,22 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      margin-bottom: 30px; /* Re-added margin here for vertical alignment */
+    }
+
+    .title-row h1 {
+      position: relative;
+      margin-bottom: 0;
+      display: inline-flex;
+      align-items: center;
     }
 
     .source-pill {
       position: absolute;
-      right: 210px;
-      top: 50px;
+      left: 100%;
+      top: 50%;
+      margin-left: 16px;
+      transform: translateY(-50%);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -97,12 +107,13 @@
       background: var(--accent-lt);
       color: var(--accent);
       text-decoration: none;
+      font-size: 14px;
       transition: opacity .2s, transform .2s;
     }
 
     .source-pill:hover {
       opacity: .82;
-      transform: translateY(-1px);
+      transform: translateY(calc(-50% - 1px));
     }
 
     .page-intro {
@@ -142,12 +153,14 @@
   <main>
     <header class="page-header">
       <div class="title-row">
-        <h1><em data-k="title">Teoria Musical</em></h1>
-        <a class="source-pill"
-          href="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/view"
-          target="_blank" rel="noopener" aria-label="Abrir planilha de teoria musical">
-          <i class="fa-solid fa-link" aria-hidden="true"></i>
-        </a>
+        <h1>
+          <em data-k="title">Teoria Musical</em>
+          <a class="source-pill"
+            href="https://docs.google.com/spreadsheets/d/1CzRrusxXYMZiGjtYx3WwloPuRZQu9sYEwFR0oKAREIc/view"
+            target="_blank" rel="noopener" aria-label="Abrir planilha de teoria musical">
+            <i class="fa-solid fa-link" aria-hidden="true"></i>
+          </a>
+        </h1>
       </div>
       <p class="page-intro" data-k="intro">Um apanhado das coisas que anotei enquanto estudava instrumentos, em ordem
         do fundamental ao avançado e que me ajudaram a internalizar os conceitos e ordenar os diversos materiais que
