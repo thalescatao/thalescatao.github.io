@@ -105,11 +105,11 @@
       background: var(--surface);
       color: var(--muted);
       text-decoration: none;
-      transition: opacity .2s, transform .2s;
+      transition: background .4s, transform .2s;
     }
 
     .source-pill:hover {
-      opacity: .84;
+      background: color-mix(in srgb, var(--text) 20%, var(--surface));
       transform: translateY(-1px);
     }
 

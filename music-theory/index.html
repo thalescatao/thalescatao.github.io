@@ -82,7 +82,8 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      margin-bottom: 30px; /* Re-added margin here for vertical alignment */
+      margin-bottom: 30px;
+      /* Re-added margin here for vertical alignment */
     }
 
     .title-row h1 {
@@ -107,12 +108,12 @@
       background: var(--accent-lt);
       color: var(--accent);
       text-decoration: none;
-      font-size: 14px;
-      transition: opacity .2s, transform .2s;
+      font-size: 18px;
+      transition: background 0.4s, transform 0.2s;
     }
 
     .source-pill:hover {
-      opacity: .82;
+      background: color-mix(in srgb, var(--accent) 20%, var(--accent-lt));
       transform: translateY(calc(-50% - 1px));
     }
 

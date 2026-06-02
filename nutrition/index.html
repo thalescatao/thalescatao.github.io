@@ -82,12 +82,12 @@
       justify-content: center;
       align-items: center;
       width: 100%;
-      margin-bottom: 30px; 
+      margin-bottom: 30px;
     }
 
     .title-row h1 {
       position: relative;
-      margin-bottom: 0; 
+      margin-bottom: 0;
       display: inline-flex;
       align-items: center;
     }
@@ -107,12 +107,12 @@
       background: var(--accent-lt);
       color: var(--accent);
       text-decoration: none;
-      font-size: 14px; /* This resets the icon size to be normal inside the h1 */
-      transition: opacity .2s, transform .2s;
+      font-size: 18px;
+      transition: background 0.4s, transform .2s;
     }
 
     .source-pill:hover {
-      opacity: .82;
+      background: color-mix(in srgb, var(--accent) 20%, var(--accent-lt));
       transform: translateY(calc(-50% - 1px));
     }
 
