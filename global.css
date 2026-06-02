@@ -38,12 +38,18 @@ html {
   scroll-behavior: smooth;
 }
 
+main {
+  margin: 0 auto;
+  padding: 110px 24px 80px;
+}
+
 h1 {
   font-family: var(--font-serif);
   font-size: var(--type-title);
   color: var(--accent);
   text-align: center;
   margin-bottom: 30px;
+  animation: fadeUp .4s ease both;
 }
 
 h2 {
