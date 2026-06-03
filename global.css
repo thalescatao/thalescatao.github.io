@@ -9,8 +9,8 @@
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
   --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
   --glass-blur: blur(20px);
-  --nav-height: 52px;
-  --nav-half: 26px;
+  --nav-height: 54px;
+  --nav-half: 27px;
   --type-title: 60px;
   --type-subtitle: 42px;
 
