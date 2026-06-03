@@ -143,14 +143,15 @@ footer {
   right: 0;
 }
 
+/* Navegação */
 
 nav {
   position: fixed;
-  top: 16px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(820px, calc(100% - 32px));
-  padding: 0 22px;
+  width: min(820px, calc(100% - 30px));
+  padding: 0 18px;
   height: var(--nav-height);
   display: flex;
   align-items: center;
@@ -172,7 +173,8 @@ nav::before {
 
 .nav-logo {
   font-family: var(--font-serif);
-  color: var(--text);
+  color: color-mix(in srgb, var(--text) 80%, var(--surface));
+  font-size: 21px;
   text-decoration: none;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -187,7 +189,7 @@ nav::before {
 
 .nav-center>li>a {
   text-decoration: none;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--muted);
   padding: 6px 12px;
   border-radius: 999px;
@@ -211,7 +213,7 @@ nav::before {
 }
 
 .chevron {
-  font-size: 9px;
+  font-size: 12px;
   transition: transform .2s;
   display: inline-block;
   margin-top: 1px;
@@ -238,7 +240,7 @@ nav::before {
   height: var(--nav-height);
   padding: 0 16px;
   border-radius: 0;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
   text-decoration: none;
   transition: background .15s, color .15s;
@@ -354,7 +356,7 @@ nav::before {
 .lang-btn {
   border: none;
   background: none;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 999px;
@@ -484,7 +486,7 @@ nav::before {
     width: 100%;
     justify-content: space-between;
     padding: 0 16px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1;
     border-radius: 0;
     height: var(--nav-height);
@@ -522,14 +524,14 @@ nav::before {
   }
 
   .nav-center .has-dropdown.open>#dd-btn {
-    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    background: color-mix(in srgb, var(--surface) 20%, transparent);
     color: var(--text);
-    border-bottom: 0.5px solid var(--muted);
+    border-bottom: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
   }
 
   .nav-center .has-dropdown>#dd-btn:hover,
   .nav-center .has-dropdown>#dd-btn:focus-visible {
-    background: var(--surface);
+    background: color-mix(in srgb, var(--bg) 20%, transparent);
     color: var(--text);
   }
 
@@ -615,6 +617,8 @@ nav::before {
   opacity: 1;
   transform: none;
 }
+
+/* Background */
 
 .structural-bg {
   position: absolute;
@@ -744,6 +748,8 @@ nav::before {
     transform: translate(0, 0) scale(1) rotate(-360deg);
   }
 }
+
+/* Other Definitions */
 
 iframe {
   width: 100%;
