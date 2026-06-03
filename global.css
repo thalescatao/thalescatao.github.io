@@ -180,6 +180,10 @@ nav::before {
   white-space: nowrap;
 }
 
+.nav-logo:hover {
+  color: var(--text);
+}
+
 .nav-center {
   display: flex;
   gap: 2px;
@@ -375,6 +379,8 @@ nav::before {
   align-items: center;
   gap: 8px;
 }
+
+/* Hamburger menu */
 
 .mobile-menu-btn {
   display: none;
