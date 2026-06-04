@@ -659,7 +659,7 @@ nav::before {
   position: absolute;
   filter: blur(40px);
   -webkit-filter: blur(40px);
-  opacity: 0.28;
+  opacity: 0.1;
   pointer-events: none;
   z-index: -3;
   will-change: transform;
@@ -668,39 +668,25 @@ nav::before {
 }
 
 .blob-orange {
-  width: 650px;
+  width: 660px;
   height: 450px;
   background: radial-gradient(ellipse at center, var(--accent) 0%, transparent 65%);
-  top: 10%;
-  left: -200px;
+  top: 240px;
+  left: -240px;
   border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
   animation: organic-morph-1 45s infinite ease-in-out;
-  opacity: 0.08;
+  opacity: 0.15;
 }
 
 .blob-clay {
-  width: 800px;
-  height: 550px;
+  width: 810px;
+  height: 540px;
   background: radial-gradient(ellipse at center, color-mix(in srgb, var(--accent) 14%, var(--surface)) 0%, transparent 65%);
-  top: 40%;
-  right: -250px;
+  top: 600px;
+  right: -180px;
   border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
   animation: organic-morph-2 55s infinite ease-in-out;
-  opacity: 0.4;
-}
-
-@media (prefers-color-scheme: dark) {
-  .blob-clay {
-    opacity: 0.5;
-  }
-
-  .ambient-blob {
-    opacity: 0.18;
-  }
-
-  .blob-orange {
-    opacity: 0.14;
-  }
+  opacity: 0.3;
 }
 
 @media (max-width: 650px) {
@@ -709,14 +695,8 @@ nav::before {
     filter: none !important;
     -webkit-filter: none !important;
     animation: none !important;
-    opacity: 0.18 !important;
   }
 
-  @media (prefers-color-scheme: dark) {
-    .ambient-blob {
-      opacity: 0.12 !important;
-    }
-  }
 }
 
 @keyframes organic-morph-1 {
