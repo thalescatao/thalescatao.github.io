@@ -635,13 +635,7 @@ nav::before {
 }
 
 .grid-rect {
-  opacity: 0.6;
-}
-
-@media (prefers-color-scheme: dark) {
-  .grid-rect {
-    opacity: 0.4;
-  }
+  opacity: 0.5;
 }
 
 .structural-svg {
