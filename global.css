@@ -275,7 +275,7 @@ nav::before {
 .nav-panel-row:focus-visible,
 .dropdown-menu a:hover,
 .dropdown-menu a:focus-visible {
-  background: var(--surface);
+  background: var(--bg);
   color: var(--text);
   outline: none;
 }
@@ -356,7 +356,7 @@ nav::before {
 
 .more-toggle:hover,
 .more-toggle:focus-visible {
-  background: var(--surface);
+  background: var(--bg);
   color: var(--text);
   outline: none;
 }
@@ -401,8 +401,8 @@ nav::before {
 .mobile-menu-btn {
   display: none;
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   background: none;
   border: none;
   color: var(--text);
