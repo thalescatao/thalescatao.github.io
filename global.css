@@ -273,8 +273,9 @@ nav::before {
 
 .nav-panel-row:hover,
 .nav-panel-row:focus-visible,
+.nav-panel-row:active,
 .dropdown-menu a:hover,
-.dropdown-menu a:focus-visible {
+.dropdown-menu a:focus-visible .dropdown-menu a:active {
   background: var(--bg);
   color: var(--text);
   outline: none;
@@ -355,7 +356,8 @@ nav::before {
 }
 
 .more-toggle:hover,
-.more-toggle:focus-visible {
+.more-toggle:focus-visible,
+.more-toggle:active {
   background: var(--bg);
   color: var(--text);
   outline: none;
