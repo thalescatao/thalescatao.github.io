@@ -577,7 +577,7 @@ nav::before {
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: max-height .25s ease, opacity .2s ease;
+    transition: max-height .25s ease, opacity .2s ease, background .2s;
   }
 
   .nav-center .has-dropdown.open>.dropdown-menu.nav-panel {
@@ -593,7 +593,7 @@ nav::before {
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: max-height .25s ease, opacity .2s ease;
+    transition: max-height .25s ease, opacity .2s ease, background .2s;
   }
 
   .nav-center .more-container.open .more-menu {
@@ -604,8 +604,10 @@ nav::before {
 
   .nav-center .has-dropdown .dropdown-menu a:hover,
   .nav-center .has-dropdown .dropdown-menu a:focus-visible,
+  .nav-center .has-dropdown .dropdown-menu a:active,
   .nav-center .has-dropdown .more-toggle:hover,
-  .nav-center .has-dropdown .more-toggle:focus-visible {
+  .nav-center .has-dropdown .more-toggle:focus-visible,
+  .nav-center .has-dropdown .more-toggle:active {
     background: var(--bg);
     color: var(--text);
   }
