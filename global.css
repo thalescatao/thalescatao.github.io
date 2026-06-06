@@ -223,9 +223,7 @@ nav::before {
 .nav-center>li>a:hover,
 .nav-center>li>a:focus-visible,
 .has-dropdown.open>#dd-btn {
-  background: transparent;
   color: var(--text);
-  outline: none;
 }
 
 .has-dropdown {
@@ -276,9 +274,8 @@ nav::before {
 .nav-panel-row:active,
 .dropdown-menu a:hover,
 .dropdown-menu a:focus-visible .dropdown-menu a:active {
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 50%, transparent);
   color: var(--text);
-  outline: none;
 }
 
 .dropdown-menu.nav-panel {
@@ -358,9 +355,8 @@ nav::before {
 .more-toggle:hover,
 .more-toggle:focus-visible,
 .more-toggle:active {
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 50%, transparent);
   color: var(--text);
-  outline: none;
 }
 
 .more-container.open .more-toggle .chevron {
@@ -522,9 +518,7 @@ nav::before {
   .nav-center>li>a:focus-visible,
   .nav-center .has-dropdown>#dd-btn:hover,
   .nav-center .has-dropdown>#dd-btn:focus-visible {
-    background: transparent;
     color: var(--text);
-    outline: none;
   }
 
   /* Personal block when closed*/
@@ -608,7 +602,7 @@ nav::before {
   .nav-center .has-dropdown .more-toggle:hover,
   .nav-center .has-dropdown .more-toggle:focus-visible,
   .nav-center .has-dropdown .more-toggle:active {
-    background: var(--bg);
+    background: color-mix(in srgb, var(--bg) 50%, transparent);
     color: var(--text);
   }
 
