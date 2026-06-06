@@ -43,6 +43,7 @@ html {
 main {
   margin: 0 auto;
   padding: 90px 30px 90px 30px;
+  width: 100%;
 }
 
 h1 {
@@ -70,8 +71,11 @@ body {
   line-height: 2.1;
   transition: background .3s, color .3s;
   position: relative;
+  
+  /* Sticky Footer Setup */
   min-height: 100vh;
-  padding-bottom: 84px;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-header {
@@ -153,11 +157,9 @@ footer {
   text-align: center;
   padding: 30px 24px 60px;
   font-size: 15px;
-
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  
+  /* Pushes footer to the bottom on short pages */
+  margin-top: auto; 
 }
 
 /* Navegação */
