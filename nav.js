@@ -227,6 +227,7 @@
 
       document.getElementById('btn-pt')?.classList.toggle('active', lang === 'pt');
       document.getElementById('btn-en')?.classList.toggle('active', lang === 'en');
+      document.querySelector('.lang-switcher')?.setAttribute('data-lang', lang);
 
       const pageT = window.pageTranslations || {};
       const merged = Object.assign({}, navTranslations[lang] || {}, pageT[lang] || {});

@@ -371,6 +371,24 @@ nav::before {
   border: 0.5px solid var(--muted);
   padding: 2px;
   border-radius: 999px;
+  position: relative;
+}
+
+.lang-switcher::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  height: calc(100% - 4px);
+  background: var(--surface);
+  border-radius: 999px;
+  transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+  z-index: 0;
+}
+
+.lang-switcher[data-lang="en"]::before {
+  transform: translateX(100%);
 }
 
 .lang-btn {
@@ -382,11 +400,12 @@ nav::before {
   border-radius: 999px;
   cursor: pointer;
   color: var(--muted);
-  transition: background .2s, color .2s;
+  transition: color .2s;
+  position: relative;
+  z-index: 1;
 }
 
 .lang-btn.active {
-  background: var(--surface);
   color: var(--text);
 }
 
