@@ -1053,6 +1053,55 @@
       }
     }
 
+    // ── Touch-swipe support for gallery on mobile ──
+    (function () {
+      const viewport = document.querySelector('.gallery-viewport');
+      if (!viewport) return;
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchDeltaX = 0;
+      let isSwiping = false;
+
+      viewport.addEventListener('touchstart', function (e) {
+        if (!activeProjectId) return;
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        touchDeltaX = 0;
+        isSwiping = false;
+      }, { passive: true });
+
+      viewport.addEventListener('touchmove', function (e) {
+        if (!activeProjectId) return;
+        const touch = e.touches[0];
+        touchDeltaX = touch.clientX - touchStartX;
+        const deltaY = Math.abs(touch.clientY - touchStartY);
+
+        // If horizontal movement dominates, mark as swipe and prevent scroll
+        if (!isSwiping && Math.abs(touchDeltaX) > 10 && Math.abs(touchDeltaX) > deltaY) {
+          isSwiping = true;
+        }
+        if (isSwiping) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchend', function () {
+        if (!activeProjectId || !isSwiping) return;
+
+        const SWIPE_THRESHOLD = 50;
+        if (touchDeltaX < -SWIPE_THRESHOLD) {
+          nextSlide();
+        } else if (touchDeltaX > SWIPE_THRESHOLD) {
+          prevSlide();
+        }
+
+        touchDeltaX = 0;
+        isSwiping = false;
+      }, { passive: true });
+    })();
+
     // Bind dynamic language switcher page callback
     window.onLangChange = function (lang) {
       activeLang = lang;
