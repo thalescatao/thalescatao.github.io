@@ -123,6 +123,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
+      width: 100%;
       max-width: 1000px;
       margin: 0 auto;
       padding: 104px 24px 48px;
@@ -210,11 +212,13 @@
     hr {
       border: none;
       border-top: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
+      width: 100%;
       max-width: 900px;
       margin: 0 auto;
     }
 
     section {
+      width: 100%;
       max-width: 1000px;
       margin: 0 auto;
       padding: 56px 24px 72px;
@@ -652,14 +656,12 @@
     </div>
   </section>
 
-  <!-- Portfolio Gallery Lightbox Modal -->
   <div id="gallery-modal" class="modal-overlay" hidden aria-hidden="true" inert role="dialog" aria-modal="true"
     aria-labelledby="project-detail-title" onclick="if(event.target === this) closeGallery()">
     <div class="modal-container" tabindex="-1">
       <button class="modal-close" type="button" onclick="closeGallery()" aria-label="Fechar galeria">&times;</button>
 
       <div class="modal-content">
-        <!-- Left Side: Interactive Carousel -->
         <div class="modal-gallery-side">
           <div class="gallery-viewport">
             <img id="gallery-active-img" src="" alt="">
@@ -670,19 +672,16 @@
             <div class="gallery-counter"><span id="current-slide-num">1</span> / <span id="total-slide-num">1</span>
             </div>
           </div>
-          <!-- Thumbnail strip below -->
           <div class="gallery-thumbs" id="gallery-thumbs"></div>
         </div>
 
-        <!-- Right Side: Project Information -->
         <div class="modal-info-side">
           <div class="project-meta">
             <span class="project-tag" id="project-typology">Residencial</span>
           </div>
           <h2 class="project-detail-title" id="project-detail-title">Project Title</h2>
           <div class="project-detail-desc" id="project-detail-desc">
-            <!-- Project description goes here -->
-          </div>
+            </div>
           <div class="project-action-row">
             <a href="#" target="_blank" rel="noopener" class="btn-primary" id="project-behance-link">
               <span>Ver no Behance</span> <i class="fa-brands fa-behance"></i>
