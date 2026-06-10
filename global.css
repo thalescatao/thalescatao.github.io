@@ -203,14 +203,14 @@ nav::before {
   color: var(--text);
 }
 
-.nav-center {
+.nav-links {
   display: flex;
   gap: 2px;
   list-style: none;
   align-items: center;
 }
 
-.nav-center>li>a {
+.nav-links>li>a {
   text-decoration: none;
   font-size: 15px;
   color: var(--muted);
@@ -222,28 +222,28 @@ nav::before {
   gap: 4px;
 }
 
-.nav-center>li>a:hover,
-.nav-center>li>a:focus-visible,
-.has-dropdown.open>#dd-btn {
+.nav-links>li>a:hover,
+.nav-links>li>a:focus-visible,
+.nav-dropdown.open>#nav-dropdown-button {
   color: var(--text);
 }
 
-.has-dropdown {
+.nav-dropdown {
   position: relative;
 }
 
-.chevron {
+.nav-chevron {
   font-size: 12px;
   transition: transform .2s;
   display: inline-block;
   margin-top: 1px;
 }
 
-.has-dropdown.open>#dd-btn .chevron {
+.nav-dropdown.open>#nav-dropdown-button .nav-chevron {
   transform: rotate(180deg);
 }
 
-.nav-panel {
+.nav-dropdown-panel {
   background: color-mix(in srgb, var(--surface) 72%, transparent);
   backdrop-filter: blur(12px) saturate(1.6);
   -webkit-backdrop-filter: blur(12px) saturate(1.6);
@@ -255,8 +255,7 @@ nav::before {
   gap: 0;
 }
 
-.nav-panel-row,
-.dropdown-menu a {
+.nav-dropdown-link {
   height: var(--nav-height);
   padding: 0 16px;
   border-radius: 0;
@@ -271,16 +270,14 @@ nav::before {
   width: 100%;
 }
 
-.nav-panel-row:hover,
-.nav-panel-row:focus-visible,
-.nav-panel-row:active,
-.dropdown-menu a:hover,
-.dropdown-menu a:focus-visible .dropdown-menu a:active {
+.nav-dropdown-link:hover,
+.nav-dropdown-link:focus-visible,
+.nav-dropdown-link:active {
   background: color-mix(in srgb, var(--bg) 50%, transparent);
   color: var(--text);
 }
 
-.dropdown-menu.nav-panel {
+.nav-dropdown-panel {
   position: absolute;
   top: calc(100% + var(--nav-half));
   left: 50%;
@@ -298,7 +295,7 @@ nav::before {
     opacity .18s ease;
 }
 
-.has-dropdown.open>.dropdown-menu.nav-panel {
+.nav-dropdown.open>.nav-dropdown-panel {
   max-height: 190px;
   opacity: 1;
   pointer-events: auto;
@@ -307,17 +304,17 @@ nav::before {
     opacity .12s ease;
 }
 
-.has-dropdown.open>.dropdown-menu.nav-panel:has(.more-container.open) {
+.nav-dropdown.open>.nav-dropdown-panel:has(.nav-more-group.open) {
   max-height: 300px;
 }
 
-.more-container {
+.nav-more-group {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
-.more-menu {
+.nav-more-menu {
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -330,7 +327,7 @@ nav::before {
     opacity .15s ease;
 }
 
-.more-container.open .more-menu {
+.nav-more-group.open .nav-more-menu {
   max-height: 110px;
   opacity: 1;
   pointer-events: auto;
@@ -339,7 +336,7 @@ nav::before {
     opacity .1s ease;
 }
 
-.more-toggle {
+.nav-more-toggle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -354,14 +351,14 @@ nav::before {
   transition: background .15s, color .15s;
 }
 
-.more-toggle:hover,
-.more-toggle:focus-visible,
-.more-toggle:active {
+.nav-more-toggle:hover,
+.nav-more-toggle:focus-visible,
+.nav-more-toggle:active {
   background: color-mix(in srgb, var(--bg) 50%, transparent);
   color: var(--text);
 }
 
-.more-container.open .more-toggle .chevron {
+.nav-more-group.open .nav-more-toggle .nav-chevron {
   transform: rotate(180deg);
 }
 
@@ -417,7 +414,7 @@ nav::before {
 
 /* Hamburger menu */
 
-.mobile-menu-btn {
+.nav-mobile-toggle {
   display: none;
   position: relative;
   width: 30px;
@@ -429,7 +426,7 @@ nav::before {
   padding: 0;
 }
 
-.mobile-menu-btn span {
+.nav-mobile-toggle span {
   position: absolute;
   left: 5px;
   width: 18px;
@@ -439,29 +436,29 @@ nav::before {
   transition: transform .22s ease, opacity .16s ease, top .22s ease;
 }
 
-.mobile-menu-btn span:nth-child(1) {
+.nav-mobile-toggle span:nth-child(1) {
   top: 8px;
 }
 
-.mobile-menu-btn span:nth-child(2) {
+.nav-mobile-toggle span:nth-child(2) {
   top: 13px;
 }
 
-.mobile-menu-btn span:nth-child(3) {
+.nav-mobile-toggle span:nth-child(3) {
   top: 18px;
 }
 
-.mobile-menu-btn.active span:nth-child(1) {
+.nav-mobile-toggle.active span:nth-child(1) {
   top: 13px;
   transform: rotate(45deg);
 }
 
-.mobile-menu-btn.active span:nth-child(2) {
+.nav-mobile-toggle.active span:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
 }
 
-.mobile-menu-btn.active span:nth-child(3) {
+.nav-mobile-toggle.active span:nth-child(3) {
   top: 13px;
   transform: rotate(-45deg);
 }
@@ -471,7 +468,7 @@ nav::before {
     --glass-blur: none;
   }
 
-  .mobile-menu-btn {
+  .nav-mobile-toggle {
     display: block;
   }
 
@@ -479,7 +476,7 @@ nav::before {
     overflow: visible;
   }
 
-  .nav-center {
+  .nav-links {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -504,7 +501,7 @@ nav::before {
     transition: none;
   }
 
-  .nav-center.open {
+  .nav-links.open {
     max-height: 500px;
     opacity: 1;
     pointer-events: auto;
@@ -514,12 +511,12 @@ nav::before {
       opacity .15s ease;
   }
 
-  .nav-center>li {
+  .nav-links>li {
     width: 100%;
   }
 
-  .nav-center>li>a,
-  .nav-center .has-dropdown>#dd-btn {
+  .nav-links>li>a,
+  .nav-dropdown>#nav-dropdown-button {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -534,20 +531,18 @@ nav::before {
     white-space: nowrap;
   }
 
-  .nav-center>li>a:hover,
-  .nav-center>li>a:focus-visible,
-  .nav-center .has-dropdown>#dd-btn:hover,
-  .nav-center .has-dropdown>#dd-btn:focus-visible {
+  .nav-links>li>a:hover,
+  .nav-links>li>a:focus-visible,
+  .nav-dropdown>#nav-dropdown-button:hover,
+  .nav-dropdown>#nav-dropdown-button:focus-visible {
     color: var(--text);
   }
 
   /* Personal block when closed*/
-  .nav-center .has-dropdown {
+  .nav-dropdown {
     position: static;
     display: flex;
     flex-direction: column;
-    margin: 6px;
-    width: calc(100% - 12px);
     align-self: center;
     border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
     border-radius: var(--nav-half);
@@ -557,24 +552,24 @@ nav::before {
   }
 
   /* Personal block when open*/
-  .nav-center .has-dropdown.open {
+  .nav-dropdown.open {
     border-color: var(--muted);
     background: transparent;
   }
 
-  .nav-center .has-dropdown.open>#dd-btn {
+  .nav-dropdown.open>#nav-dropdown-button {
     background: color-mix(in srgb, var(--surface) 20%, transparent);
     color: var(--text);
     border-bottom: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
   }
 
-  .nav-center .has-dropdown>#dd-btn:hover,
-  .nav-center .has-dropdown>#dd-btn:focus-visible {
+  .nav-dropdown>#nav-dropdown-button:hover,
+  .nav-dropdown>#nav-dropdown-button:focus-visible {
     background: color-mix(in srgb, var(--bg) 50%, transparent);
     color: var(--text);
   }
 
-  .nav-center .dropdown-menu.nav-panel {
+  .nav-dropdown .nav-dropdown-panel {
     position: static;
     transform: none;
     width: 100%;
@@ -594,13 +589,13 @@ nav::before {
     transition: max-height .25s ease, opacity .2s ease, background .2s;
   }
 
-  .nav-center .has-dropdown.open>.dropdown-menu.nav-panel {
+  .nav-dropdown.open>.nav-dropdown-panel {
     max-height: 320px;
     opacity: 1;
     pointer-events: auto;
   }
 
-  .nav-center .more-menu {
+  .nav-dropdown .nav-more-menu {
     display: flex;
     flex-direction: column;
     max-height: 0;
@@ -610,23 +605,23 @@ nav::before {
     transition: max-height .25s ease, opacity .2s ease, background .2s;
   }
 
-  .nav-center .more-container.open .more-menu {
+  .nav-more-group.open .nav-more-menu {
     max-height: 120px;
     opacity: 1;
     pointer-events: auto;
   }
 
-  .nav-center .has-dropdown .dropdown-menu a:hover,
-  .nav-center .has-dropdown .dropdown-menu a:focus-visible,
-  .nav-center .has-dropdown .dropdown-menu a:active,
-  .nav-center .has-dropdown .more-toggle:hover,
-  .nav-center .has-dropdown .more-toggle:focus-visible,
-  .nav-center .has-dropdown .more-toggle:active {
+  .nav-dropdown .nav-dropdown-panel a:hover,
+  .nav-dropdown .nav-dropdown-panel a:focus-visible,
+  .nav-dropdown .nav-dropdown-panel a:active,
+  .nav-dropdown .nav-more-toggle:hover,
+  .nav-dropdown .nav-more-toggle:focus-visible,
+  .nav-dropdown .nav-more-toggle:active {
     background: color-mix(in srgb, var(--bg) 50%, transparent);
     color: var(--text);
   }
 
-  .more-container {
+  .nav-more-group {
     width: 100%;
   }
 }

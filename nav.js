@@ -53,24 +53,24 @@
   const navHtml = `
     <nav>
       <a class="nav-logo" href="${routes.home}">Thales Catão</a>
-      <ul class="nav-center" id="nav-center">
+      <ul class="nav-links" id="nav-links">
         <li><a href="${routes.portfolio}" data-k="nav.portfolio">Portfólio</a></li>
-        <li class="has-dropdown" id="dd-item">
-          <a id="dd-btn" href="#" role="button" tabindex="0">
+        <li class="nav-dropdown" id="nav-dropdown-item">
+          <a id="nav-dropdown-button" href="#" role="button" tabindex="0">
             <span data-k="nav.personal">Pessoal</span>
-            <span class="chevron">▾</span>
+            <span class="nav-chevron">▾</span>
           </a>
-          <div class="dropdown-menu nav-panel">
-            <a href="${routes.workout}">🏋️ <span data-k="nav.workout">Treino</span></a>
-            <a href="${routes.nutrition}">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
-            <a href="${routes.music}">🎵 <span data-k="nav.music">Teoria Musical</span></a>
-            <div class="more-container" id="more-container">
-              <div class="more-menu" id="more-menu">
-                <a href="${routes.software}">💻 <span data-k="nav.software">Software</span></a>
-                <a href="${routes.law}">⚖️ <span data-k="nav.law">Direito Natural</span></a>
+          <div class="nav-dropdown-panel">
+            <a class="nav-dropdown-link" href="${routes.workout}">🏋️ <span data-k="nav.workout">Treino</span></a>
+            <a class="nav-dropdown-link" href="${routes.nutrition}">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
+            <a class="nav-dropdown-link" href="${routes.music}">🎵 <span data-k="nav.music">Teoria Musical</span></a>
+            <div class="nav-more-group" id="nav-more-group">
+              <div class="nav-more-menu" id="nav-more-menu">
+                <a class="nav-dropdown-link" href="${routes.software}">💻 <span data-k="nav.software">Software</span></a>
+                <a class="nav-dropdown-link" href="${routes.law}">⚖️ <span data-k="nav.law">Direito Natural</span></a>
               </div>
-              <div class="more-toggle" id="more-toggle" tabindex="0">
-                <span class="chevron">▾</span>
+              <div class="nav-more-toggle" id="nav-more-toggle" tabindex="0">
+                <span class="nav-chevron">▾</span>
               </div>
             </div>
           </div>
@@ -82,19 +82,19 @@
           <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
           <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
         </div>
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </nav>
   `;
 
   function closeMobileMenu() {
-    const navCenter = document.getElementById('nav-center');
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    navCenter?.classList.remove('open');
+    const navLinks = document.getElementById('nav-links');
+    const mobileBtn = document.getElementById('nav-mobile-toggle');
+    navLinks?.classList.remove('open');
     mobileBtn?.classList.remove('active');
     mobileBtn?.setAttribute('aria-expanded', 'false');
-    document.getElementById('dd-item')?.classList.remove('open');
-    document.getElementById('more-container')?.classList.remove('open');
+    document.getElementById('nav-dropdown-item')?.classList.remove('open');
+    document.getElementById('nav-more-group')?.classList.remove('open');
   }
 
   function setupNav() {
@@ -165,12 +165,12 @@
       if (routes[route]) link.setAttribute('href', routes[route]);
     });
 
-    const ddItem = document.getElementById('dd-item');
-    const ddBtn = document.getElementById('dd-btn');
-    const navCenter = document.getElementById('nav-center');
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const moreToggle = document.getElementById('more-toggle');
-    const moreContainer = document.getElementById('more-container');
+    const ddItem = document.getElementById('nav-dropdown-item');
+    const ddBtn = document.getElementById('nav-dropdown-button');
+    const navCenter = document.getElementById('nav-links');
+    const mobileBtn = document.getElementById('nav-mobile-toggle');
+    const moreToggle = document.getElementById('nav-more-toggle');
+    const moreContainer = document.getElementById('nav-more-group');
     const langSwitcher = document.querySelector('.lang-switcher');
 
     mobileBtn?.addEventListener('click', e => {
@@ -217,7 +217,7 @@
       }
     });
 
-    document.querySelectorAll('#nav-center a:not(#dd-btn)').forEach(link => {
+    document.querySelectorAll('#nav-links a:not(#nav-dropdown-button)').forEach(link => {
       link.addEventListener('click', closeMobileMenu);
     });
 
