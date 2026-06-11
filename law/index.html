@@ -104,6 +104,36 @@
         filter: none;
       }
     }
+
+    .law-section {
+      margin-top: 40px;
+      margin-bottom: 40px;
+      animation: fadeUp .4s ease both;
+    }
+
+    .law-section h2 {
+      margin-top: 48px;
+      margin-bottom: 20px;
+    }
+
+    .law-list {
+      list-style-type: disc;
+      padding-left: 20px;
+      margin-bottom: 32px;
+    }
+
+    .law-list li {
+      margin-bottom: 12px;
+      font-family: var(--font-sans);
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .law-list li::marker {
+      color: var(--accent);
+      font-size: 1.25em;
+    }
   </style>
 </head>
 
@@ -119,6 +149,34 @@
         de Aquino, e todos os grandes.
       </p>
     </header>
+
+    <hr />
+
+    <section class="law-section">
+      <h2 data-k="ext.neg.title">Externalidades Negativas Difusas na Civilização</h2>
+      <ul class="law-list">
+        <li data-k="ext.neg.item1">Poluição atmosférica por combustão de derivados de petróleo</li>
+        <li data-k="ext.neg.item2">Infraestrutura de cabeamento aéreo, poluição visual e desincentivo para melhorar</li>
+        <li data-k="ext.neg.item3">Dessensibilização do valor do dinheiro pela facilidade de pagamentos digitais</li>
+        <li data-k="ext.neg.item4">Fragilidade da economia oriunda da interdependência das cadeias de suprimento e
+          infraestruturas físicas simples que podem acabar com pouco esforço.</li>
+      </ul>
+
+      <h2 data-k="ext.pos.title">Externalidades Positivas</h2>
+      <ul class="law-list">
+        <li data-k="ext.pos.item1">Comércio global de produtos e serviços.</li>
+        <li data-k="ext.pos.item2">Campanhas de expansão agressivas que remuneram novos usuários ou subsidiam serviços,
+          e Programas de Fidelidade. Mame o capital especulativo.</li>
+      </ul>
+
+      <h2 data-k="bad.prod.title">Produtos Ruins</h2>
+      <ul class="law-list">
+        <li data-k="bad.prod.item1">Consórcio (para quem compra, é ruim)</li>
+        <li data-k="bad.prod.item2">Gaste para ganhar</li>
+      </ul>
+    </section>
+
+    <hr />
 
     <div class="doc-heading">
       <h2 data-k="headline.death">Teoria Geral da Morte</h2>
@@ -145,12 +203,34 @@
       pt: {
         'title': 'Direito Natural',
         'intro': 'Corolários da ética. Em homenagem a Homero, Tales de Mileto, Pitágoras, Sidarta Gautama, Confúcio, Sócrates, Platão, Aristóteles, Jesus Cristo de Nazaré, Santo Agostinho, São Tomás de Aquino, e todos os grandes.',
-        'headline.death': 'Teoria Geral da Morte'
+        'headline.death': 'Teoria Geral da Morte',
+        'ext.neg.title': 'Externalidades Negativas Difusas na Civilização',
+        'ext.neg.item1': 'Poluição atmosférica por combustão de derivados de petróleo',
+        'ext.neg.item2': 'Infraestrutura de cabeamento aéreo, poluição visual e desincentivo para melhorar',
+        'ext.neg.item3': 'Dessensibilização do valor do dinheiro pela facilidade de pagamentos digitais',
+        'ext.neg.item4': 'Fragilidade da economia oriunda da interdependência das cadeias de suprimento e infraestruturas físicas simples que podem acabar com pouco esforço.',
+        'ext.pos.title': 'Externalidades Positivas',
+        'ext.pos.item1': 'Comércio global de produtos e serviços.',
+        'ext.pos.item2': 'Campanhas de expansão agressivas que remuneram novos usuários ou subsidiam serviços, e Programas de Fidelidade. Mame o capital especulativo.',
+        'bad.prod.title': 'Produtos Ruins',
+        'bad.prod.item1': 'Consórcio (para quem compra, é ruim)',
+        'bad.prod.item2': 'Gaste para ganhar'
       },
       en: {
         'title': 'Natural Law',
         'intro': 'Corollaries of ethics. In honor of Homer, Thales of Miletus, Pythagoras, Siddhartha Gautama, Confucius, Socrates, Plato, Aristotle, Jesus Christ of Nazareth, Saint Augustine, Saint Thomas Aquinas, and all the greats.',
-        'headline.death': 'General Theory of Death'
+        'headline.death': 'General Theory of Death',
+        'ext.neg.title': 'Diffuse Negative Externalities in Civilization',
+        'ext.neg.item1': 'Atmospheric pollution from the combustion of petroleum derivatives',
+        'ext.neg.item2': 'Overhead cabling infrastructure, visual pollution, and a lack of incentive to improve',
+        'ext.neg.item3': 'Desensitization of the value of money due to the ease of digital payments',
+        'ext.neg.item4': 'Economic fragility stemming from the interdependence of supply chains and simple physical infrastructures that can be disrupted with minimal effort.',
+        'ext.pos.title': 'Positive Externalities',
+        'ext.pos.item1': 'Global trade of products and services.',
+        'ext.pos.item2': 'Aggressive expansion campaigns that reward new users or subsidize services, and loyalty programs. Profit off speculative capital.',
+        'bad.prod.title': 'Bad Products',
+        'bad.prod.item1': 'Consortiums (Group purchasing pools)',
+        'bad.prod.item2': 'Spend to win / Spend to earn'
       }
     };
   </script>

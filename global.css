@@ -8,7 +8,7 @@
   --accent: #EC8716;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
   --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
-  --glass-blur: blur(20px);
+  --glass-blur: blur(24px);
   --nav-height: 54px;
   --nav-half: 27px;
   --type-title: 60px;
@@ -20,7 +20,7 @@
   :root {
     --bg: #121110;
     --surface: #252321;
-    --text: #e8e4df;
+    --text: #dbd7c2;
     --muted: #948f87;
     --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--bg));
   }
@@ -76,6 +76,14 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+main hr {
+  border: none;
+  border-top: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  height: 0;
+  clear: both;
+  margin: 30px 0;
 }
 
 .page-header {
@@ -244,7 +252,7 @@ nav::before {
 }
 
 .nav-dropdown-panel {
-  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
   backdrop-filter: blur(12px) saturate(1.6);
   -webkit-backdrop-filter: blur(12px) saturate(1.6);
   border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
@@ -489,7 +497,7 @@ nav::before {
     gap: 0;
     align-items: stretch;
     overflow: hidden;
-    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    background: color-mix(in srgb, var(--surface) 75%, transparent);
     backdrop-filter: blur(12px) saturate(1.6);
     -webkit-backdrop-filter: blur(12px) saturate(1.6);
     border: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
