@@ -7,7 +7,7 @@
   --muted: #6b6660;
   --accent: #EC8716;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
-  --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
+  --glass-bgs: color-mix(in srgb, var(--surface) 67%, transparent);
   --glass-blur: blur(24px);
   --nav-height: 54px;
   --nav-half: 27px;
@@ -20,7 +20,7 @@
   :root {
     --bg: #121110;
     --surface: #252321;
-    --text: #dbd7c2;
+    --text: #d8d5c6;
     --muted: #948f87;
     --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--bg));
   }
