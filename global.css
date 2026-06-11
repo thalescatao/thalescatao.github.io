@@ -702,7 +702,7 @@ nav::before {
   top: 600px;
   right: -180px;
   border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
-  animation: organic-morph-2 55s infinite ease-in-out;
+  animation: organic-morph-2 60s infinite ease-in-out;
   opacity: 0.3;
 }
 
