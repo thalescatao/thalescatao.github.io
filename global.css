@@ -61,6 +61,7 @@ h2 {
   font-size: var(--type-subtitle);
   line-height: 1.08;
   letter-spacing: -.03em;
+  margin-bottom: 30px;
 }
 
 body {
@@ -78,7 +79,7 @@ body {
   flex-direction: column;
 }
 
-main hr {
+hr {
   border: none;
   border-top: 0.5px solid color-mix(in srgb, var(--muted) 25%, transparent);
   height: 0;
