@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>404 — Página não encontrada • Thales Catão</title>
+  <link rel="icon" type="image/svg+xml" sizes="any" href="favicon/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon/64x64.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/180x180.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="global.css" />
+  <style>
+    .error-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+      padding: 104px 24px 48px;
+    }
+
+    .error-code {
+      font-family: var(--font-serif);
+      font-size: clamp(100px, 20vw, 200px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      position: relative;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .error-code::before,
+    .error-code::after {
+      content: '404';
+      position: absolute;
+      inset: 0;
+      color: var(--accent);
+      overflow: hidden;
+    }
+
+    .error-code::before {
+      text-shadow: -2px 0 #ff6b00;
+      animation: glitch-top 3s infinite linear alternate-reverse;
+    }
+
+    .error-code::after {
+      text-shadow: 2px 0 #d4a04a;
+      animation: glitch-bottom 2.5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-top {
+      0% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+      5% { clip-path: inset(15% 0 65% 0); transform: translate(-3px, -1px); }
+      10% { clip-path: inset(50% 0 20% 0); transform: translate(3px, 1px); }
+      15% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+      20% { clip-path: inset(70% 0 5% 0); transform: translate(-2px, 0); }
+      25% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+      30% { clip-path: inset(30% 0 40% 0); transform: translate(4px, 1px); }
+      35% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+      100% { clip-path: inset(0 0 85% 0); transform: translate(0); }
+    }
+
+    @keyframes glitch-bottom {
+      0% { clip-path: inset(80% 0 0 0); transform: translate(0); }
+      5% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 1px); }
+      10% { clip-path: inset(20% 0 50% 0); transform: translate(-3px, -1px); }
+      15% { clip-path: inset(80% 0 0 0); transform: translate(0); }
+      20% { clip-path: inset(5% 0 70% 0); transform: translate(2px, 0); }
+      25% { clip-path: inset(80% 0 0 0); transform: translate(0); }
+      30% { clip-path: inset(40% 0 30% 0); transform: translate(-4px, -1px); }
+      35% { clip-path: inset(80% 0 0 0); transform: translate(0); }
+      100% { clip-path: inset(80% 0 0 0); transform: translate(0); }
+    }
+
+    .error-title {
+      font-family: var(--font-serif);
+      font-size: clamp(24px, 4vw, 36px);
+      color: var(--text);
+      margin-top: 15px;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    .error-desc {
+      max-width: 300px;
+      margin-top: 15px;
+      line-height: 1.6;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 36px;
+      animation: fadeUp 0.5s 0.3s ease both;
+    }
+
+    .error-actions .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--accent);
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--bg);
+      text-decoration: none;
+      transition: background 0.4s, transform 0.2s;
+    }
+
+    .error-actions .btn-primary:hover {
+      background: color-mix(in srgb, var(--accent) 80%, #fff);
+      transform: translateY(-1px);
+    }
+
+    .error-actions .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: transparent;
+      color: var(--text);
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 400;
+      text-decoration: none;
+      border: 0.5px solid var(--muted);
+      transition: background 0.4s, transform 0.2s;
+    }
+
+    .error-actions .btn-secondary:hover {
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+
+
+  </style>
+</head>
+
+<body>
+
+  <div id="site-nav"></div>
+
+  <div class="error-page">
+    <div class="error-code">404</div>
+    <h1 class="error-title" data-k="404.title">Página não encontrada</h1>
+    <p class="error-desc" data-k="404.desc">O endereço que tentou acessar não existe ou foi movido.</p>
+    <div class="error-actions">
+      <a class="btn-primary" href="/" data-k="404.btn1">Ir para o início</a>
+      <a class="btn-secondary" href="/contact/" data-route="contact" data-k="404.btn2">Entrar em contato</a>
+    </div>
+  </div>
+
+  <footer><span data-k="footer">Feito com 🧡 &middot; &copy; 2026 Thales Catão</span></footer>
+
+  <script>
+    window.pageTranslations = {
+      pt: {
+        '404.title': 'Página não encontrada',
+        '404.desc': 'O endereço que tentou acessar não existe ou foi movido.',
+        '404.btn1': 'Ir para o início',
+        '404.btn2': 'Entrar em contato'
+      },
+      en: {
+        '404.title': 'Page not found',
+        '404.desc': 'The page you were looking for doesn\'t exist or has been moved.',
+        '404.btn1': 'Go to homepage',
+        '404.btn2': 'Get in touch'
+      }
+    };
+  </script>
+  <script src="nav.js"></script>
+</body>
+
+</html>
