@@ -32,7 +32,7 @@
       line-height: 1;
       color: var(--accent);
       position: relative;
-      animation: fadeUp 0.5s ease both, drift 0.01s 3s forwards;
+      animation: fadeUp 0.5s ease both, drift 0.33s 1.5s forwards;
     }
 
     @keyframes drift {
@@ -49,14 +49,14 @@
 
     .error-title {
       font-family: var(--font-serif);
-      font-size: clamp(24px, 4vw, 36px);
+      font-size: 30px;
       color: var(--text);
       margin-top: 15px;
       animation: fadeUp 0.5s 0.1s ease both;
     }
 
     .error-desc {
-      max-width: 300px;
+      max-width: 285px;
       margin-top: 15px;
       line-height: 1.6;
       animation: fadeUp 0.5s 0.2s ease both;
@@ -125,7 +125,7 @@
     <h1 class="error-title" data-k="404.title">Página não encontrada</h1>
     <p class="error-desc" data-k="404.desc">O endereço que tentou acessar não existe ou foi movido.</p>
     <div class="error-actions">
-      <a class="btn-primary" href="/" data-k="404.btn1">Ir para o início</a>
+      <a class="btn-primary" href="/" data-k="404.btn1">Página Principal</a>
       <a class="btn-secondary" href="/contact/" data-route="contact" data-k="404.btn2">Entrar em contato</a>
     </div>
   </div>
@@ -137,7 +137,7 @@
       pt: {
         '404.title': 'Página não encontrada',
         '404.desc': 'O endereço que tentou acessar não existe ou foi movido.',
-        '404.btn1': 'Ir para o início',
+        '404.btn1': 'Página Principal',
         '404.btn2': 'Entrar em contato'
       },
       en: {
