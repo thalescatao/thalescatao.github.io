@@ -56,10 +56,10 @@
       <ul class="nav-links" id="nav-links">
         <li><a href="${routes.portfolio}" data-k="nav.portfolio">Portfólio</a></li>
         <li class="nav-dropdown" id="nav-dropdown-item">
-          <a id="nav-dropdown-button" href="#" role="button" tabindex="0">
+          <button id="nav-dropdown-button" type="button">
             <span data-k="nav.personal">Pessoal</span>
             <span class="nav-chevron">▾</span>
-          </a>
+          </button>
           <div class="nav-dropdown-panel">
             <a class="nav-dropdown-link" href="${routes.workout}">🏋️ <span data-k="nav.workout">Treino</span></a>
             <a class="nav-dropdown-link" href="${routes.nutrition}">🥗 <span data-k="nav.nutrition">Nutrição</span></a>
@@ -69,9 +69,9 @@
                 <a class="nav-dropdown-link" href="${routes.software}">💻 <span data-k="nav.software">Software</span></a>
                 <a class="nav-dropdown-link" href="${routes.law}">⚖️ <span data-k="nav.law">Direito Natural</span></a>
               </div>
-              <div class="nav-more-toggle" id="nav-more-toggle" tabindex="0">
+              <button class="nav-more-toggle" id="nav-more-toggle" type="button">
                 <span class="nav-chevron">▾</span>
-              </div>
+              </button>
             </div>
           </div>
         </li>

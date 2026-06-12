@@ -233,12 +233,28 @@ nav::before {
 
 .nav-links>li>a:hover,
 .nav-links>li>a:focus-visible,
+.nav-links>li>button:hover,
+.nav-links>li>button:focus-visible,
 .nav-dropdown.open>#nav-dropdown-button {
   color: var(--text);
 }
 
 .nav-dropdown {
   position: relative;
+}
+
+#nav-dropdown-button {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: color .15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .nav-chevron {
@@ -352,11 +368,12 @@ nav::before {
   width: 100%;
   height: var(--nav-half);
   flex-shrink: 0;
-  cursor: pointer;
   border-radius: 0;
   border: none;
   background: none;
   color: var(--muted);
+  font-family: inherit;
+  font-size: inherit;
   transition: background .15s, color .15s;
 }
 
