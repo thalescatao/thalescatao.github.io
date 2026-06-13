@@ -215,6 +215,13 @@ nav::before {
   z-index: -1;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  margin-left: -9px;
+}
+
 .nav-logo {
   font-family: var(--font-serif);
   color: color-mix(in srgb, var(--text) 80%, var(--surface));
@@ -471,41 +478,40 @@ nav::before {
 
 .theme-toggle-btn:hover {
   color: color-mix(in srgb, var(--surface) 67%, var(--muted) 33%);
-  transform: scale(1.1);
 }
 
 .theme-toggle-btn .icon-sun {
-  display: none;
+  display: inline-block;
 }
 
 .theme-toggle-btn .icon-moon {
-  display: inline-block;
+  display: none;
 }
 
 @media (prefers-color-scheme: dark) {
   .theme-toggle-btn .icon-sun {
-    display: inline-block;
+    display: none;
   }
 
   .theme-toggle-btn .icon-moon {
-    display: none;
+    display: inline-block;
   }
 }
 
 html[data-theme="dark"] .theme-toggle-btn .icon-sun {
-  display: inline-block;
+  display: none;
 }
 
 html[data-theme="dark"] .theme-toggle-btn .icon-moon {
-  display: none;
+  display: inline-block;
 }
 
 html[data-theme="light"] .theme-toggle-btn .icon-sun {
-  display: none;
+  display: inline-block;
 }
 
 html[data-theme="light"] .theme-toggle-btn .icon-moon {
-  display: inline-block;
+  display: none;
 }
 
 .nav-right {

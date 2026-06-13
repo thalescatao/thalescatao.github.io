@@ -59,7 +59,13 @@
 
   const navHtml = `
     <nav>
-      <a class="nav-logo" href="${routes.home}">Thales Catão</a>
+      <div class="nav-left">
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle theme" type="button">
+          <i class="fa-solid fa-sun icon-sun"></i>
+          <i class="fa-solid fa-circle-half-stroke icon-moon"></i>
+        </button>
+        <a class="nav-logo" href="${routes.home}">Thales Catão</a>
+      </div>
       <ul class="nav-links" id="nav-links">
         <li><a href="${routes.portfolio}" data-k="nav.portfolio">Portfólio</a></li>
         <li class="nav-dropdown" id="nav-dropdown-item">
@@ -85,10 +91,6 @@
         <li><a href="${routes.contact}" data-k="nav.contact">Contato</a></li>
       </ul>
       <div class="nav-right">
-        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle theme" type="button">
-          <i class="fa-solid fa-sun icon-sun"></i>
-          <i class="fa-solid fa-circle-half-stroke icon-moon"></i>
-        </button>
         <div class="lang-switcher">
           <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
           <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
