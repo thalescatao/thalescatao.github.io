@@ -1,4 +1,11 @@
 (function () {
+  try {
+    const savedTheme = localStorage.getItem('siteTheme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  } catch (e) { }
+
   const isFile = window.location.protocol === 'file:';
   const isNestedFile = isFile && /\/(workout|nutrition|music-theory|software|law|contact)\/index\.html$/i.test(window.location.pathname.replace(/\\/g, '/'));
   const rootPrefix = isNestedFile ? '../' : '';
@@ -78,6 +85,10 @@
         <li><a href="${routes.contact}" data-k="nav.contact">Contato</a></li>
       </ul>
       <div class="nav-right">
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle theme" type="button">
+          <i class="fa-solid fa-sun icon-sun"></i>
+          <i class="fa-solid fa-circle-half-stroke icon-moon"></i>
+        </button>
         <div class="lang-switcher">
           <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
           <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
@@ -172,6 +183,17 @@
     const moreToggle = document.getElementById('nav-more-toggle');
     const moreContainer = document.getElementById('nav-more-group');
     const langSwitcher = document.querySelector('.lang-switcher');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    themeToggle?.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      try {
+        localStorage.setItem('siteTheme', newTheme);
+      } catch (e) { }
+    });
 
     mobileBtn?.addEventListener('click', e => {
       e.stopPropagation();

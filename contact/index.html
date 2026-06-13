@@ -428,7 +428,7 @@
       if (!holdBtn.classList.contains('filling')) { holdTimer = null; return; }
       let deltaTime = time - lastTime;
       lastTime = time;
-      progress += deltaTime * 0.013;
+      progress += deltaTime * 0.0167;
       if (progress >= 100) {
         progress = 100;
         if (holdBg) holdBg.style.width = '100%';
