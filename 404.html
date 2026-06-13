@@ -14,6 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
     rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="global.css" />
   <style>
     .error-page {
@@ -29,10 +30,11 @@
     .error-code {
       font-family: var(--font-serif);
       font-size: 120px;
+      font-weight: bold;
       line-height: 1;
       color: var(--accent);
       position: relative;
-      animation: fadeUp 0.5s ease both, drift 0.33s 1.5s forwards;
+      animation: fadeUp 0.5s ease both, drift 0.5s 1.5s forwards;
     }
 
     @keyframes drift {
@@ -44,6 +46,7 @@
       100% {
         color: var(--muted);
         font-style: italic;
+        font-weight: 400;
       }
     }
 
