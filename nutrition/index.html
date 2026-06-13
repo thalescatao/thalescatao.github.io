@@ -72,6 +72,14 @@
       height: 1110px;
     }
 
+    html[data-theme="light"] .doc-container iframe {
+      filter: none;
+    }
+
+    html[data-theme="dark"] .doc-container iframe {
+      filter: invert(0.9) hue-rotate(180deg);
+    }
+
     @media(prefers-color-scheme:dark) {
       .doc-container iframe {
         filter: invert(0.9) hue-rotate(180deg);
