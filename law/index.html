@@ -101,14 +101,14 @@
 
     html[data-theme="light"] iframe,
     iframe {
-      filter: invert(0.9) hue-rotate(180deg);
-    }
-
-    html[data-theme="dark"] iframe {
       filter: none;
     }
 
-    @media(prefers-color-scheme:dark) {
+    html[data-theme="dark"] iframe {
+      filter: invert(0.9) hue-rotate(180deg);
+    }
+
+    @media(prefers-color-scheme:light) {
       .doc-container iframe {
         filter: none;
       }
