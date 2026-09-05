@@ -814,6 +814,34 @@ html[data-theme="light"] .theme-toggle-btn .icon-moon {
 
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .ambient-blob {
+    animation: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    display: none !important;
+  }
+}
+
 @keyframes organic-morph-1 {
   0% {
     transform: translate(0, 0) scale(1) rotate(0deg);

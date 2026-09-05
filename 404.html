@@ -2,6 +2,11 @@
 <html lang="pt-BR">
 
 <head>
+  <script>
+    if (window.location.protocol !== 'file:' && window.location.pathname.replace(/\\/g, '/').split('/').pop() !== '404.html') {
+      document.write('<base href="/">');
+    }
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
@@ -128,8 +133,8 @@
     <h1 class="error-title" data-k="404.title">Página não encontrada</h1>
     <p class="error-desc" data-k="404.desc">O endereço que tentou acessar não existe ou foi movido.</p>
     <div class="error-actions">
-      <a class="btn-primary" href="/" data-k="404.btn1">Página Principal</a>
-      <a class="btn-secondary" href="/contact/" data-route="contact" data-k="404.btn2">Fazer contato</a>
+      <a class="btn-primary" href="index.html" data-route="home" data-k="404.btn1">Página Principal</a>
+      <a class="btn-secondary" href="contact/index.html" data-route="contact" data-k="404.btn2">Fazer contato</a>
     </div>
   </div>
 

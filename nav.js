@@ -7,13 +7,15 @@
   } catch (e) { }
 
   const isFile = window.location.protocol === 'file:';
-  const isNestedFile = isFile && /\/(workout|nutrition|music-theory|software|law|contact)\/index\.html$/i.test(window.location.pathname.replace(/\\/g, '/'));
+  const normPath = window.location.pathname.replace(/\\/g, '/');
+  const isNestedFile = isFile && /\/(workout|nutrition|music-theory|software|law|contact)\/index\.html$/i.test(normPath);
+  const isRootHome = isFile ? /(^|\/)index\.html$/i.test(normPath) && !isNestedFile : (window.location.pathname === '/' || window.location.pathname.endsWith('/index.html'));
   const rootPrefix = isNestedFile ? '../' : '';
 
   const routes = isFile
     ? {
       home: rootPrefix + 'index.html',
-      portfolio: isNestedFile ? rootPrefix + 'index.html#portfolio' : '#portfolio',
+      portfolio: isRootHome ? '#portfolio' : rootPrefix + 'index.html#portfolio',
       workout: rootPrefix + 'workout/index.html',
       nutrition: rootPrefix + 'nutrition/index.html',
       music: rootPrefix + 'music-theory/index.html',
@@ -115,6 +117,8 @@
     mount.id = 'site-nav';
     mount.innerHTML = navHtml;
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     if (!document.getElementById('structural-bg')) {
       const screenWidth = window.innerWidth || 1200;
       const scrollHeight = Math.max(
@@ -145,8 +149,8 @@
         const opacity = (Math.random() * 0.17 + 0.18).toFixed(2);
 
         nodesHtml += `
-          <circle r="${r}" fill="var(--accent)" opacity="${opacity}">
-            <animateMotion dur="${dur}s" repeatCount="indefinite" path="${path}" />
+          <circle cx="${x1}" cy="${y1}" r="${r}" fill="var(--accent)" opacity="${opacity}">
+            ${prefersReducedMotion ? '' : `<animateMotion dur="${dur}s" repeatCount="indefinite" path="${path}" />`}
           </circle>
         `;
       }
@@ -274,7 +278,9 @@
     window.setLang(savedLang);
 
     const revealEls = document.querySelectorAll('.reveal');
-    if (revealEls.length && 'IntersectionObserver' in window) {
+    if (prefersReducedMotion) {
+      revealEls.forEach(function (el) { el.classList.add('revealed'); });
+    } else if (revealEls.length && 'IntersectionObserver' in window) {
       const revealObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
