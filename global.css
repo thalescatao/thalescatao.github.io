@@ -254,22 +254,29 @@ nav::before {
 
 /* 3 Individual Links */
 
-.nav-links>li>a {
+.nav-links>li>a,
+#nav-dropdown-button {
   text-decoration: none;
+  font-family: inherit;
   font-size: 15px;
+  line-height: 1;
   color: var(--muted);
   height: var(--nav-height);
-  padding: 0px 9px;
-  transition: color .15s;
+  padding: 0 10px;
+  border: none;
+  background: none;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  gap: 4px;
+  transition: color .15s;
+  white-space: nowrap;
 }
 
 .nav-links>li>a:hover,
 .nav-links>li>a:focus-visible,
-.nav-links>li>button:hover,
-.nav-links>li>button:focus-visible,
+#nav-dropdown-button:hover,
+#nav-dropdown-button:focus-visible,
 .nav-dropdown.open>#nav-dropdown-button {
   color: var(--text);
 }
@@ -278,29 +285,9 @@ nav::before {
   position: relative;
 }
 
-/* Personal Dropdown */
-
-#nav-dropdown-button {
-  border: none;
-  background: none;
-  height: var(--nav-height);
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 15px;
-  cursor: pointer;
-  padding: 0px 12px;
-  transition: color .15s;
-  transform: translateY(-1px);
-  display: flex;
-  align-items: center;
-}
-
-#nav-dropdown-button:hover {
-  color: var(--text);
-}
-
 .nav-chevron {
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1;
   transition: transform .2s;
   display: inline-block;
 }
