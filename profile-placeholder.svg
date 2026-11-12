@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Placeholder para foto de perfil</title>
+  <desc id="desc">Ilustração abstrata em tons neutros com as iniciais TC.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f2ee"/>
+      <stop offset="1" stop-color="#e8dfd3"/>
+    </linearGradient>
+    <clipPath id="circle"><circle cx="200" cy="200" r="200"/></clipPath>
+  </defs>
+  <g clip-path="url(#circle)">
+    <rect width="400" height="400" fill="url(#bg)"/>
+    <circle cx="330" cy="72" r="92" fill="#ec8716" opacity=".12"/>
+    <path d="M-15 350C72 289 129 320 196 284s129-33 226 21v112H-15Z" fill="#ec8716" opacity=".1"/>
+    <circle cx="200" cy="164" r="68" fill="#c9bcae"/>
+    <path d="M68 410c8-92 55-139 132-139s124 47 132 139" fill="#b9aa9a"/>
+    <text x="200" y="374" text-anchor="middle" fill="#6b6660" font-family="Georgia,serif" font-size="26" letter-spacing="5" opacity=".72">TC</text>
+  </g>
+</svg>
