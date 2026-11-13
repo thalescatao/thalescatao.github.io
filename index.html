@@ -381,8 +381,12 @@
       transition: flex-basis 1.8s cubic-bezier(.16, 1, .3, 1);
     }
 
+    #portfolio.has-selection {
+      --portfolio-selected-card-width: min(58vw, 820px, calc((100svh - 328px) * 1.5), calc(100vw - 380px));
+    }
+
     #portfolio.has-selection .portfolio-card.is-selected {
-      flex-basis: min(58vw, 820px, calc((100svh - 328px) * 1.5), calc(100vw - 380px));
+      flex-basis: var(--portfolio-selected-card-width);
     }
 
     .portfolio-card-image {
@@ -753,6 +757,15 @@
 
       .hero-main { height: 100%; }
       html[lang="en"] .portfolio-description { max-width: 960px; }
+      .portfolio-track {
+        transition: padding-left 1.8s cubic-bezier(.16, 1, .3, 1),
+          padding-right 1.8s cubic-bezier(.16, 1, .3, 1);
+      }
+      #portfolio.has-selection .portfolio-track {
+        --portfolio-expanded-feature-width: max(min(30vw, 420px), 320px);
+        padding-left: max(24px, calc((100% - var(--portfolio-selected-card-width) - var(--portfolio-expanded-feature-width) - 12px) / 2));
+        padding-right: max(24px, calc((100% - var(--portfolio-selected-card-width) - var(--portfolio-expanded-feature-width) - 12px) / 2));
+      }
       .portfolio-track { cursor: grab; }
       .portfolio-track.is-dragging { cursor: grabbing; }
     }
