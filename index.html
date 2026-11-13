@@ -530,9 +530,13 @@
 
     @media(max-width:768px) {
       .hero {
-        padding-top: 108px;
-        padding-bottom: 50px;
-        height: auto;
+        min-height: calc(100svh - var(--portfolio-height));
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: clamp(80px, 12svh, 112px);
+        padding-bottom: clamp(20px, 4svh, 36px);
+        box-sizing: border-box;
       }
 
       .hero-main {
@@ -547,17 +551,18 @@
         align-items: center;
         justify-items: stretch;
         column-gap: 20px;
-        row-gap: 22px;
+        row-gap: clamp(18px, 3svh, 28px);
         text-align: left;
+        width: 100%;
       }
 
       .hero-copy { display: contents; }
-      .hero h1 { grid-area: heading; position: relative; top: clamp(10px, 3.5vw, 16px); align-self: start; max-width: 100%; margin-bottom: 0; font-size: clamp(32px, 10vw, 48px); text-align: left; }
-      .hero-p { grid-area: bio; max-width: none; margin: clamp(32px, 8vw, 42px) 0 0; font-size: 18px; line-height: 1.65; text-align: left; }
-      .hero-portrait-wrap { grid-area: portrait; justify-self: center; align-self: end; width: clamp(132px, 38vw, 162px); padding: 7px; }
+      .hero h1 { grid-area: heading; position: relative; top: clamp(6px, 2svh, 14px); align-self: start; max-width: 100%; margin-bottom: 0; font-size: clamp(32px, 10vw, 48px); text-align: left; }
+      .hero-p { grid-area: bio; max-width: none; margin: clamp(16px, 3.5svh, 30px) 0 0; font-size: 18px; line-height: 1.65; text-align: left; }
+      .hero-portrait-wrap { grid-area: portrait; justify-self: center; align-self: end; width: clamp(132px, 38vw, 170px); padding: 7px; }
       .hero-tag { grid-area: role; justify-self: start; align-self: end; margin: 0; padding: 4px 6px; font-size: 9px; white-space: nowrap; }
       .btn-row { grid-area: actions; justify-content: center; align-items: center; gap: 10px; }
-      .hero-actions { flex-direction: row; flex-wrap: wrap; margin-top: 26px; }
+      .hero-actions { flex-direction: row; flex-wrap: wrap; margin-top: clamp(16px, 3.5svh, 28px); }
 
       .portfolio-heading {
         position: sticky;
@@ -571,8 +576,8 @@
         --portfolio-header-space: 84px;
         --portfolio-height: 28svh;
         --portfolio-card-width: min(88vw, 520px);
-        --portfolio-mobile-top: calc(100svh - var(--portfolio-height) - 72px);
-        --portfolio-description-opacity: 1;
+        --portfolio-mobile-top: calc(100svh - var(--portfolio-height));
+        --portfolio-description-opacity: 0;
         scroll-margin-top: calc(var(--nav-height) + var(--portfolio-heading-offset));
         padding-bottom: 48px;
       }
@@ -607,31 +612,36 @@
         flex: 0 0 var(--portfolio-card-width);
         flex-direction: column;
         width: var(--portfolio-card-width);
+        max-height: calc(100svh - var(--nav-height) - 18px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
         scroll-snap-align: center;
+        scrollbar-width: thin;
       }
       #portfolio.has-selection .portfolio-card-details {
         display: block;
         width: 100%;
         min-width: 0;
         box-sizing: border-box;
-        padding: 22px 18px;
+        padding: clamp(14px, 2.5svh, 20px) 18px clamp(16px, 2.8svh, 22px);
         overflow-wrap: anywhere;
       }
       .portfolio-card-details > * { max-width: 100%; }
-      .portfolio-card-details .project-tag { display: inline-block; margin-bottom: 10px; }
+      .portfolio-card-details .project-tag { display: inline-block; margin-bottom: 8px; }
       .portfolio-card-details h3 {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
         color: var(--text);
         font-family: var(--font-serif);
-        font-size: 26px;
+        font-size: clamp(22px, 5.5vw, 26px);
         font-weight: 400;
         line-height: 1.08;
         letter-spacing: -.02em;
         overflow-wrap: anywhere;
       }
       .portfolio-card-description { width: 100%; min-width: 0; overflow-wrap: anywhere; }
-      .portfolio-card-description p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
-      .portfolio-card-details .portfolio-feature-link { max-width: 100%; margin-top: 14px; overflow-wrap: anywhere; }
+      .portfolio-card-description p { margin: 0; color: var(--muted); font-size: clamp(13px, 3.4vw, 14px); line-height: 1.55; }
+      .portfolio-card-details .portfolio-feature-link { max-width: 100%; margin-top: 12px; overflow-wrap: anywhere; }
       #portfolio.has-selection .portfolio-track {
         flex-direction: row;
         align-items: flex-start;
@@ -680,13 +690,13 @@
       .portfolio-feature-link { max-width: 100%; margin-top: 14px; overflow-wrap: anywhere; }
       .portfolio-description {
         display: block;
-        top: calc(100% + 10px);
+        top: calc(100% + clamp(24px, 5svh, 44px));
         bottom: auto;
         width: calc(100% - 36px);
-        max-width: 324px;
+        max-width: 360px;
         padding: 0;
-        font-size: clamp(12px, 3.4vw, 15px);
-        line-height: 1.4;
+        font-size: clamp(13px, 3.6vw, 15px);
+        line-height: 1.55;
         opacity: var(--portfolio-description-opacity);
         transform: translateX(-50%);
         transition: opacity .65s ease;
@@ -1335,8 +1345,12 @@
         const headerSpace = parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-header-space')) || 64;
         const headingStickyTop = navHeight + headingOffset;
         const mobileHeaderClearance = isMobile ? getMobilePortfolioHeaderClearance(section) : 0;
-        const stickyTop = isMobile ? Math.max(navHeight + headerSpace, navHeight + 24 + mobileHeaderClearance) : navHeight + headerSpace;
-        const mobileFooterClearance = isMobile ? getMobilePortfolioDescriptionHeight(section) + 28 : 18;
+        const stickyTop = isMobile
+          ? (selected ? navHeight + 8 : Math.max(navHeight + headerSpace, navHeight + 24 + mobileHeaderClearance))
+          : navHeight + headerSpace;
+        const mobileFooterClearance = isMobile
+          ? (selected ? 16 : getMobilePortfolioDescriptionHeight(section) + 54)
+          : 18;
         const availableHeight = Math.max(260, viewportHeight - stickyTop - mobileFooterClearance);
         const initialHeight = viewportHeight * (isMobile ? .28 : .25);
         const stageRect = stage.getBoundingClientRect();
@@ -1361,7 +1375,15 @@
           (selected ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding + mobileDetailsHeight
         );
         const expandedStickyTop = isMobile
-          ? stickyTop + Math.max(0, (availableHeight - expandedPanelHeight) / 2)
+          ? (selected
+              ? Math.max(navHeight + 8, Math.min(
+                  viewportHeight - expandedPanelHeight - 16,
+                  Math.round((viewportHeight - expandedPanelHeight) / 2)
+                ))
+              : Math.max(stickyTop, Math.min(
+                  viewportHeight - expandedPanelHeight - mobileFooterClearance,
+                  Math.round(viewportHeight / 3 - expandedPanelHeight / 2)
+                )))
           : stickyTop;
         const scrollRange = Math.max(1, stageTop + stage.offsetHeight - expandedStickyTop - expandedPanelHeight);
         const progress = Math.min(1, Math.max(0, window.scrollY / scrollRange));
@@ -1381,7 +1403,7 @@
           : initialHeight + (expandedPanelHeight - initialHeight) * easedProgress;
         const detailsProgress = isMobile && selected ? easedProgress : 0;
         const descriptionProgress = isMobile
-          ? (selected ? 0 : 1)
+          ? (selected ? 0 : Math.min(1, Math.max(0, (progress - .18) / .32)))
           : stickyActive && !selected
             ? Math.min(1, Math.max(0, (progress - .52) / .2))
             : 0;
@@ -1397,7 +1419,7 @@
         section.style.setProperty('--portfolio-feature-visible-height', `${(mobileDetailsHeight * detailsProgress).toFixed(1)}px`);
         section.style.setProperty('--portfolio-feature-visible-padding', `${(22 * detailsProgress).toFixed(1)}px`);
         if (isMobile) {
-          const compactTop = viewportHeight - initialHeight - mobileFooterClearance;
+          const compactTop = viewportHeight - initialHeight;
           const mobileTop = compactTop + (expandedStickyTop - compactTop) * easedProgress;
           section.style.setProperty('--portfolio-mobile-top', `${mobileTop.toFixed(1)}px`);
           const stickyPanel = section.querySelector('.portfolio-sticky');
@@ -1635,8 +1657,12 @@
       } else {
         const headerSpace = parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-header-space')) || (mobileLayout ? 84 : 224);
         const mobileHeaderClearance = mobileLayout ? getMobilePortfolioHeaderClearance(section) : 0;
-        const stickyTop = mobileLayout ? Math.max(navHeight + headerSpace, navHeight + 24 + mobileHeaderClearance) : navHeight + headerSpace;
-        const mobileFooterClearance = mobileLayout ? getMobilePortfolioDescriptionHeight(section) + 28 : 18;
+        const stickyTop = mobileLayout
+          ? (keepSelection ? navHeight + 8 : Math.max(navHeight + headerSpace, navHeight + 24 + mobileHeaderClearance))
+          : navHeight + headerSpace;
+        const mobileFooterClearance = mobileLayout
+          ? (keepSelection ? 16 : getMobilePortfolioDescriptionHeight(section) + 54)
+          : 18;
         const availableHeight = Math.max(260, window.innerHeight - stickyTop - mobileFooterClearance);
         const expandedCardWidth = mobileLayout
           ? Math.max(120, Math.min(520, window.innerWidth * .86, (availableHeight - 32) * 1.5))
@@ -1654,7 +1680,15 @@
           (keepSelection ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding + mobileDetailsHeight
         );
         const expandedStickyTop = mobileLayout
-          ? stickyTop + Math.max(0, (availableHeight - expandedPanelHeight) / 2)
+          ? (keepSelection
+              ? Math.max(navHeight + 8, Math.min(
+                  window.innerHeight - expandedPanelHeight - 16,
+                  Math.round((window.innerHeight - expandedPanelHeight) / 2)
+                ))
+              : Math.max(stickyTop, Math.min(
+                  window.innerHeight - expandedPanelHeight - mobileFooterClearance,
+                  Math.round(window.innerHeight / 3 - expandedPanelHeight / 2)
+                )))
           : stickyTop;
         const stageTop = window.scrollY + stage.getBoundingClientRect().top;
         targetTop = stageTop + stage.offsetHeight - expandedStickyTop - expandedPanelHeight;
