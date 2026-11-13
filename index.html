@@ -1957,6 +1957,159 @@
 
     setupPortfolioDrag();
 
+    // A largura dos cards cresce com a rolagem vertical, mas o scrollLeft em pixels não acompanha:
+    // o mesmo ponto da faixa passa a cair num projeto mais à esquerda. Depois de uma rolagem
+    // horizontal, a câmera fica presa no trecho que já estava no centro da faixa.
+    function setupPortfolioCameraAnchor() {
+      const track = document.getElementById('portfolio-track');
+      if (!track) return;
+
+      let focus = null;
+      let focusWidth = 0;
+      let focusTrackWidth = 0;
+      let horizontalIntent = false;
+      let userMoved = false;
+      let pointerActive = false;
+      let ignoreScroll = 0;
+      let followUntil = 0;
+      let running = false;
+
+      const rememberLayout = () => {
+        const card = track.querySelector('.portfolio-card');
+        focusWidth = card ? card.getBoundingClientRect().width : 0;
+        focusTrackWidth = track.clientWidth;
+      };
+
+      const layoutChanged = () => {
+        const card = track.querySelector('.portfolio-card');
+        const width = card ? card.getBoundingClientRect().width : 0;
+        return Math.abs(width - focusWidth) > 0.4 || track.clientWidth !== focusTrackWidth;
+      };
+
+      const capture = () => {
+        const cards = track.querySelectorAll('.portfolio-card');
+        if (!cards.length) return null;
+        const center = track.getBoundingClientRect().left + track.clientWidth / 2;
+        for (let index = 0; index < cards.length; index++) {
+          const rect = cards[index].getBoundingClientRect();
+          if (rect.width < 1) return null;
+          if (center <= rect.right || index === cards.length - 1) {
+            return {
+              index,
+              ratio: Math.min(1, Math.max(0, (center - rect.left) / rect.width))
+            };
+          }
+        }
+        return null;
+      };
+
+      const apply = () => {
+        if (!focus || pointerActive || userMoved || activePortfolioProjectId) return;
+        const card = track.querySelectorAll('.portfolio-card')[focus.index];
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        if (rect.width < 1) return;
+        const delta = rect.left + rect.width * focus.ratio - (track.getBoundingClientRect().left + track.clientWidth / 2);
+        if (Math.abs(delta) < 0.6) return;
+        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+        const next = Math.min(maxScroll, Math.max(0, track.scrollLeft + delta));
+        if (Math.abs(next - track.scrollLeft) < 0.6) return;
+        ignoreScroll++;
+        const before = track.scrollLeft;
+        track.scrollLeft = next;
+        if (Math.abs(track.scrollLeft - before) < 0.6) ignoreScroll = Math.max(0, ignoreScroll - 1);
+      };
+
+      const tick = () => {
+        if (!horizontalIntent) {
+          running = false;
+          return;
+        }
+        if (pointerActive || userMoved || activePortfolioProjectId || !focus) {
+          focus = capture() || focus;
+          rememberLayout();
+          userMoved = false;
+        } else if (layoutChanged()) {
+          apply();
+        }
+        if (performance.now() < followUntil) {
+          requestAnimationFrame(tick);
+        } else {
+          running = false;
+        }
+      };
+
+      const kick = () => {
+        followUntil = performance.now() + 2100;
+        if (running) return;
+        running = true;
+        requestAnimationFrame(tick);
+      };
+
+      track.addEventListener('scroll', () => {
+        if (ignoreScroll > 0) {
+          ignoreScroll--;
+          return;
+        }
+        if (activePortfolioProjectId) return;
+        horizontalIntent = true;
+        if (!pointerActive) {
+          userMoved = true;
+          kick();
+        }
+      }, { passive: true });
+
+      track.addEventListener('wheel', event => {
+        if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) || !event.deltaX) return;
+        horizontalIntent = true;
+        userMoved = true;
+        kick();
+      }, { passive: true });
+
+      let pointerStartX = 0;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      track.addEventListener('pointerdown', event => {
+        if (event.pointerType !== 'mouse' || event.button !== 0) return;
+        pointerStartX = event.clientX;
+      });
+      track.addEventListener('pointermove', event => {
+        if (event.pointerType !== 'mouse' || !(event.buttons & 1)) return;
+        if (Math.abs(event.clientX - pointerStartX) > 5) pointerActive = true;
+      });
+      const endPointer = () => {
+        if (!pointerActive) return;
+        pointerActive = false;
+        if (!horizontalIntent) return;
+        userMoved = true;
+        kick();
+      };
+      track.addEventListener('pointerup', endPointer);
+      track.addEventListener('pointercancel', () => { pointerActive = false; });
+
+      track.addEventListener('touchstart', event => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      }, { passive: true });
+      track.addEventListener('touchmove', event => {
+        const dx = Math.abs(event.touches[0].clientX - touchStartX);
+        const dy = Math.abs(event.touches[0].clientY - touchStartY);
+        if (dx > 8 && dx > dy) pointerActive = true;
+      }, { passive: true });
+      track.addEventListener('touchend', endPointer);
+      track.addEventListener('touchcancel', () => { pointerActive = false; });
+
+      window.addEventListener('scroll', () => {
+        if (horizontalIntent) kick();
+      }, { passive: true });
+      window.addEventListener('resize', () => {
+        if (horizontalIntent) kick();
+      });
+    }
+
+    setupPortfolioCameraAnchor();
+
     (function setupMobileExpandedTrackNavigation() {
       const track = document.getElementById('portfolio-track');
       if (!track) return;
