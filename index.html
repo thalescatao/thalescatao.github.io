@@ -2214,7 +2214,7 @@
         }, selectionAnimMs + 400);
       }
       window.dispatchEvent(new Event('scroll'));
-      if (!preserveTrack) window.scrollToExpandedPortfolio({ keepSelection: true, updateHash: false, instant: true });
+      if (!preserveTrack) window.scrollToExpandedPortfolio({ keepSelection: true, updateHash: false, duration: 600, linear: true });
       requestAnimationFrame(() => {
         if (!selectedCard || preserveTrack || activePortfolioProjectId !== projectId) return;
         portfolioTrackCenterObserver?.disconnect();
@@ -2304,7 +2304,7 @@
       }
     }
 
-    function smoothScrollWindowTo(targetY) {
+    function smoothScrollWindowTo(targetY, { duration: customDuration, linear = false } = {}) {
       cancelWindowScrollAnimation();
       const startY = window.scrollY;
       const diff = targetY - startY;
@@ -2316,13 +2316,15 @@
       // Otherwise the browser starts a second smooth scroll for every frame.
       previousRootScrollBehavior = document.documentElement.style.scrollBehavior;
       document.documentElement.style.scrollBehavior = 'auto';
-      const duration = Math.min(3000, Math.max(2100, Math.abs(diff) * 0.65));
+      const duration = typeof customDuration === 'number'
+        ? customDuration
+        : Math.min(3000, Math.max(2100, Math.abs(diff) * 0.65));
       const startTime = performance.now();
       const step = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1, elapsed / duration);
-        // Move quickly at first, then ease out as the page approaches the destination.
-        const ease = 1 - Math.pow(1 - progress, 3);
+        // Move linearly when requested, or quickly at first and ease out toward the destination.
+        const ease = linear ? progress : 1 - Math.pow(1 - progress, 3);
         window.scrollTo(0, startY + diff * ease);
         if (progress < 1) {
           windowScrollAnimationId = requestAnimationFrame(step);
@@ -2375,7 +2377,7 @@
       }
     }, { passive: true });
 
-    window.scrollToExpandedPortfolio = function ({ keepSelection = false, updateHash = true, instant = false } = {}) {
+    window.scrollToExpandedPortfolio = function ({ keepSelection = false, updateHash = true, instant = false, duration, linear = false } = {}) {
       suppressPortfolioDescriptionUntilTop = false;
       const section = document.getElementById('portfolio');
       const stage = section?.querySelector('.portfolio-scroll-stage');
@@ -2518,7 +2520,7 @@
         cancelWindowScrollAnimation();
         window.scrollTo(0, Math.max(0, targetTop));
       } else {
-        smoothScrollWindowTo(Math.max(0, targetTop));
+        smoothScrollWindowTo(Math.max(0, targetTop), { duration, linear });
       }
     };
 
@@ -2539,10 +2541,12 @@
               window.history.replaceState(null, '', `${destination.pathname}${destination.search}`);
             } catch (error) { }
           }
-          window.scrollTo({
-            top: 0,
-            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
-          });
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            cancelWindowScrollAnimation();
+            window.scrollTo(0, 0);
+          } else {
+            smoothScrollWindowTo(0, { duration: 600, linear: true });
+          }
           return;
         }
         if (sameHomePage && destination.hash === '#portfolio') {
