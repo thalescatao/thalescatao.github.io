@@ -285,6 +285,7 @@
       --portfolio-heading-offset: 88px;
       --portfolio-header-space: 224px;
       --portfolio-card-width: clamp(120px, calc(37.5svh - 24px), 340px);
+      --portfolio-expanded-feature-width: max(min(30vw, 420px), 320px);
       position: relative;
       width: 100%;
       max-width: none;
@@ -442,13 +443,13 @@
     .portfolio-card-details { display: none; }
 
     .portfolio-feature {
-      flex: 0 0 min(30vw, 420px);
+      flex: 0 0 var(--portfolio-expanded-feature-width);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
       gap: 18px;
-      min-width: 320px;
+      min-width: var(--portfolio-expanded-feature-width);
       height: 100%;
       padding: 28px 20px 28px 4px;
       overflow-x: clip;
@@ -514,8 +515,8 @@
 
     .portfolio-feature-info {
       /* largura fixa = largura final do painel, para o texto não reflowar enquanto o painel cresce */
-      width: calc(max(min(30vw, 420px), 320px) - 24px);
-      max-width: 420px;
+      width: calc(var(--portfolio-expanded-feature-width) - 24px);
+      max-width: calc(var(--portfolio-expanded-feature-width) - 24px);
       padding: 0;
     }
 
@@ -550,7 +551,7 @@
 
     @keyframes portfolio-feature-arrive {
       from { flex-basis: 0; min-width: 0; margin-left: -12px; padding-left: 0; padding-right: 0; }
-      to { flex-basis: min(30vw, 420px); min-width: 320px; margin-left: 0; padding-left: 4px; padding-right: 20px; }
+      to { flex-basis: var(--portfolio-expanded-feature-width); min-width: var(--portfolio-expanded-feature-width); margin-left: 0; padding-left: 4px; padding-right: 20px; }
     }
 
     @keyframes portfolio-feature-appear {
@@ -604,7 +605,7 @@
 
       .hero-main {
         min-height: 0;
-        grid-template-columns: minmax(0, 1fr) minmax(104px, .58fr);
+        grid-template-columns: minmax(0, 1fr) minmax(112px, .58fr);
         grid-template-rows: auto auto auto auto;
         grid-template-areas:
           "heading portrait"
@@ -614,7 +615,7 @@
         align-items: center;
         justify-items: stretch;
         column-gap: 16px;
-        row-gap: clamp(12px, 2svh, 18px);
+        row-gap: clamp(14px, 2.2svh, 20px);
         text-align: left;
         width: 100%;
       }
@@ -626,7 +627,7 @@
         align-self: end;
         max-width: 100%;
         margin-bottom: 0;
-        font-size: clamp(32px, 9.2vw, 44px);
+        font-size: clamp(35px, 9.6vw, 46px);
         line-height: 1.05;
         text-align: left;
       }
@@ -634,36 +635,36 @@
         grid-area: bio;
         max-width: none;
         margin: 4px 0 0;
-        font-size: clamp(15px, 4.1vw, 17px);
-        line-height: 1.55;
+        font-size: clamp(16px, 4.25vw, 17.5px);
+        line-height: 1.58;
         text-align: left;
       }
       .hero-portrait-wrap {
         grid-area: portrait;
         justify-self: end;
         align-self: center;
-        width: clamp(116px, 33vw, 148px);
-        padding: 6px;
+        width: clamp(126px, 34.5vw, 156px);
+        padding: 7px;
       }
       .hero-tag {
         grid-area: role;
         justify-self: start;
         align-self: start;
         margin: 0;
-        padding: 4px 10px;
-        font-size: 10px;
+        padding: 4.5px 11px;
+        font-size: 10.5px;
         white-space: nowrap;
       }
       .btn-row {
         grid-area: actions;
         justify-content: flex-start;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
       }
       .hero-actions {
         flex-direction: row;
         flex-wrap: wrap;
-        margin-top: 4px;
+        margin-top: 6px;
       }
 
       #portfolio {
@@ -816,20 +817,8 @@
       }
     }
 
-    @media (max-width: 768px) {
-      .btn-primary,
-      .btn-secondary {
-        padding: 8px 16px;
-        font-size: 14px;
-        line-height: 1.25;
-      }
-    }
-
     @media (max-width: 420px) {
       .hero { padding-left: 18px; padding-right: 18px; }
-      .hero-main { min-height: 0; row-gap: 12px; }
-      .hero-portrait-wrap { width: clamp(110px, 32vw, 136px); }
-      .hero-p { font-size: 15.5px; }
       .portfolio-heading { padding-left: 18px; padding-right: 18px; }
       .portfolio-track,
       #portfolio.has-selection .portfolio-track { padding-left: 10px; padding-right: 10px; }
@@ -840,9 +829,16 @@
         padding-top: calc(var(--nav-height) + 18px + clamp(16px, 2.8svh, 24px));
         padding-bottom: clamp(10px, 1.8svh, 16px);
       }
-      .hero-main { min-height: 0; row-gap: 10px; }
-      .hero-portrait-wrap { width: clamp(106px, 30vw, 128px); }
+      .hero-main {
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr) minmax(104px, .58fr);
+        row-gap: 10px;
+      }
+      .hero h1 { font-size: clamp(32px, 9.2vw, 38px); }
+      .hero-portrait-wrap { width: clamp(106px, 30vw, 128px); padding: 6px; }
+      .hero-tag { padding: 4px 10px; font-size: 10px; }
       .hero-p { font-size: 14.5px; line-height: 1.5; }
+      .btn-row { gap: 10px; }
       .hero-actions { margin-top: 2px; }
       .btn-primary,
       .btn-secondary {
@@ -889,7 +885,6 @@
           padding-right 1.8s cubic-bezier(.16, 1, .3, 1);
       }
       #portfolio.has-selection .portfolio-track {
-        --portfolio-expanded-feature-width: max(min(30vw, 420px), 320px);
         padding-left: max(24px, calc((100% - var(--portfolio-selected-card-width) - var(--portfolio-expanded-feature-width) - 12px) / 2));
         padding-right: max(24px, calc((100% - var(--portfolio-selected-card-width) - var(--portfolio-expanded-feature-width) - 12px) / 2));
       }
@@ -975,6 +970,28 @@
 
       .portfolio-feature-link {
         margin-top: 18px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-height: 700px) {
+      #portfolio {
+        --portfolio-expanded-feature-width: clamp(260px, min(30vw, calc(58svh - 12px)), 420px);
+      }
+    }
+
+    @media (min-width: 769px) and (max-height: 620px) {
+      .portfolio-feature-info {
+        gap: 10px;
+        padding-right: clamp(20px, 3vw, 48px);
+      }
+
+      .portfolio-feature-info h3 {
+        font-size: clamp(26px, 3vw, 36px);
+      }
+
+      .portfolio-feature-info p {
+        font-size: clamp(13.5px, 2.2svh, 15.5px);
+        line-height: 1.5;
       }
     }
 
@@ -1603,6 +1620,7 @@
 
     let programmaticPortfolioAlignment = false;
     let portfolioAlignmentTimer = 0;
+    let suppressPortfolioDescriptionUntilTop = false;
 
     function setupPortfolioExpansion() {
       const section = document.getElementById('portfolio');
@@ -1755,10 +1773,13 @@
           ? expandedPanelHeight
           : initialHeight + (expandedPanelHeight - initialHeight) * easedProgress;
         const detailsProgress = isMobile && selected ? easedProgress : 0;
+        if (suppressPortfolioDescriptionUntilTop && currentScrollY <= 2) {
+          suppressPortfolioDescriptionUntilTop = false;
+        }
         const descEl = section.querySelector('.portfolio-description');
-        const showDesc = isMobile
+        const showDesc = !suppressPortfolioDescriptionUntilTop && (isMobile
           ? (!selected && (scrollingUp ? progress > .45 : progress > .18))
-          : (stickyActive && !selected && (scrollingUp ? progress > .68 : progress > .52));
+          : (stickyActive && !selected && (scrollingUp ? progress > .68 : progress > .52)));
         const rawDescProgress = !showDesc
           ? 0
           : isMobile
@@ -2206,6 +2227,7 @@
     }, { passive: true });
 
     window.scrollToExpandedPortfolio = function ({ keepSelection = false, updateHash = true, instant = false } = {}) {
+      suppressPortfolioDescriptionUntilTop = false;
       const section = document.getElementById('portfolio');
       const stage = section?.querySelector('.portfolio-scroll-stage');
       if (!section || !stage) return;
@@ -2356,12 +2378,15 @@
         const sameHomePage = destination && destination.origin === window.location.origin &&
           (destination.pathname === window.location.pathname ||
             (destination.pathname === '/' && window.location.pathname.endsWith('/index.html')));
-        if (sameHomePage && link.matches('.nav-logo')) {
+        if (link.matches('.nav-logo')) {
           event.preventDefault();
+          suppressPortfolioDescriptionUntilTop = true;
           if (activePortfolioProjectId) window.closePortfolioFeature(false);
-          try {
-            window.history.replaceState(null, '', `${destination.pathname}${destination.search}`);
-          } catch (error) { }
+          if (destination && destination.origin === window.location.origin) {
+            try {
+              window.history.replaceState(null, '', `${destination.pathname}${destination.search}`);
+            } catch (error) { }
+          }
           window.scrollTo({
             top: 0,
             behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
