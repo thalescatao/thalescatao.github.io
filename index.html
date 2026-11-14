@@ -209,7 +209,7 @@
       text-align: left;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 768px) and (orientation: portrait) {
       .hero h1 { font-size: clamp(42px, 10vw, 56px); }
     }
 
@@ -606,7 +606,7 @@
       to { flex-basis: 0; min-width: 0; margin-left: -12px; padding-left: 0; padding-right: 0; }
     }
 
-    @media(max-width:768px) {
+    @media (max-width: 768px) and (orientation: portrait) {
       .hero {
         /* Desconta a altura da faixa de imagens + a faixa de respiro do título Portfólio (~76px) */
         min-height: calc(100svh - var(--portfolio-height) - 76px);
@@ -840,7 +840,7 @@
       #portfolio.has-selection .portfolio-track { padding-left: 10px; padding-right: 10px; }
     }
 
-    @media (max-width: 768px) and (max-height: 720px), (max-width: 380px) {
+    @media (max-width: 768px) and (max-height: 720px) and (orientation: portrait), (max-width: 380px) and (orientation: portrait) {
       .hero {
         padding-top: calc(var(--nav-height) + 18px + clamp(16px, 2.8svh, 24px));
         padding-bottom: clamp(10px, 1.8svh, 16px);
@@ -883,12 +883,12 @@
       .portfolio-card-image:focus-visible img { transform: none; }
     }
 
-    @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    @media (max-width: 768px) and (orientation: portrait) and (prefers-reduced-motion: reduce) {
       .portfolio-heading { top: calc(var(--nav-height) + var(--portfolio-heading-offset)); }
       .portfolio-card { flex-basis: min(88vw, 600px); }
     }
 
-    @media (min-width: 769px) {
+    @media (min-width: 769px), (orientation: landscape) {
       .hero {
         height: calc(100svh - 25svh - 60px);
         padding: 126px 24px 24px;
@@ -916,7 +916,7 @@
       }
     }
 
-    @media (min-width: 769px) and (max-height: 800px) {
+    @media (min-width: 769px) and (max-height: 800px), (orientation: landscape) and (max-height: 800px) {
       :root {
         --portfolio-height: 22svh;
       }
@@ -989,7 +989,7 @@
       }
     }
 
-    @media (min-width: 769px) and (max-height: 700px) {
+    @media (min-width: 769px) and (max-height: 700px), (orientation: landscape) and (max-height: 700px) {
       #portfolio {
         --portfolio-expanded-feature-width: clamp(260px, min(30vw, calc(58svh - 12px)), 420px);
       }
@@ -1016,7 +1016,7 @@
       }
     }
 
-    @media (min-width: 769px) and (max-height: 620px) {
+    @media (min-width: 769px) and (max-height: 620px), (orientation: landscape) and (max-height: 620px) {
       .portfolio-feature {
         padding: 10px 16px 10px 4px;
       }
@@ -1036,6 +1036,95 @@
 
       .portfolio-feature-link {
         margin-top: 10px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-height: 540px), (orientation: landscape) and (max-height: 540px) {
+      .hero {
+        height: calc(100svh - 22svh - 36px);
+        padding-top: calc(var(--nav-height) + 18px + clamp(6px, 1.8svh, 14px));
+        padding-bottom: clamp(6px, 1.5svh, 12px);
+      }
+
+      .hero-main {
+        grid-template-columns: minmax(0, 1.25fr) minmax(136px, .75fr);
+        column-gap: clamp(24px, 4.5vw, 56px);
+        row-gap: 4px;
+      }
+
+      .hero h1 {
+        font-size: clamp(30px, min(4.5vw, 8.5svh), 38px);
+        margin-bottom: 6px;
+        white-space: nowrap;
+      }
+
+      .hero-p {
+        font-size: clamp(13px, min(1.85vw, 3.4svh), 14.5px);
+        line-height: 1.45;
+      }
+
+      .hero-portrait-wrap {
+        width: clamp(98px, min(15vw, 27svh), 126px);
+        padding: 6px;
+      }
+
+      .hero-tag {
+        padding: 3.5px 10px;
+        font-size: 10px;
+      }
+
+      .btn-row {
+        gap: 10px;
+      }
+
+      .hero-actions {
+        margin-top: 4px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        padding: 7px 13px;
+        font-size: 13px;
+        line-height: 1.2;
+        gap: 7px;
+      }
+      #portfolio {
+        --portfolio-expanded-feature-width: clamp(220px, 34vw, 300px);
+      }
+
+      .portfolio-heading {
+        margin-bottom: 6px;
+      }
+
+      .portfolio-heading h2 {
+        font-size: clamp(22px, 5.2svh, 28px);
+      }
+
+      .portfolio-description {
+        bottom: calc(100% + 8px);
+        font-size: clamp(11.5px, 2.7svh, 13.5px);
+        line-height: 1.38;
+      }
+
+      .portfolio-feature {
+        padding: 6px 14px 6px 4px;
+      }
+
+      .portfolio-feature-info .project-tag {
+        margin-bottom: 6px;
+      }
+
+      .portfolio-feature-info h3 {
+        margin: 0 0 6px;
+      }
+
+      .portfolio-feature-info p {
+        font-size: clamp(10.5px, 2.45svh, 12px);
+        line-height: 1.38;
+      }
+
+      .portfolio-feature-link {
+        margin-top: 8px;
       }
     }
 
@@ -1602,7 +1691,7 @@
           const selectedCard = track.querySelector(`[data-project-card="${activePortfolioProjectId}"]`);
           selectedCard?.classList.add('is-selected');
           selectedCard?.querySelectorAll('.portfolio-feature-arrow, .portfolio-feature-counter').forEach(control => { control.hidden = false; });
-          const mobileLayout = window.matchMedia('(max-width: 768px)').matches;
+          const mobileLayout = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
           if (selectedCard && !mobileLayout) selectedCard.insertAdjacentElement('afterend', feature);
           feature.hidden = mobileLayout || !selectedCard;
         }
@@ -1651,7 +1740,7 @@
       let animationFrame = 0;
       let previousScrollY = window.scrollY;
       const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const mobileLayout = window.matchMedia('(max-width: 768px)');
+      const mobileLayout = window.matchMedia('(max-width: 768px) and (orientation: portrait)');
 
       const update = () => {
         animationFrame = 0;
@@ -1674,21 +1763,24 @@
         const desktopFooterSpace = sectionPadBottom + (footerEl ? footerEl.getBoundingClientRect().height : 0);
         const desktopHeadingHeight = !isMobile ? (section.querySelector('.portfolio-heading')?.getBoundingClientRect().height || 36) : 0;
         const desktopDescHeight = !isMobile ? getMobilePortfolioDescriptionHeight(section) : 0;
-        const descTopGap = Math.round(Math.min(24, Math.max(10, viewportHeight * .035 - 4)));
-        const descBottomGap = 12;
+        const isUltraShortDesktop = !isMobile && viewportHeight <= 540;
+        const descTopGap = isUltraShortDesktop ? 6 : Math.round(Math.min(24, Math.max(10, viewportHeight * .035 - 4)));
+        const descBottomGap = isUltraShortDesktop ? 8 : 12;
         const headerBlockHeight = desktopHeadingHeight + descTopGap + desktopDescHeight + descBottomGap;
         const headingOffset = isMobile
           ? (parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-heading-offset')) || 24)
-          : isShortDesktop
-            ? Math.round(Math.min(52, Math.max(18, viewportHeight * .075 - 10)))
-            : 88;
+          : isUltraShortDesktop
+            ? 20
+            : isShortDesktop
+              ? Math.round(Math.min(52, Math.max(18, viewportHeight * .075 - 10)))
+              : 88;
         const baseHeaderSpace = isMobile
           ? (parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-header-space')) || 84)
           : 224;
         const unselectedHeaderSpace = isShortDesktop
           ? Math.ceil(headingOffset + headerBlockHeight)
           : Math.max(baseHeaderSpace, Math.ceil(headingOffset + headerBlockHeight));
-        const selectedHeaderGap = isShortDesktop ? 14 : 18;
+        const selectedHeaderGap = isUltraShortDesktop ? 8 : (isShortDesktop ? 14 : 18);
         const selectedHeaderSpace = Math.ceil(headingOffset + desktopHeadingHeight + selectedHeaderGap);
         const headerSpace = !isMobile && selected
           ? Math.min(unselectedHeaderSpace, selectedHeaderSpace)
@@ -2057,7 +2149,7 @@
       // abrir do zero usa a duração lenta; trocar entre projetos já abertos usa a mais rápida
       setPortfolioMotionDuration(section, switchingProject ? PORTFOLIO_SWITCH_MS : PORTFOLIO_FEATURE_MS);
       if (switchingProject && !feature.hidden && feature.parentElement === track &&
-          !window.matchMedia('(max-width: 768px)').matches &&
+          !window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches &&
           !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         spawnLeavingPortfolioPanel(feature, section);
       }
@@ -2071,7 +2163,7 @@
         card.querySelectorAll('.portfolio-feature-arrow, .portfolio-feature-counter').forEach(control => { control.hidden = !selected; });
       });
       section.classList.add('has-selection');
-      const mobileLayout = window.matchMedia('(max-width: 768px)').matches;
+      const mobileLayout = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
       feature.hidden = mobileLayout;
       const selectedCard = track.querySelector(`[data-project-card="${projectId}"]`);
       if (!mobileLayout && selectedCard && selectedCard.nextElementSibling !== feature) {
@@ -2131,7 +2223,7 @@
       // Desktop: deixa uma cópia da coluna recolhendo no lugar enquanto o card volta ao tamanho normal
       const track = document.getElementById('portfolio-track');
       const closingAnimated = !!activePortfolioProjectId && !feature.hidden && feature.parentElement === track &&
-        !window.matchMedia('(max-width: 768px)').matches &&
+        !window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches &&
         !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (closingAnimated) {
         setPortfolioMotionDuration(section, PORTFOLIO_FEATURE_MS);
@@ -2259,7 +2351,7 @@
       const navHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 54;
       const headingOffset = parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-heading-offset')) || 88;
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const mobileLayout = window.matchMedia('(max-width: 768px)').matches;
+      const mobileLayout = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
       let targetTop;
 
       if (reducedMotion) {
@@ -2271,21 +2363,24 @@
         const desktopFooterSpace = sectionPadBottom + (footerEl ? footerEl.getBoundingClientRect().height : 0);
         const desktopHeadingHeight = !mobileLayout ? (section.querySelector('.portfolio-heading')?.getBoundingClientRect().height || 36) : 0;
         const desktopDescHeight = !mobileLayout ? getMobilePortfolioDescriptionHeight(section) : 0;
-        const descTopGap = Math.round(Math.min(24, Math.max(10, window.innerHeight * .035 - 4)));
-        const descBottomGap = 12;
+        const isUltraShortDesktop = !mobileLayout && window.innerHeight <= 540;
+        const descTopGap = isUltraShortDesktop ? 6 : Math.round(Math.min(24, Math.max(10, window.innerHeight * .035 - 4)));
+        const descBottomGap = isUltraShortDesktop ? 8 : 12;
         const headerBlockHeight = desktopHeadingHeight + descTopGap + desktopDescHeight + descBottomGap;
         const effectiveHeadingOffset = mobileLayout
           ? headingOffset
-          : isShortDesktop
-            ? Math.round(Math.min(52, Math.max(18, window.innerHeight * .075 - 10)))
-            : 88;
+          : isUltraShortDesktop
+            ? 20
+            : isShortDesktop
+              ? Math.round(Math.min(52, Math.max(18, window.innerHeight * .075 - 10)))
+              : 88;
         const baseHeaderSpace = mobileLayout
           ? (parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-header-space')) || 84)
           : 224;
         const unselectedHeaderSpace = isShortDesktop
           ? Math.ceil(effectiveHeadingOffset + headerBlockHeight)
           : Math.max(baseHeaderSpace, Math.ceil(effectiveHeadingOffset + headerBlockHeight));
-        const selectedHeaderGap = isShortDesktop ? 14 : 18;
+        const selectedHeaderGap = isUltraShortDesktop ? 8 : (isShortDesktop ? 14 : 18);
         const selectedHeaderSpace = Math.ceil(effectiveHeadingOffset + desktopHeadingHeight + selectedHeaderGap);
         const headerSpace = !mobileLayout && keepSelection
           ? Math.min(unselectedHeaderSpace, selectedHeaderSpace)
@@ -2466,6 +2561,12 @@
     }
 
     handlePortfolioHashOnArrival();
+
+    window.matchMedia('(max-width: 768px) and (orientation: portrait)').addEventListener('change', () => {
+      renderPortfolioCards(document.documentElement.lang === 'en' ? 'en' : 'pt');
+      if (activePortfolioProjectId) updatePortfolioFeature();
+      window.dispatchEvent(new Event('scroll'));
+    });
 
     window.addEventListener('hashchange', () => {
       if (window.location.hash === '#portfolio') {
@@ -2715,7 +2816,7 @@
 
       track.addEventListener('scroll', () => {
         if (!activePortfolioProjectId || !document.getElementById('portfolio')?.classList.contains('has-selection')) return;
-        if (!window.matchMedia('(max-width: 768px)').matches) return;
+        if (!window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches) return;
         window.clearTimeout(settleTimer);
         settleTimer = window.setTimeout(() => {
           const trackRect = track.getBoundingClientRect();
