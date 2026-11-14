@@ -977,25 +977,7 @@
       #portfolio {
         --portfolio-expanded-feature-width: clamp(260px, min(30vw, calc(58svh - 12px)), 420px);
       }
-    }
 
-    @media (min-width: 769px) and (max-height: 620px) {
-      .portfolio-feature-info {
-        gap: 10px;
-        padding-right: clamp(20px, 3vw, 48px);
-      }
-
-      .portfolio-feature-info h3 {
-        font-size: clamp(26px, 3vw, 36px);
-      }
-
-      .portfolio-feature-info p {
-        font-size: clamp(13.5px, 2.2svh, 15.5px);
-        line-height: 1.5;
-      }
-    }
-
-    @media (min-width: 769px) and (max-height: 660px) {
       .portfolio-feature {
         padding: 14px 18px 14px 4px;
       }
@@ -1009,12 +991,35 @@
       }
 
       .portfolio-feature-info p {
-        font-size: clamp(13.5px, 2.1svh, 14.5px);
-        line-height: 1.58;
+        font-size: clamp(12px, 2.02svh, 14.2px);
+        line-height: 1.54;
       }
 
       .portfolio-feature-link {
         margin-top: 14px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-height: 620px) {
+      .portfolio-feature {
+        padding: 10px 16px 10px 4px;
+      }
+
+      .portfolio-feature-info .project-tag {
+        margin-bottom: 9px;
+      }
+
+      .portfolio-feature-info h3 {
+        margin: 0 0 10px;
+      }
+
+      .portfolio-feature-info p {
+        font-size: clamp(11px, 1.92svh, 12.8px);
+        line-height: 1.44;
+      }
+
+      .portfolio-feature-link {
+        margin-top: 10px;
       }
     }
 
