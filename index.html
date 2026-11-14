@@ -462,14 +462,12 @@
 
     .portfolio-feature-arrow {
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 0;
+      height: 100%;
       z-index: 2;
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 52px;
+      width: clamp(56px, 15%, 88px);
       padding: 0;
       border: none;
       border-radius: 0;
@@ -478,8 +476,12 @@
       font-size: 28px;
       cursor: pointer;
       filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.75));
-      transition: transform .2s ease, opacity .2s ease;
+      transition: opacity .2s ease;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    .portfolio-feature-arrow i {
+      transition: transform .2s ease;
     }
 
     .portfolio-feature-arrow[hidden],
@@ -487,16 +489,28 @@
 
     .portfolio-feature-arrow:hover {
       background: transparent;
-      transform: translateY(-50%) scale(1.15);
       opacity: .95;
     }
 
-    .portfolio-feature-arrow:active {
-      transform: translateY(-50%) scale(0.95);
+    .portfolio-feature-arrow:hover i {
+      transform: scale(1.15);
     }
 
-    .portfolio-feature-prev { left: 4px; }
-    .portfolio-feature-next { right: 4px; }
+    .portfolio-feature-arrow:active i {
+      transform: scale(0.95);
+    }
+
+    .portfolio-feature-prev {
+      left: 0;
+      justify-content: flex-start;
+      padding-left: 14px;
+    }
+
+    .portfolio-feature-next {
+      right: 0;
+      justify-content: flex-end;
+      padding-right: 14px;
+    }
 
     .portfolio-feature-counter {
       position: absolute;
@@ -511,6 +525,7 @@
       line-height: 1.2;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+      pointer-events: none;
     }
 
     .portfolio-feature-info {
@@ -785,7 +800,8 @@
         animation: none;
       }
       #portfolio.has-selection .portfolio-feature-arrow {
-        top: var(--portfolio-arrow-top, 50%);
+        top: 0;
+        height: var(--portfolio-image-height, calc(var(--portfolio-card-width) / 1.5));
       }
       #portfolio.has-selection .portfolio-feature-counter {
         top: var(--portfolio-counter-top, auto);
@@ -1799,6 +1815,7 @@
         document.documentElement.style.setProperty('--portfolio-height', `${panelHeight.toFixed(1)}px`);
         section.style.setProperty('--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
         section.style.setProperty('--portfolio-arrow-top', `${(cardWidth / 3).toFixed(1)}px`);
+        section.style.setProperty('--portfolio-image-height', `${(cardWidth / 1.5).toFixed(1)}px`);
         section.style.setProperty('--portfolio-counter-top', `${(cardWidth / 1.5 - 38).toFixed(1)}px`);
         section.style.setProperty('--portfolio-description-opacity', descriptionOpacity.toFixed(3));
         section.style.setProperty('--portfolio-details-progress', detailsProgress.toFixed(3));
@@ -2032,6 +2049,7 @@
       const track = document.getElementById('portfolio-track');
       const feature = document.getElementById('portfolio-feature');
       if (!section || !track || !feature) return;
+      if (activePortfolioProjectId === projectId && section.classList.contains('has-selection')) return;
 
       // Troca de um projeto aberto para outro: deixa uma cópia do painel antigo recolhendo no lugar,
       // para o layout não "pular" quando o painel real muda de card.
