@@ -118,6 +118,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="global.css" />
   <style>
+    :root {
+      --portfolio-height: 25svh;
+    }
+
     .hero {
       min-height: 0;
       width: 100%;
@@ -581,18 +585,19 @@
 
     @media(max-width:768px) {
       .hero {
-        min-height: calc(100svh - var(--portfolio-height));
+        /* Desconta a altura da faixa de imagens + a faixa de respiro do título Portfólio (~76px) */
+        min-height: calc(100svh - var(--portfolio-height) - 76px);
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding-top: clamp(80px, 12svh, 112px);
-        padding-bottom: clamp(20px, 4svh, 36px);
+        padding-top: calc(var(--nav-height) + clamp(14px, 2.5svh, 28px));
+        padding-bottom: clamp(12px, 2svh, 20px);
         box-sizing: border-box;
       }
 
       .hero-main {
         min-height: 0;
-        grid-template-columns: minmax(0, 1fr) minmax(108px, .64fr);
+        grid-template-columns: minmax(0, 1fr) minmax(104px, .58fr);
         grid-template-rows: auto auto auto auto;
         grid-template-areas:
           "heading portrait"
@@ -601,25 +606,57 @@
           "actions actions";
         align-items: center;
         justify-items: stretch;
-        column-gap: 20px;
-        row-gap: clamp(18px, 3svh, 28px);
+        column-gap: 16px;
+        row-gap: clamp(12px, 2svh, 18px);
         text-align: left;
         width: 100%;
       }
 
       .hero-copy { display: contents; }
-      .hero h1 { grid-area: heading; position: relative; top: clamp(6px, 2svh, 14px); align-self: start; max-width: 100%; margin-bottom: 0; font-size: clamp(32px, 10vw, 48px); text-align: left; }
-      .hero-p { grid-area: bio; max-width: none; margin: clamp(16px, 3.5svh, 30px) 0 0; font-size: 18px; line-height: 1.65; text-align: left; }
-      .hero-portrait-wrap { grid-area: portrait; justify-self: center; align-self: end; width: clamp(132px, 38vw, 170px); padding: 7px; }
-      .hero-tag { grid-area: role; justify-self: start; align-self: end; margin: 0; padding: 4px 6px; font-size: 9px; white-space: nowrap; }
-      .btn-row { grid-area: actions; justify-content: center; align-items: center; gap: 10px; }
-      .hero-actions { flex-direction: row; flex-wrap: wrap; margin-top: clamp(16px, 3.5svh, 28px); }
-
-      .portfolio-heading {
-        position: sticky;
-        top: calc(var(--nav-height) + var(--portfolio-heading-offset));
-        z-index: 5;
-        background: transparent;
+      .hero h1 {
+        grid-area: heading;
+        position: static;
+        align-self: end;
+        max-width: 100%;
+        margin-bottom: 0;
+        font-size: clamp(32px, 9.2vw, 44px);
+        line-height: 1.05;
+        text-align: left;
+      }
+      .hero-p {
+        grid-area: bio;
+        max-width: none;
+        margin: 4px 0 0;
+        font-size: clamp(15px, 4.1vw, 17px);
+        line-height: 1.55;
+        text-align: left;
+      }
+      .hero-portrait-wrap {
+        grid-area: portrait;
+        justify-self: end;
+        align-self: center;
+        width: clamp(116px, 33vw, 148px);
+        padding: 6px;
+      }
+      .hero-tag {
+        grid-area: role;
+        justify-self: start;
+        align-self: start;
+        margin: 0;
+        padding: 4px 10px;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+      .btn-row {
+        grid-area: actions;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+      }
+      .hero-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 4px;
       }
 
       #portfolio {
@@ -634,7 +671,13 @@
       }
 
       .portfolio-heading {
-        top: var(--portfolio-mobile-heading-top, max(calc(var(--nav-height) + 24px), calc(var(--portfolio-mobile-top) - 54px)));
+        position: sticky;
+        top: var(--portfolio-mobile-heading-top, max(calc(var(--nav-height) + 16px), calc(var(--portfolio-mobile-top) - 52px)));
+        z-index: 5;
+        padding-top: 6px;
+        padding-bottom: 14px;
+        margin-bottom: 0;
+        background: transparent;
       }
 
       .portfolio-sticky {
@@ -649,7 +692,6 @@
         transition: none;
       }
 
-      .portfolio-heading { margin-bottom: 0; }
       .portfolio-track { flex: 1 1 auto; height: auto; gap: 12px; padding: 0 12px; }
       .portfolio-card { transition: none; }
       .portfolio-scroll-stage { height: 100svh; }
@@ -765,9 +807,9 @@
 
     @media (max-width: 420px) {
       .hero { padding-left: 18px; padding-right: 18px; }
-      .hero-main { min-height: 0; row-gap: 22px; }
-      .hero-portrait-wrap { width: clamp(132px, 38vw, 160px); }
-      .hero-p { font-size: 18px; }
+      .hero-main { min-height: 0; row-gap: 12px; }
+      .hero-portrait-wrap { width: clamp(110px, 32vw, 136px); }
+      .hero-p { font-size: 15.5px; }
       .portfolio-heading { padding-left: 18px; padding-right: 18px; }
       .portfolio-track,
       #portfolio.has-selection .portfolio-track { padding-left: 10px; padding-right: 10px; }
@@ -1541,6 +1583,7 @@
 
         section.style.setProperty('--portfolio-progress', progress.toFixed(3));
         section.style.setProperty('--portfolio-height', `${panelHeight.toFixed(1)}px`);
+        document.documentElement.style.setProperty('--portfolio-height', `${panelHeight.toFixed(1)}px`);
         section.style.setProperty('--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
         section.style.setProperty('--portfolio-arrow-top', `${(cardWidth / 3).toFixed(1)}px`);
         section.style.setProperty('--portfolio-counter-top', `${(cardWidth / 1.5 - 38).toFixed(1)}px`);
@@ -1557,7 +1600,7 @@
           if (stickyPanel && heading) {
             const panelTop = stickyPanel.getBoundingClientRect().top;
             const headingHeight = heading.getBoundingClientRect().height;
-            const headingTop = Math.max(navHeight + 24, panelTop - headingHeight - 20);
+            const headingTop = Math.max(navHeight + 16, panelTop - headingHeight - 14);
             section.style.setProperty('--portfolio-mobile-heading-top', `${headingTop.toFixed(1)}px`);
           }
         }
