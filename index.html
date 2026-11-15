@@ -619,7 +619,7 @@
     @media (max-width: 768px) and (orientation: portrait) {
       .hero {
         /* Desconta a altura da faixa de imagens + a faixa de respiro do título Portfólio (~76px) */
-        min-height: calc(100svh - var(--portfolio-height) - 76px);
+        min-height: calc(100svh - var(--portfolio-initial-height, var(--portfolio-height)) - 76px);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -826,6 +826,17 @@
 
       .portfolio-description.is-visible {
         transition: opacity .65s ease;
+      }
+    }
+
+    /* Desempenho em telas de toque: o painel sticky muda de tamanho a cada quadro da rolagem,
+       e o backdrop-filter obriga o navegador a refazer o blur toda vez. Fundo um pouco mais opaco
+       compensa. Para voltar ao vidro fosco, apague este bloco. */
+    @media (pointer: coarse) {
+      .portfolio-sticky {
+        background: color-mix(in srgb, var(--surface) 90%, transparent);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
     }
 
@@ -1709,7 +1720,7 @@
           <article class="portfolio-card" role="listitem" data-project-card="${projectId}">
             <button class="portfolio-card-image" type="button"
               onclick="selectPortfolioProject('${projectId}')" aria-label="${viewLabel}: ${localized.title}">
-              <img src="${project.images[0]}" alt="${altText}" loading="${index < 3 ? 'eager' : 'lazy'}" draggable="false"${priority}>
+              <img src="${project.images[0]}" alt="${altText}" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async" draggable="false"${priority}>
             </button>
             <button class="portfolio-feature-arrow portfolio-feature-prev" type="button" onclick="stepPortfolioImage(-1)" aria-label="${isEnglish ? 'Previous image' : 'Imagem anterior'}" hidden>
               <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
@@ -1778,6 +1789,18 @@
     let portfolioAlignmentTimer = 0;
     let suppressPortfolioDescriptionUntilTop = false;
 
+    // Só grava a variável CSS se o valor mudou. Gravar um valor idêntico não muda nada na tela,
+    // mas invalida estilo (e às vezes layout) a cada quadro de rolagem. A comparação é com o valor
+    // realmente gravado no elemento, e não com um cache próprio: assim continua correto se outro
+    // trecho mexer na mesma variável (ex.: a medição temporária de getMobilePortfolioDetailsHeight).
+    function setCssVar(el, name, value) {
+      if (!el) return;
+      if (el.style.getPropertyValue(name) !== value) el.style.setProperty(name, value);
+    }
+    function removeCssVar(el, name) {
+      if (el && el.style.getPropertyValue(name) !== '') el.style.removeProperty(name);
+    }
+
     function setupPortfolioExpansion() {
       const section = document.getElementById('portfolio');
       const stage = section?.querySelector('.portfolio-scroll-stage');
@@ -1785,6 +1808,8 @@
 
       let animationFrame = 0;
       let previousScrollY = window.scrollY;
+      const sectionStyles = getComputedStyle(section);
+      const rootStyles = getComputedStyle(document.documentElement);
       const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
       const mobileLayout = window.matchMedia('(max-width: 768px) and (orientation: portrait)');
 
@@ -1803,9 +1828,9 @@
 
         const viewportHeight = window.innerHeight;
         const isShortDesktop = !isMobile && viewportHeight <= 800;
-        const navHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 54;
+        const navHeight = parseFloat(rootStyles.getPropertyValue('--nav-height')) || 54;
         const footerEl = document.querySelector('footer');
-        const sectionPadBottom = parseFloat(getComputedStyle(section).paddingBottom) || 0;
+        const sectionPadBottom = parseFloat(sectionStyles.paddingBottom) || 0;
         const desktopFooterSpace = sectionPadBottom + (footerEl ? footerEl.getBoundingClientRect().height : 0);
         const desktopHeadingHeight = !isMobile ? (section.querySelector('.portfolio-heading')?.getBoundingClientRect().height || 36) : 0;
         const desktopDescHeight = !isMobile ? getMobilePortfolioDescriptionHeight(section) : 0;
@@ -1814,14 +1839,14 @@
         const descBottomGap = isUltraShortDesktop ? 8 : 12;
         const headerBlockHeight = desktopHeadingHeight + descTopGap + desktopDescHeight + descBottomGap;
         const headingOffset = isMobile
-          ? (parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-heading-offset')) || 24)
+          ? (parseFloat(sectionStyles.getPropertyValue('--portfolio-heading-offset')) || 24)
           : isUltraShortDesktop
             ? 20
             : isShortDesktop
               ? Math.round(Math.min(52, Math.max(18, viewportHeight * .075 - 10)))
               : 88;
         const baseHeaderSpace = isMobile
-          ? (parseFloat(getComputedStyle(section).getPropertyValue('--portfolio-header-space')) || 84)
+          ? (parseFloat(sectionStyles.getPropertyValue('--portfolio-header-space')) || 84)
           : 224;
         const unselectedHeaderSpace = isShortDesktop
           ? Math.ceil(headingOffset + headerBlockHeight)
@@ -1832,11 +1857,11 @@
           ? Math.min(unselectedHeaderSpace, selectedHeaderSpace)
           : unselectedHeaderSpace;
         if (!isMobile) {
-          section.style.setProperty('--portfolio-heading-offset', `${headingOffset}px`);
-          section.style.setProperty('--portfolio-header-space', `${headerSpace}px`);
+          setCssVar(section, '--portfolio-heading-offset', `${headingOffset}px`);
+          setCssVar(section, '--portfolio-header-space', `${headerSpace}px`);
         } else {
-          section.style.removeProperty('--portfolio-heading-offset');
-          section.style.removeProperty('--portfolio-header-space');
+          removeCssVar(section, '--portfolio-heading-offset');
+          removeCssVar(section, '--portfolio-header-space');
         }
         const headingStickyTop = navHeight + headingOffset;
         const mobileHeaderClearance = isMobile ? getMobilePortfolioHeaderClearance(section) : 0;
@@ -1887,9 +1912,9 @@
                 window.innerWidth - 380
               ));
         if (!isMobile) {
-          section.style.setProperty('--portfolio-selected-card-width', `${selectedCardWidth.toFixed(1)}px`);
+          setCssVar(section, '--portfolio-selected-card-width', `${selectedCardWidth.toFixed(1)}px`);
         } else {
-          section.style.removeProperty('--portfolio-selected-card-width');
+          removeCssVar(section, '--portfolio-selected-card-width');
         }
         const mobileDetailsHeight = isMobile && selected ? getMobilePortfolioDetailsHeight(expandedCardWidth) : 0;
         const expandedPanelHeight = isMobile
@@ -1951,28 +1976,31 @@
         const descriptionOpacity = descriptionProgress * descriptionProgress * (3 - 2 * descriptionProgress);
         descEl?.classList.toggle('is-visible', showDesc && !scrollingUp);
 
-        section.style.setProperty('--portfolio-progress', progress.toFixed(3));
-        section.style.setProperty('--portfolio-height', `${panelHeight.toFixed(1)}px`);
-        document.documentElement.style.setProperty('--portfolio-height', `${panelHeight.toFixed(1)}px`);
-        section.style.setProperty('--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
-        section.style.setProperty('--portfolio-arrow-top', `${(cardWidth / 3).toFixed(1)}px`);
-        section.style.setProperty('--portfolio-image-height', `${(cardWidth / 1.5).toFixed(1)}px`);
-        section.style.setProperty('--portfolio-counter-top', `${(cardWidth / 1.5 - 38).toFixed(1)}px`);
-        section.style.setProperty('--portfolio-description-opacity', descriptionOpacity.toFixed(3));
-        section.style.setProperty('--portfolio-details-progress', detailsProgress.toFixed(3));
-        section.style.setProperty('--portfolio-feature-visible-height', `${(mobileDetailsHeight * detailsProgress).toFixed(1)}px`);
-        section.style.setProperty('--portfolio-feature-visible-padding', `${(22 * detailsProgress).toFixed(1)}px`);
+        setCssVar(section, '--portfolio-progress', progress.toFixed(3));
+        setCssVar(section, '--portfolio-height', `${panelHeight.toFixed(1)}px`);
+        // Altura da faixa em progresso 0. Só o .hero do mobile usa. Antes, a raiz do documento recebia
+        // --portfolio-height a cada quadro: isso invalida o estilo da página inteira e ainda fazia a
+        // altura do .hero variar durante a rolagem. Agora só muda em resize/orientação/idioma.
+        if (isMobile) setCssVar(document.documentElement, '--portfolio-initial-height', `${initialHeight.toFixed(1)}px`);
+        setCssVar(section, '--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
+        setCssVar(section, '--portfolio-arrow-top', `${(cardWidth / 3).toFixed(1)}px`);
+        setCssVar(section, '--portfolio-image-height', `${(cardWidth / 1.5).toFixed(1)}px`);
+        setCssVar(section, '--portfolio-counter-top', `${(cardWidth / 1.5 - 38).toFixed(1)}px`);
+        setCssVar(section, '--portfolio-description-opacity', descriptionOpacity.toFixed(3));
+        setCssVar(section, '--portfolio-details-progress', detailsProgress.toFixed(3));
+        setCssVar(section, '--portfolio-feature-visible-height', `${(mobileDetailsHeight * detailsProgress).toFixed(1)}px`);
+        setCssVar(section, '--portfolio-feature-visible-padding', `${(22 * detailsProgress).toFixed(1)}px`);
         if (isMobile) {
           const compactTop = viewportHeight - initialHeight;
           const mobileTop = compactTop + (expandedStickyTop - compactTop) * easedProgress;
-          section.style.setProperty('--portfolio-mobile-top', `${mobileTop.toFixed(1)}px`);
+          setCssVar(section, '--portfolio-mobile-top', `${mobileTop.toFixed(1)}px`);
           const stickyPanel = section.querySelector('.portfolio-sticky');
           const heading = section.querySelector('.portfolio-heading');
           if (stickyPanel && heading) {
             const panelTop = stickyPanel.getBoundingClientRect().top;
             const headingHeight = heading.getBoundingClientRect().height;
             const headingTop = Math.max(navHeight + 16, panelTop - headingHeight - 14);
-            section.style.setProperty('--portfolio-mobile-heading-top', `${headingTop.toFixed(1)}px`);
+            setCssVar(section, '--portfolio-mobile-heading-top', `${headingTop.toFixed(1)}px`);
           }
         }
 
@@ -1982,7 +2010,7 @@
         if (headingEl && panelEl) {
           const overlap = headingEl.getBoundingClientRect().bottom - panelEl.getBoundingClientRect().top;
           const headingOpacity = Math.min(1, Math.max(0, 1 - overlap / 24));
-          section.style.setProperty('--portfolio-heading-opacity', headingOpacity.toFixed(2));
+          setCssVar(section, '--portfolio-heading-opacity', headingOpacity.toFixed(2));
         }
         if (section.classList.contains('selection-animating') && !animationFrame) {
           animationFrame = requestAnimationFrame(update);
@@ -3188,7 +3216,7 @@
             ? `Show image ${index + 1} of ${proj.images.length}`
             : `Mostrar imagem ${index + 1} de ${proj.images.length}`);
           thumb.onclick = () => selectSlide(index);
-          thumb.innerHTML = `<img src="${imgSrc}" alt="${localization.title} - ${index + 1}">`;
+          thumb.innerHTML = `<img src="${imgSrc}" alt="${localization.title} - ${index + 1}" decoding="async">`;
           thumbsContainer.appendChild(thumb);
         });
       }

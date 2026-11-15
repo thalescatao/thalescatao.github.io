@@ -175,6 +175,26 @@
         </svg>
       `;
       document.body.appendChild(bg);
+
+      // Os pontos do fundo se movem via SMIL (animateMotion), que roda na thread principal e
+      // disputa tempo com a rolagem. Eles são lentos e discretos, então pausamos enquanto a página
+      // rola e retomamos logo depois que ela para (a animação continua de onde parou, sem salto).
+      const bgSvg = bg.querySelector('.structural-svg');
+      if (bgSvg && typeof bgSvg.pauseAnimations === 'function' && !prefersReducedMotion) {
+        let bgPaused = false;
+        let bgResumeTimer = 0;
+        window.addEventListener('scroll', () => {
+          if (!bgPaused) {
+            bgSvg.pauseAnimations();
+            bgPaused = true;
+          }
+          clearTimeout(bgResumeTimer);
+          bgResumeTimer = setTimeout(() => {
+            bgSvg.unpauseAnimations();
+            bgPaused = false;
+          }, 180);
+        }, { passive: true });
+      }
     }
 
     document.querySelectorAll('[data-route]').forEach(link => {
