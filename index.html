@@ -2861,45 +2861,66 @@
       let followUntil = 0;
       let running = false;
 
+      const getCardUnitRect = card => {
+        const rect = card.getBoundingClientRect();
+        const next = card.nextElementSibling;
+        if (next && next.classList.contains('portfolio-feature') && !next.hidden) {
+          const nextRect = next.getBoundingClientRect();
+          if (nextRect.width > 0.5) {
+            return {
+              left: rect.left,
+              right: nextRect.right,
+              width: nextRect.right - rect.left
+            };
+          }
+        }
+        return rect;
+      };
+
+      const getTrackInsets = cards => {
+        const trackRect = track.getBoundingClientRect();
+        const firstRect = getCardUnitRect(cards[0]);
+        const lastRect = getCardUnitRect(cards[cards.length - 1]);
+        const leftInset = Math.max(0, firstRect.left - trackRect.left + track.scrollLeft);
+        const rightInset = Math.max(0, track.scrollWidth - (lastRect.right - trackRect.left + track.scrollLeft));
+        return { trackRect, firstRect, lastRect, leftInset, rightInset };
+      };
+
       const rememberLayout = () => {
         const card = track.querySelector('.portfolio-card');
-        focusWidth = card ? card.getBoundingClientRect().width : 0;
+        const leaving = track.querySelector('.portfolio-feature.is-leaving');
+        focusWidth = (card ? card.getBoundingClientRect().width : 0) + (leaving ? leaving.getBoundingClientRect().width : 0);
         focusTrackWidth = track.clientWidth;
       };
 
       const layoutChanged = () => {
         const card = track.querySelector('.portfolio-card');
-        const width = card ? card.getBoundingClientRect().width : 0;
+        const leaving = track.querySelector('.portfolio-feature.is-leaving');
+        const width = (card ? card.getBoundingClientRect().width : 0) + (leaving ? leaving.getBoundingClientRect().width : 0);
         return Math.abs(width - focusWidth) > 0.4 || track.clientWidth !== focusTrackWidth;
       };
 
       // posição (em px, a partir da borda esquerda da faixa) onde o ponto ancorado fica:
       // de leftInset (começo) até clientWidth - rightInset (final), proporcional a `progress` (0 a 1)
-      const anchorOffset = anchor => anchor.leftInset +
-        anchor.progress * Math.max(0, track.clientWidth - anchor.leftInset - anchor.rightInset);
+      const anchorOffset = (progress, leftInset, rightInset) => leftInset +
+        progress * Math.max(0, track.clientWidth - leftInset - rightInset);
 
       const capture = () => {
         const cards = track.querySelectorAll('.portfolio-card');
         if (!cards.length) return null;
-        const trackRect = track.getBoundingClientRect();
-        const firstRect = cards[0].getBoundingClientRect();
-        const lastRect = cards[cards.length - 1].getBoundingClientRect();
+        const { trackRect, firstRect, lastRect, leftInset, rightInset } = getTrackInsets(cards);
         if (firstRect.width < 1 || lastRect.width < 1) return null;
-        // folgas reais entre as pontas dos cards e as pontas roláveis da faixa (padding do track)
-        const leftInset = Math.max(0, firstRect.left - trackRect.left + track.scrollLeft);
-        const rightInset = Math.max(0, track.scrollWidth - (lastRect.right - trackRect.left + track.scrollLeft));
         const maxScroll = track.scrollWidth - track.clientWidth;
         const progress = maxScroll > 1 ? Math.min(1, Math.max(0, track.scrollLeft / maxScroll)) : 0;
-        const anchor = { leftInset, rightInset, progress };
-        const anchorX = trackRect.left + anchorOffset(anchor);
+        const anchorX = trackRect.left + anchorOffset(progress, leftInset, rightInset);
         for (let index = 0; index < cards.length; index++) {
-          const rect = cards[index].getBoundingClientRect();
+          const rect = getCardUnitRect(cards[index]);
           if (rect.width < 1) return null;
           if (anchorX <= rect.right || index === cards.length - 1) {
             return {
               index,
-              ratio: Math.min(1, Math.max(0, (anchorX - rect.left) / rect.width)),
-              ...anchor
+              ratio: (anchorX - rect.left) / rect.width,
+              progress
             };
           }
         }
@@ -2908,11 +2929,13 @@
 
       const apply = () => {
         if (!focus || pointerActive || userMoved || activePortfolioProjectId) return;
-        const card = track.querySelectorAll('.portfolio-card')[focus.index];
+        const cards = track.querySelectorAll('.portfolio-card');
+        const card = cards[focus.index];
         if (!card) return;
-        const rect = card.getBoundingClientRect();
+        const rect = getCardUnitRect(card);
         if (rect.width < 1) return;
-        const delta = rect.left + rect.width * focus.ratio - (track.getBoundingClientRect().left + anchorOffset(focus));
+        const { trackRect, leftInset, rightInset } = getTrackInsets(cards);
+        const delta = rect.left + rect.width * focus.ratio - (trackRect.left + anchorOffset(focus.progress, leftInset, rightInset));
         if (Math.abs(delta) < 0.6) return;
         const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
         const next = Math.min(maxScroll, Math.max(0, track.scrollLeft + delta));
@@ -3004,6 +3027,7 @@
       track.addEventListener('touchcancel', () => { pointerActive = false; });
 
       window.addEventListener('scroll', () => {
+        if (!activePortfolioProjectId && track.scrollLeft > 1) horizontalIntent = true;
         if (horizontalIntent) kick();
       }, { passive: true });
       window.addEventListener('resize', () => {
