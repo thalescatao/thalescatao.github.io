@@ -382,6 +382,15 @@
     }
 
     .portfolio-track::-webkit-scrollbar { display: none; }
+    .portfolio-track { cursor: grab; }
+    .portfolio-track.is-dragging { cursor: grabbing; }
+    .portfolio-track.is-dragging,
+    .portfolio-track.is-snapping,
+    #portfolio.has-selection .portfolio-track.is-dragging,
+    #portfolio.has-selection .portfolio-track.is-snapping {
+      scroll-snap-type: none !important;
+      scroll-behavior: auto !important;
+    }
 
     .portfolio-card {
       flex: 0 0 var(--portfolio-card-width);
@@ -782,23 +791,9 @@
         display: none;
       }
 
-      .portfolio-feature {
-        flex: 0 0 auto;
-        display: flex;
-        min-width: 0;
-        width: var(--portfolio-card-width);
-        height: auto;
-        min-height: 0;
-        padding: 22px 0;
-        overflow: visible;
-      }
+      .portfolio-feature,
       #portfolio.has-selection .portfolio-feature {
-        height: var(--portfolio-feature-visible-height, 0px);
-        padding-top: var(--portfolio-feature-visible-padding, 22px);
-        padding-bottom: var(--portfolio-feature-visible-padding, 22px);
-        overflow: hidden;
-        opacity: var(--portfolio-details-progress, 1);
-        animation: none;
+        display: none !important;
       }
       #portfolio.has-selection .portfolio-feature-arrow {
         top: 0;
@@ -1683,6 +1678,22 @@
             if (linkSpan) linkSpan.textContent = behanceLabel;
           }
         });
+        track.querySelectorAll('.portfolio-feature.is-leaving').forEach(el => el.remove());
+        if (feature) {
+          const mobileLayout = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
+          const selectedCard = activePortfolioProjectId
+            ? track.querySelector(`[data-project-card="${activePortfolioProjectId}"]`)
+            : null;
+          if (selectedCard && !mobileLayout) {
+            if (selectedCard.nextElementSibling !== feature) {
+              selectedCard.insertAdjacentElement('afterend', feature);
+            }
+            feature.hidden = false;
+          } else {
+            feature.hidden = true;
+            track.append(feature);
+          }
+        }
         return;
       }
 
@@ -2604,9 +2615,39 @@
 
     handlePortfolioHashOnArrival();
 
-    window.matchMedia('(max-width: 768px) and (orientation: portrait)').addEventListener('change', () => {
+    window.matchMedia('(max-width: 768px) and (orientation: portrait)').addEventListener('change', event => {
+      portfolioTrackCenterObserver?.disconnect();
+      portfolioTrackCenterObserver = null;
+      stopPortfolioTrackFollow();
       renderPortfolioCards(document.documentElement.lang === 'en' ? 'en' : 'pt');
-      if (activePortfolioProjectId) updatePortfolioFeature();
+      if (activePortfolioProjectId) {
+        updatePortfolioFeature();
+        window.scrollToExpandedPortfolio({ keepSelection: true, updateHash: false, instant: true });
+        requestAnimationFrame(() => {
+          const track = document.getElementById('portfolio-track');
+          const feature = document.getElementById('portfolio-feature');
+          const selectedCard = track?.querySelector(`[data-project-card="${activePortfolioProjectId}"]`);
+          if (!track || !selectedCard) return;
+          const centerOnOrientation = () => {
+            if (!activePortfolioProjectId) return;
+            const trackRect = track.getBoundingClientRect();
+            const cardRect = selectedCard.getBoundingClientRect();
+            const featureRect = feature?.getBoundingClientRect();
+            const groupCenter = event.matches || !feature || feature.hidden
+              ? cardRect.left + cardRect.width / 2
+              : (cardRect.left + featureRect.right) / 2;
+            const targetScrollLeft = track.scrollLeft + groupCenter - (trackRect.left + track.clientWidth / 2);
+            const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+            track.scrollLeft = Math.min(maxScrollLeft, Math.max(0, targetScrollLeft));
+          };
+          centerOnOrientation();
+          if (!event.matches && feature && 'ResizeObserver' in window) {
+            portfolioTrackCenterObserver = new ResizeObserver(centerOnOrientation);
+            track.querySelectorAll('.portfolio-card').forEach(card => portfolioTrackCenterObserver.observe(card));
+            portfolioTrackCenterObserver.observe(feature);
+          }
+        });
+      }
       window.dispatchEvent(new Event('scroll'));
     });
 
@@ -2623,20 +2664,130 @@
       let pointerId = null;
       let startX = 0;
       let startScrollLeft = 0;
+      let lastX = 0;
+      let lastTime = 0;
+      let velocityX = 0;
       let dragged = false;
       let suppressClick = false;
+      let snapFrameId = 0;
+
+      const cancelSnapAnimation = () => {
+        if (snapFrameId) {
+          cancelAnimationFrame(snapFrameId);
+          snapFrameId = 0;
+        }
+        track.classList.remove('is-snapping');
+      };
+
+      const snapMobileTrackAfterDrag = (totalDeltaX, releaseVx) => {
+        const cards = Array.from(track.querySelectorAll('.portfolio-card'));
+        if (!cards.length) return;
+        const trackRect = track.getBoundingClientRect();
+        const trackCenter = trackRect.left + track.clientWidth / 2;
+
+        // Encontra o card que estava mais perto do centro no início do arraste
+        let startIndex = 0;
+        let bestStartDist = Infinity;
+        const scrollShift = track.scrollLeft - startScrollLeft;
+        cards.forEach((card, idx) => {
+          const rect = card.getBoundingClientRect();
+          const startCardCenter = (rect.left + scrollShift) + rect.width / 2;
+          const dist = Math.abs(startCardCenter - trackCenter);
+          if (dist < bestStartDist) {
+            bestStartDist = dist;
+            startIndex = idx;
+          }
+        });
+
+        // Card mais próximo do centro na posição onde a pessoa soltou o mouse
+        let nearestIndex = startIndex;
+        let bestDist = Infinity;
+        cards.forEach((card, idx) => {
+          const rect = card.getBoundingClientRect();
+          const dist = Math.abs(rect.left + rect.width / 2 - trackCenter);
+          if (dist < bestDist) {
+            bestDist = dist;
+            nearestIndex = idx;
+          }
+        });
+
+        let targetIndex = nearestIndex;
+        const cardWidth = cards[startIndex].getBoundingClientRect().width || track.clientWidth;
+        // Se ainda estiver na metade do mesmo card, mas arrastou >= 15% da largura (ou deu um puxão), avança 1 projeto
+        if (targetIndex === startIndex) {
+          if (totalDeltaX < -cardWidth * 0.15 || (totalDeltaX < -20 && releaseVx < -0.25)) {
+            targetIndex = Math.min(cards.length - 1, startIndex + 1);
+          } else if (totalDeltaX > cardWidth * 0.15 || (totalDeltaX > 20 && releaseVx > 0.25)) {
+            targetIndex = Math.max(0, startIndex - 1);
+          }
+        }
+
+        const targetCard = cards[targetIndex];
+        const cardRect = targetCard.getBoundingClientRect();
+        const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+        const targetScrollLeft = Math.min(
+          maxScrollLeft,
+          Math.max(0, track.scrollLeft + (cardRect.left + cardRect.width / 2) - trackCenter)
+        );
+        const startPos = track.scrollLeft;
+        const diff = targetScrollLeft - startPos;
+        const nextProjectId = targetCard.dataset.projectCard;
+
+        if (Math.abs(diff) < 1) {
+          track.classList.remove('is-snapping');
+          if (nextProjectId && nextProjectId !== activePortfolioProjectId &&
+              document.getElementById('portfolio')?.classList.contains('has-selection')) {
+            window.selectPortfolioProject(nextProjectId, { preserveTrack: true });
+          }
+          return;
+        }
+
+        track.classList.add('is-snapping');
+        const duration = Math.min(420, Math.max(240, Math.abs(diff) * 0.85));
+        const animStart = performance.now();
+        const step = now => {
+          const t = Math.min(1, (now - animStart) / duration);
+          const ease = 1 - Math.pow(1 - t, 3);
+          track.scrollLeft = startPos + diff * ease;
+          if (t < 1) {
+            snapFrameId = requestAnimationFrame(step);
+          } else {
+            snapFrameId = 0;
+            track.scrollLeft = targetScrollLeft;
+            track.classList.remove('is-snapping');
+            if (nextProjectId && nextProjectId !== activePortfolioProjectId &&
+                document.getElementById('portfolio')?.classList.contains('has-selection')) {
+              window.selectPortfolioProject(nextProjectId, { preserveTrack: true });
+            }
+          }
+        };
+        snapFrameId = requestAnimationFrame(step);
+      };
 
       track.addEventListener('pointerdown', event => {
         if (event.pointerType !== 'mouse' || event.button !== 0) return;
+        if (event.target.closest('.portfolio-feature-arrow, a[href]')) return;
+        cancelSnapAnimation();
         pointerId = event.pointerId;
         startX = event.clientX;
+        lastX = event.clientX;
+        lastTime = performance.now();
+        velocityX = 0;
         startScrollLeft = track.scrollLeft;
         dragged = false;
       });
 
       track.addEventListener('pointermove', event => {
         if (event.pointerId !== pointerId) return;
+        const now = performance.now();
+        const dt = now - lastTime;
         const deltaX = event.clientX - startX;
+        if (dt > 0) {
+          const instantVx = (event.clientX - lastX) / dt;
+          velocityX = velocityX * 0.35 + instantVx * 0.65;
+          lastX = event.clientX;
+          lastTime = now;
+        }
         if (!dragged && Math.abs(deltaX) > 5) {
           dragged = true;
           track.classList.add('is-dragging');
@@ -2651,13 +2802,24 @@
       const finishDrag = event => {
         if (event.pointerId !== pointerId) return;
         if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+        const wasDragged = dragged;
+        const totalDeltaX = event.clientX - startX;
+        const staleMotion = performance.now() - lastTime > 80;
+        const releaseVx = staleMotion ? 0 : velocityX;
         pointerId = null;
-        track.classList.remove('is-dragging');
-        if (dragged) {
+        dragged = false;
+        if (wasDragged) {
           suppressClick = true;
           setTimeout(() => { suppressClick = false; }, 0);
+          const isMobilePortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
+          if (isMobilePortrait) {
+            track.classList.add('is-snapping');
+            track.classList.remove('is-dragging');
+            snapMobileTrackAfterDrag(totalDeltaX, releaseVx);
+            return;
+          }
         }
-        dragged = false;
+        track.classList.remove('is-dragging');
       };
 
       // se a pessoa pegar o carrossel (mouse, toque ou rolagem horizontal), a animação automática sai do caminho
@@ -2857,6 +3019,10 @@
       let settleTimer = 0;
 
       track.addEventListener('scroll', () => {
+        if (track.classList.contains('is-dragging') || track.classList.contains('is-snapping')) {
+          window.clearTimeout(settleTimer);
+          return;
+        }
         if (!activePortfolioProjectId || !document.getElementById('portfolio')?.classList.contains('has-selection')) return;
         if (!window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches) return;
         window.clearTimeout(settleTimer);
