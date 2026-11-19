@@ -2517,6 +2517,104 @@
       }
     });
 
+    let mobileTrackSnapFrameId = 0;
+
+    function cancelMobileTrackSnap() {
+      if (mobileTrackSnapFrameId) {
+        cancelAnimationFrame(mobileTrackSnapFrameId);
+        mobileTrackSnapFrameId = 0;
+      }
+      document.getElementById('portfolio-track')?.classList.remove('is-snapping');
+    }
+
+    function snapMobileTrackAfterDrag(startScrollLeft, totalDeltaX, releaseVx) {
+      const track = document.getElementById('portfolio-track');
+      if (!track) return;
+      cancelMobileTrackSnap();
+      const cards = Array.from(track.querySelectorAll('.portfolio-card'));
+      if (!cards.length) return;
+      const trackRect = track.getBoundingClientRect();
+      const trackCenter = trackRect.left + track.clientWidth / 2;
+
+      // Card closest to center when the drag/swipe started
+      let startIndex = 0;
+      let bestStartDist = Infinity;
+      const scrollShift = track.scrollLeft - startScrollLeft;
+      cards.forEach((card, idx) => {
+        const rect = card.getBoundingClientRect();
+        const startCardCenter = (rect.left + scrollShift) + rect.width / 2;
+        const dist = Math.abs(startCardCenter - trackCenter);
+        if (dist < bestStartDist) {
+          bestStartDist = dist;
+          startIndex = idx;
+        }
+      });
+
+      // Card closest to center where the user released
+      let nearestIndex = startIndex;
+      let bestDist = Infinity;
+      cards.forEach((card, idx) => {
+        const rect = card.getBoundingClientRect();
+        const dist = Math.abs(rect.left + rect.width / 2 - trackCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          nearestIndex = idx;
+        }
+      });
+
+      let targetIndex = nearestIndex;
+      const cardWidth = cards[startIndex].getBoundingClientRect().width || track.clientWidth;
+      // Advance 1 project if dragged >= 15% of card width or flicked briskly
+      if (targetIndex === startIndex) {
+        if (totalDeltaX < -cardWidth * 0.15 || (totalDeltaX < -20 && releaseVx < -0.25)) {
+          targetIndex = Math.min(cards.length - 1, startIndex + 1);
+        } else if (totalDeltaX > cardWidth * 0.15 || (totalDeltaX > 20 && releaseVx > 0.25)) {
+          targetIndex = Math.max(0, startIndex - 1);
+        }
+      }
+
+      const targetCard = cards[targetIndex];
+      const cardRect = targetCard.getBoundingClientRect();
+      const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+      const targetScrollLeft = Math.min(
+        maxScrollLeft,
+        Math.max(0, track.scrollLeft + (cardRect.left + cardRect.width / 2) - trackCenter)
+      );
+      const startPos = track.scrollLeft;
+      const diff = targetScrollLeft - startPos;
+      const nextProjectId = targetCard.dataset.projectCard;
+
+      if (Math.abs(diff) < 1) {
+        track.classList.remove('is-snapping');
+        if (nextProjectId && nextProjectId !== activePortfolioProjectId &&
+            document.getElementById('portfolio')?.classList.contains('has-selection')) {
+          window.selectPortfolioProject(nextProjectId, { preserveTrack: true });
+        }
+        return;
+      }
+
+      track.classList.add('is-snapping');
+      const duration = Math.min(420, Math.max(240, Math.abs(diff) * 0.85));
+      const animStart = performance.now();
+      const step = now => {
+        const t = Math.min(1, (now - animStart) / duration);
+        const ease = 1 - Math.pow(1 - t, 3);
+        track.scrollLeft = startPos + diff * ease;
+        if (t < 1) {
+          mobileTrackSnapFrameId = requestAnimationFrame(step);
+        } else {
+          mobileTrackSnapFrameId = 0;
+          track.scrollLeft = targetScrollLeft;
+          track.classList.remove('is-snapping');
+          if (nextProjectId && nextProjectId !== activePortfolioProjectId &&
+              document.getElementById('portfolio')?.classList.contains('has-selection')) {
+            window.selectPortfolioProject(nextProjectId, { preserveTrack: true });
+          }
+        }
+      };
+      mobileTrackSnapFrameId = requestAnimationFrame(step);
+    }
+
     function setupPortfolioDrag() {
       const track = document.getElementById('portfolio-track');
       if (!track) return;
@@ -2529,100 +2627,6 @@
       let velocityX = 0;
       let dragged = false;
       let suppressClick = false;
-      let snapFrameId = 0;
-
-      const cancelSnapAnimation = () => {
-        if (snapFrameId) {
-          cancelAnimationFrame(snapFrameId);
-          snapFrameId = 0;
-        }
-        track.classList.remove('is-snapping');
-      };
-
-      const snapMobileTrackAfterDrag = (totalDeltaX, releaseVx) => {
-        const cards = Array.from(track.querySelectorAll('.portfolio-card'));
-        if (!cards.length) return;
-        const trackRect = track.getBoundingClientRect();
-        const trackCenter = trackRect.left + track.clientWidth / 2;
-
-        // Encontra o card que estava mais perto do centro no início do arraste
-        let startIndex = 0;
-        let bestStartDist = Infinity;
-        const scrollShift = track.scrollLeft - startScrollLeft;
-        cards.forEach((card, idx) => {
-          const rect = card.getBoundingClientRect();
-          const startCardCenter = (rect.left + scrollShift) + rect.width / 2;
-          const dist = Math.abs(startCardCenter - trackCenter);
-          if (dist < bestStartDist) {
-            bestStartDist = dist;
-            startIndex = idx;
-          }
-        });
-
-        // Card mais próximo do centro na posição onde a pessoa soltou o mouse
-        let nearestIndex = startIndex;
-        let bestDist = Infinity;
-        cards.forEach((card, idx) => {
-          const rect = card.getBoundingClientRect();
-          const dist = Math.abs(rect.left + rect.width / 2 - trackCenter);
-          if (dist < bestDist) {
-            bestDist = dist;
-            nearestIndex = idx;
-          }
-        });
-
-        let targetIndex = nearestIndex;
-        const cardWidth = cards[startIndex].getBoundingClientRect().width || track.clientWidth;
-        // Se ainda estiver na metade do mesmo card, mas arrastou >= 15% da largura (ou deu um puxão), avança 1 projeto
-        if (targetIndex === startIndex) {
-          if (totalDeltaX < -cardWidth * 0.15 || (totalDeltaX < -20 && releaseVx < -0.25)) {
-            targetIndex = Math.min(cards.length - 1, startIndex + 1);
-          } else if (totalDeltaX > cardWidth * 0.15 || (totalDeltaX > 20 && releaseVx > 0.25)) {
-            targetIndex = Math.max(0, startIndex - 1);
-          }
-        }
-
-        const targetCard = cards[targetIndex];
-        const cardRect = targetCard.getBoundingClientRect();
-        const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
-        const targetScrollLeft = Math.min(
-          maxScrollLeft,
-          Math.max(0, track.scrollLeft + (cardRect.left + cardRect.width / 2) - trackCenter)
-        );
-        const startPos = track.scrollLeft;
-        const diff = targetScrollLeft - startPos;
-        const nextProjectId = targetCard.dataset.projectCard;
-
-        if (Math.abs(diff) < 1) {
-          track.classList.remove('is-snapping');
-          if (nextProjectId && nextProjectId !== activePortfolioProjectId &&
-              document.getElementById('portfolio')?.classList.contains('has-selection')) {
-            window.selectPortfolioProject(nextProjectId, { preserveTrack: true });
-          }
-          return;
-        }
-
-        track.classList.add('is-snapping');
-        const duration = Math.min(420, Math.max(240, Math.abs(diff) * 0.85));
-        const animStart = performance.now();
-        const step = now => {
-          const t = Math.min(1, (now - animStart) / duration);
-          const ease = 1 - Math.pow(1 - t, 3);
-          track.scrollLeft = startPos + diff * ease;
-          if (t < 1) {
-            snapFrameId = requestAnimationFrame(step);
-          } else {
-            snapFrameId = 0;
-            track.scrollLeft = targetScrollLeft;
-            track.classList.remove('is-snapping');
-            if (nextProjectId && nextProjectId !== activePortfolioProjectId &&
-                document.getElementById('portfolio')?.classList.contains('has-selection')) {
-              window.selectPortfolioProject(nextProjectId, { preserveTrack: true });
-            }
-          }
-        };
-        snapFrameId = requestAnimationFrame(step);
-      };
 
       track.addEventListener('pointerdown', event => {
         if (event.pointerType === 'mouse') stopPortfolioTrackFollow();
@@ -2630,7 +2634,7 @@
         if (event.target.closest('.portfolio-feature-arrow, a[href]')) return;
         // Selected image has its own swipe (left/right = change photo), not track scroll.
         if (event.target.closest('.portfolio-card.is-selected .portfolio-card-image')) return;
-        cancelSnapAnimation();
+        cancelMobileTrackSnap();
         pointerId = event.pointerId;
         startX = event.clientX;
         lastX = event.clientX;
@@ -2678,7 +2682,7 @@
           if (isMobilePortrait) {
             track.classList.add('is-snapping');
             track.classList.remove('is-dragging');
-            snapMobileTrackAfterDrag(totalDeltaX, releaseVx);
+            snapMobileTrackAfterDrag(startScrollLeft, totalDeltaX, releaseVx);
             return;
           }
         }
@@ -2859,28 +2863,50 @@
         'a[href], button, input, textarea, select, [contenteditable], #portfolio-track'
       );
 
+      const mobilePortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)');
+      let suppressClick = false;
+      let suppressTimer = 0;
+      const armClickSuppress = () => {
+        suppressClick = true;
+        window.clearTimeout(suppressTimer);
+        suppressTimer = window.setTimeout(() => { suppressClick = false; }, 120);
+      };
+
       // Mouse drag outside the track
       let pointerId = null;
       let startX = 0;
       let startY = 0;
+      let lastX = 0;
+      let lastTime = 0;
+      let velocityX = 0;
       let startScrollLeft = 0;
       let dragging = false;
-      let suppressClick = false;
 
       document.addEventListener('pointerdown', event => {
         if (event.pointerType !== 'mouse' || event.button !== 0) return;
         if (isInteractive(event.target) || !isPortfolioStripVisible()) return;
+        cancelMobileTrackSnap();
         pointerId = event.pointerId;
         startX = event.clientX;
         startY = event.clientY;
+        lastX = event.clientX;
+        lastTime = performance.now();
+        velocityX = 0;
         startScrollLeft = track.scrollLeft;
         dragging = false;
       });
 
       document.addEventListener('pointermove', event => {
         if (event.pointerId !== pointerId) return;
+        const now = performance.now();
+        const dt = now - lastTime;
         const dx = event.clientX - startX;
         const dy = event.clientY - startY;
+        if (dt > 0) {
+          velocityX = velocityX * 0.35 + ((event.clientX - lastX) / dt) * 0.65;
+          lastX = event.clientX;
+          lastTime = now;
+        }
         if (!dragging) {
           if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
             dragging = true;
@@ -2900,46 +2926,70 @@
       const finishPointer = event => {
         if (event.pointerId !== pointerId) return;
         const wasDragging = dragging;
+        const totalDeltaX = event.clientX - startX;
+        const releaseVx = (performance.now() - lastTime > 80) ? 0 : velocityX;
         pointerId = null;
         dragging = false;
-        track.classList.remove('is-dragging', 'is-outside-dragging');
         if (wasDragging) {
-          suppressClick = true;
-          setTimeout(() => { suppressClick = false; }, 0);
+          armClickSuppress();
+          if (mobilePortrait.matches && document.getElementById('portfolio')?.classList.contains('has-selection')) {
+            track.classList.add('is-snapping');
+            track.classList.remove('is-dragging', 'is-outside-dragging');
+            snapMobileTrackAfterDrag(startScrollLeft, totalDeltaX, releaseVx);
+            return;
+          }
         }
+        track.classList.remove('is-dragging', 'is-outside-dragging');
       };
       document.addEventListener('pointerup', finishPointer, { passive: true });
       document.addEventListener('pointercancel', finishPointer, { passive: true });
       document.addEventListener('click', event => {
         if (!suppressClick) return;
+        suppressClick = false;
+        window.clearTimeout(suppressTimer);
         if (event.target.closest('#portfolio-track')) return;
         event.preventDefault();
         event.stopPropagation();
-        suppressClick = false;
       }, true);
 
       // Touch swipe outside the track (uses touch events with passive: false for iOS Safari)
       let touchId = null;
       let touchStartX = 0;
       let touchStartY = 0;
+      let touchLastX = 0;
+      let touchLastTime = 0;
+      let touchVelocityX = 0;
       let touchStartScroll = 0;
       let touchDragging = false;
 
       document.addEventListener('touchstart', event => {
         if (event.touches.length !== 1) return;
         if (isInteractive(event.target) || !isPortfolioStripVisible()) return;
-        touchId = event.touches[0].identifier;
-        touchStartX = event.touches[0].clientX;
-        touchStartY = event.touches[0].clientY;
+        cancelMobileTrackSnap();
+        const t = event.touches[0];
+        touchId = t.identifier;
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchLastX = t.clientX;
+        touchLastTime = performance.now();
+        touchVelocityX = 0;
         touchStartScroll = track.scrollLeft;
         touchDragging = false;
       }, { passive: true });
 
       document.addEventListener('touchmove', event => {
         if (touchId === null || event.touches.length !== 1) return;
-        if (event.touches[0].identifier !== touchId) return;
-        const dx = event.touches[0].clientX - touchStartX;
-        const dy = event.touches[0].clientY - touchStartY;
+        const t = event.touches[0];
+        if (t.identifier !== touchId) return;
+        const now = performance.now();
+        const dt = now - touchLastTime;
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        if (dt > 0) {
+          touchVelocityX = touchVelocityX * 0.35 + ((t.clientX - touchLastX) / dt) * 0.65;
+          touchLastX = t.clientX;
+          touchLastTime = now;
+        }
         if (!touchDragging) {
           if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
             touchDragging = true;
@@ -2957,8 +3007,20 @@
       }, { passive: false });
 
       const finishTouch = () => {
+        const wasDragging = touchDragging;
+        const totalDeltaX = touchLastX - touchStartX;
+        const releaseVx = (performance.now() - touchLastTime > 80) ? 0 : touchVelocityX;
         touchId = null;
         touchDragging = false;
+        if (wasDragging) {
+          armClickSuppress();
+          if (mobilePortrait.matches && document.getElementById('portfolio')?.classList.contains('has-selection')) {
+            track.classList.add('is-snapping');
+            track.classList.remove('is-dragging', 'is-outside-dragging');
+            snapMobileTrackAfterDrag(touchStartScroll, totalDeltaX, releaseVx);
+            return;
+          }
+        }
         track.classList.remove('is-dragging', 'is-outside-dragging');
       };
       document.addEventListener('touchend', finishTouch, { passive: true });
