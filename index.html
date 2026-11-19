@@ -783,8 +783,8 @@
         height: auto;
         gap: 12px;
         padding: 0 12px;
-        transition: padding-left 1.2s cubic-bezier(.22, .61, .36, 1),
-          padding-right 1.2s cubic-bezier(.22, .61, .36, 1);
+        transition: padding-left .65s cubic-bezier(.22, 1, .36, 1),
+          padding-right .65s cubic-bezier(.22, 1, .36, 1);
       }
       .portfolio-card { transition: none; }
       .portfolio-scroll-stage { height: 100svh; }
@@ -794,17 +794,19 @@
         transition: none;
       }
       #portfolio.selection-animating .portfolio-sticky {
-        transition: height 2.5s cubic-bezier(.22, .61, .36, 1), top 2.5s cubic-bezier(.22, .61, .36, 1);
+        transition: height .85s cubic-bezier(.22, 1, .36, 1), top .85s cubic-bezier(.22, 1, .36, 1);
       }
       #portfolio.selection-animating .portfolio-track {
-        transition: padding-left 2.5s cubic-bezier(.22, .61, .36, 1),
-          padding-right 2.5s cubic-bezier(.22, .61, .36, 1);
+        scroll-snap-type: none !important;
+        scroll-behavior: auto !important;
+        transition: padding-left .85s cubic-bezier(.22, 1, .36, 1),
+          padding-right .85s cubic-bezier(.22, 1, .36, 1);
       }
       #portfolio.selection-animating .portfolio-card {
-        transition: flex-basis 2.5s cubic-bezier(.22, .61, .36, 1), width 2.5s cubic-bezier(.22, .61, .36, 1);
+        transition: flex-basis .85s cubic-bezier(.22, 1, .36, 1), width .85s cubic-bezier(.22, 1, .36, 1);
       }
       #portfolio.has-selection.selection-animating .portfolio-card.is-selected {
-        transition: flex-basis 2.5s cubic-bezier(.22, .61, .36, 1), width 2.5s cubic-bezier(.22, .61, .36, 1);
+        transition: flex-basis .85s cubic-bezier(.22, 1, .36, 1), width .85s cubic-bezier(.22, 1, .36, 1);
       }
       #portfolio.has-selection .portfolio-card {
         display: flex;
@@ -2082,14 +2084,17 @@
         selectedCard.insertAdjacentElement('afterend', feature);
       }
       updatePortfolioFeature();
+      if (mobileLayout) {
+        setPortfolioMotionDuration(section, 850);
+      }
       if (!preserveTrack) {
-        const selectionAnimMs = mobileLayout ? 2500 : portfolioMotionMs;
+        const selectionAnimMs = mobileLayout ? 850 : portfolioMotionMs;
         section.classList.add('selection-animating');
         window.clearTimeout(portfolioSelectionAnimationTimer);
         portfolioSelectionAnimationTimer = window.setTimeout(() => {
           section.classList.remove('selection-animating');
           window.dispatchEvent(new Event('scroll'));
-        }, selectionAnimMs + 400);
+        }, selectionAnimMs + 120);
       }
       window.dispatchEvent(new Event('scroll'));
       if (!preserveTrack) window.scrollToExpandedPortfolio({ keepSelection: true, updateHash: false, duration: 600, linear: true });
@@ -2109,27 +2114,13 @@
           const targetScrollLeft = track.scrollLeft + groupCenter - trackCenter;
           const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
           const centeredScrollLeft = Math.min(maxScrollLeft, Math.max(0, targetScrollLeft));
-          if (mobileLayout) {
-            track.scrollTo({
-              left: centeredScrollLeft,
-              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
-            });
-          } else {
-            applyPortfolioTrackGlide(centeredScrollLeft, centerSelectedCard);
-          }
+          applyPortfolioTrackGlide(centeredScrollLeft, centerSelectedCard);
         };
 
+        // Cancel any residual native touch momentum cleanly before starting the glide
+        if (mobileLayout) track.scrollLeft = track.scrollLeft;
         centerSelectedCard();
-        if (mobileLayout) {
-          const onPaddingSettled = event => {
-            if (event.target !== track || (event.propertyName !== 'padding-left' && event.propertyName !== 'padding-right')) return;
-            track.removeEventListener('transitionend', onPaddingSettled);
-            if (activePortfolioProjectId === projectId && !track.classList.contains('is-dragging') && !track.classList.contains('is-snapping')) {
-              centerSelectedCard();
-            }
-          };
-          track.addEventListener('transitionend', onPaddingSettled);
-        } else if ('ResizeObserver' in window) {
+        if (!mobileLayout && 'ResizeObserver' in window) {
           portfolioTrackCenterObserver = new ResizeObserver(centerSelectedCard);
           track.querySelectorAll('.portfolio-card').forEach(card => portfolioTrackCenterObserver.observe(card));
           portfolioTrackCenterObserver.observe(feature);
@@ -3174,6 +3165,7 @@
     function setupPortfolioCameraAnchor() {
       const track = document.getElementById('portfolio-track');
       if (!track) return;
+      const mobilePortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)');
 
       let focus = null;
       let focusWidth = 0;
@@ -3252,7 +3244,7 @@
       };
 
       const apply = () => {
-        if (!focus || pointerActive || userMoved || activePortfolioProjectId) return;
+        if (mobilePortrait.matches || !focus || pointerActive || userMoved || activePortfolioProjectId) return;
         const cards = track.querySelectorAll('.portfolio-card');
         const card = cards[focus.index];
         if (!card) return;
@@ -3290,6 +3282,7 @@
       };
 
       const kick = () => {
+        if (mobilePortrait.matches) return;
         followUntil = performance.now() + 2100;
         if (running) return;
         running = true;
@@ -3371,7 +3364,8 @@
           window.clearTimeout(settleTimer);
           return;
         }
-        if (!activePortfolioProjectId || !document.getElementById('portfolio')?.classList.contains('has-selection')) return;
+        const section = document.getElementById('portfolio');
+        if (!activePortfolioProjectId || !section?.classList.contains('has-selection') || section.classList.contains('selection-animating')) return;
         if (!window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches) return;
         window.clearTimeout(settleTimer);
         settleTimer = window.setTimeout(() => {
