@@ -380,27 +380,23 @@
 
     .portfolio-track::-webkit-scrollbar { display: none; }
 
-    /* ── Lively portfolio: edge mask fade, section swipe, image swipe, dots ── */
-    /* Same file, same structure — only additions for the portfolio strip. */
+    /* ── Portfólio: fade das bordas, deslize na seção, deslize de imagem, pontos ── */
     #portfolio { touch-action: pan-y; }
     .portfolio-heading { touch-action: pan-y; }
     .portfolio-sticky { touch-action: pan-y; }
     .portfolio-scroll-stage { touch-action: pan-y; }
 
-    /* Edge fade — MUCH larger fade (200px). No overlay colour, so no banding.
-       The track itself fades via mask over a long distance.
-       The fade SIZE is animated in JS (see setupPortfolioEdgeFadesAndKeys),
-       not via @property — @property does not transition the mask on
-       Safari / some browsers, so it popped in out of nowhere. JS lerps
-       the size over ~1.8s, so it dissolves in slowly everywhere. */
+    /* Fade das bordas: máscara de 200px nas duas pontas do track, sem camada de cor por cima
+       (assim não há banding). O tamanho do fade é animado em JS (setupPortfolioEdgeFadesAndKeys)
+       e não por @property, porque o Safari não faz transição da máscara. */
     .portfolio-track {
       --portfolio-fade-left: 200px;
       --portfolio-fade-right: 200px;
       -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--portfolio-fade-left), #000 calc(100% - var(--portfolio-fade-right)), transparent 100%);
       mask-image: linear-gradient(to right, transparent 0, #000 var(--portfolio-fade-left), #000 calc(100% - var(--portfolio-fade-right)), transparent 100%);
     }
-    /* is-at-start / is-at-end are kept as state hooks for JS.
-       The actual fade size is set inline by JS so it can animate. */
+    /* is-at-start / is-at-end são ganchos de estado para o JS.
+       O tamanho real do fade é gravado inline pelo JS, para poder animar. */
     @media (max-width: 768px) and (orientation: portrait) {
       .portfolio-track {
         --portfolio-fade-left: 0px;
@@ -907,15 +903,13 @@
       }
     }
 
-    /* Desempenho em telas de toque: o painel sticky muda de tamanho a cada quadro da rolagem,
-       e o backdrop-filter obriga o navegador a refazer o blur toda vez. Fundo um pouco mais opaco
-       compensa. Para voltar ao vidro fosco, apague este bloco. */
-    @media (pointer: coarse) {
-      .portfolio-sticky {
-        background: color-mix(in srgb, var(--surface) 90%, transparent);
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
+    /* Desempenho (todas as telas): a altura do painel sticky muda a cada quadro da rolagem,
+       e o backdrop-filter obriga o navegador a refazer o blur toda vez, o que pesa em notebook
+       na bateria. O fundo mais opaco compensa a falta do vidro fosco. */
+    .portfolio-sticky {
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
 
     @media (max-width: 420px) {
@@ -1371,6 +1365,25 @@
         'port.desc': 'Authorial architectural projects with a clear design concept, centered on the human experience, construction modularity, BIM modeling, poetic and impactful visualization.'
       }
     };
+
+    /* ────────────────────────────────────────────────────────────────
+       VISÃO GERAL DO PORTFÓLIO (página inicial)
+       - Dados: projectsData (projetos e imagens); textos traduzidos no dicionário de idiomas (port.*).
+       - Layout no CSS, medidas no JS: setupPortfolioExpansion() → update() roda em rAF a cada
+         scroll/resize/mudança de media query e grava variáveis CSS em #portfolio (--portfolio-height,
+         --portfolio-card-width, --portfolio-progress...) via setCssVar, que só escreve se o valor mudou.
+       - Duas disposições: desktop e "mobile retrato" (max-width: 768px + portrait; mobileLayout).
+         Boa parte da lógica ramifica por isMobile.
+       - Projeto aberto = activePortfolioProjectId (selectPortfolioProject / closePortfolioFeature);
+         a classe .has-selection fica em #portfolio.
+       - Durações: as variáveis CSS (--portfolio-feature-duration, --portfolio-fade-duration,
+         --portfolio-ease) e as constantes PORTFOLIO_*_MS no JS precisam ficar iguais.
+       - Interações extras (blocos 1 a 4 mais adiante): deriva pela borda, deslize pela seção,
+         deslize na imagem selecionada, fade das bordas e teclado; mais a câmera ancorada na
+         rolagem vertical (setupPortfolioCameraAnchor).
+       - Desempenho: a altura do .portfolio-sticky muda a cada quadro da rolagem; evite backdrop-filter
+         ali e evite misturar leituras de layout (getBoundingClientRect) com escritas dentro de update().
+       ──────────────────────────────────────────────────────────────── */
 
     // ── Interactive Gallery Data ──
     const projectsData = {
@@ -1840,9 +1853,9 @@
 
         setCssVar(section, '--portfolio-progress', progress.toFixed(3));
         setCssVar(section, '--portfolio-height', `${panelHeight.toFixed(1)}px`);
-        // Altura da faixa em progresso 0. Só o .hero do mobile usa. Antes, a raiz do documento recebia
-        // --portfolio-height a cada quadro: isso invalida o estilo da página inteira e ainda fazia a
-        // altura do .hero variar durante a rolagem. Agora só muda em resize/orientação/idioma.
+        // Altura da faixa em progresso 0 (só o .hero do mobile usa). Fica numa variável própria na raiz
+        // porque gravar --portfolio-height ali a cada quadro invalidaria o estilo da página inteira e
+        // faria a altura do .hero variar durante a rolagem. Só muda em resize/orientação/idioma.
         if (isMobile) setCssVar(document.documentElement, '--portfolio-initial-height', `${initialHeight.toFixed(1)}px`);
         setCssVar(section, '--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
         setCssVar(section, '--portfolio-image-height', `${(cardWidth / 1.5).toFixed(1)}px`);
@@ -2797,7 +2810,7 @@
     setupPortfolioDrag();
 
     /* ────────────────────────────────────────────────────────────────
-       LIVELY PORTFOLIO — additions only, same file / same data.
+       PORTFÓLIO — interações extras (desktop e toque), em blocos numerados.
        1) Edge drift on desktop — fluid, non-linear, subtle
        2) Full-section swipe (heading / padding / sticky also drag track)
        3) Swipe on selected image = change photo
@@ -2806,14 +2819,12 @@
        is open, when dragging, or when an animation is running.
        ──────────────────────────────────────────────────────────────── */
 
-    // 1) DESKTOP EDGE DRIFT — progressive, sub-pixel-smooth mouse steering.
-    // Calm dead zone around the center (central 32% of screen width = 0 speed),
-    // then a wide active zone spanning from 16% off-center to 96% toward either
-    // edge. A C1-continuous power curve (t^2.2) lifts off from 0 px/s with zero
-    // kink or step—whisper-slow near the center, ramping progressively into a
-    // lively, responsive glide toward the edges. A floating-point scroll
-    // accumulator prevents browser integer-pixel rounding from swallowing
-    // ultra-slow movement, and the rAF loop sleeps whenever idle.
+    // 1) DESKTOP EDGE DRIFT — a faixa desliza conforme a posição do mouse.
+    // Zona morta no centro (|u| <= 0.16, ou seja, os 16% centrais da largura da tela = velocidade 0).
+    // De |u| = 0.16 até |u| = 0.96 (a ~2% da borda) a velocidade cresce com uma curva de potência t^2.2,
+    // que sai de 0 px/s sem degrau: quase parada perto do centro, mais viva perto das bordas.
+    // Um acumulador em ponto flutuante evita que o arredondamento do scrollLeft para pixel inteiro
+    // engula movimentos muito lentos, e o loop de rAF dorme quando não há nada a fazer.
     function setupPortfolioEdgeDrift() {
       const track = document.getElementById('portfolio-track');
       const section = document.getElementById('portfolio');
@@ -2821,7 +2832,7 @@
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const mobilePortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)');
-      const DEAD_ZONE = 0.16; // |u| <= 0.16 (central 32%): completely still
+      const DEAD_ZONE = 0.16; // |u| <= 0.16 (16% centrais da largura): totalmente parado
       const EDGE_FULL = 0.96; // reaches cruising speed just before screen bezel
       const CURVE_EXP = 2.2;  // zero slope at DEAD_ZONE -> seamless onset from 0
       const TAU_ACCEL = 0.12; // lively response when accelerating or steering
@@ -3218,19 +3229,16 @@
       }, true);
     }
 
-    // 4) EDGE FADES + KEYBOARD — no progress bar, no wheel hijack.
-    // Wheel over the images now just scrolls the page, as before.
+    // 4) FADE DAS BORDAS + TECLADO — sem barra de progresso e sem capturar a roda do mouse:
+    // a roda sobre as imagens rola a página normalmente.
     function setupPortfolioEdgeFadesAndKeys() {
       const track = document.getElementById('portfolio-track');
       const section = document.getElementById('portfolio');
       if (!track || !section) return;
 
-      // JS-animated fade size — the fix for the pop.
-      // @property + CSS transition did not animate the mask on Safari,
-      // so the left fade went 0 -> 200px instantly once you scrolled
-      // past a little bit. Now we lerp the size in JS over ~1.8s:
-      // every frame we move ~3.5% of the way to the target, so it
-      // dissolves in slowly, never appears out of nowhere.
+      // O tamanho do fade é interpolado em JS: a cada quadro anda ~3,5% do caminho até o alvo
+      // (constante de tempo de ~0,5 s; ~1,4 s para chegar a 95%). A transição CSS da máscara
+      // (@property) não anima no Safari, e o fade aparecia de repente.
       const FADE_MAX = 200;
       let currentLeft = 0;
       let currentRight = FADE_MAX;
