@@ -1602,6 +1602,18 @@
       return headingHeight + 20;
     }
 
+    function getMobileSelectedStickyTop(section, viewportHeight, navHeight, expandedPanelHeight) {
+      const headingHeight = section?.querySelector('.portfolio-heading')?.getBoundingClientRect().height || 52;
+      const headingGap = 12;
+      const usableHeight = viewportHeight - navHeight;
+      const freeSpace = usableHeight - (headingHeight + headingGap + expandedPanelHeight);
+      if (freeSpace >= 30) {
+        const topMargin = Math.round(freeSpace * 0.48);
+        return navHeight + topMargin + headingHeight + headingGap;
+      }
+      return Math.max(navHeight + 12, viewportHeight - expandedPanelHeight - 15);
+    }
+
     function getMobilePortfolioDescriptionHeight(section) {
       return section?.querySelector('.portfolio-description')?.getBoundingClientRect().height || 0;
     }
@@ -1746,10 +1758,7 @@
           : (selected ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding;
         const expandedStickyTop = isMobile
           ? (selected
-              ? Math.max(navHeight + 8, Math.min(
-                  viewportHeight - expandedPanelHeight - 16,
-                  Math.round((viewportHeight - expandedPanelHeight) / 2)
-                ))
+              ? getMobileSelectedStickyTop(section, viewportHeight, navHeight, expandedPanelHeight)
               : Math.max(stickyTop, Math.min(
                   viewportHeight - expandedPanelHeight - mobileFooterClearance,
                   Math.round(viewportHeight / 3 - expandedPanelHeight / 2)
@@ -1816,7 +1825,7 @@
           if (stickyPanel && heading) {
             const panelTop = stickyPanel.getBoundingClientRect().top;
             const headingHeight = heading.getBoundingClientRect().height;
-            const headingTop = Math.max(navHeight + 16, panelTop - headingHeight - 14);
+            const headingTop = Math.max(navHeight + 15, panelTop - headingHeight - 12);
             setCssVar(section, '--portfolio-mobile-heading-top', `${headingTop.toFixed(1)}px`);
           }
         }
@@ -2355,10 +2364,7 @@
           : (keepSelection ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding;
         const expandedStickyTop = mobileLayout
           ? (keepSelection
-              ? Math.max(navHeight + 8, Math.min(
-                  window.innerHeight - expandedPanelHeight - 16,
-                  Math.round((window.innerHeight - expandedPanelHeight) / 2)
-                ))
+              ? getMobileSelectedStickyTop(section, window.innerHeight, navHeight, expandedPanelHeight)
               : Math.max(stickyTop, Math.min(
                   window.innerHeight - expandedPanelHeight - mobileFooterClearance,
                   Math.round(window.innerHeight / 3 - expandedPanelHeight / 2)
@@ -2370,12 +2376,10 @@
         targetTop = mobileLayout ? rawTargetTop : Math.min(maxScroll, rawTargetTop);
 
         if (keepSelection) {
-          // Ao selecionar um projeto, rola até o fim real da página (rodapé inteiro).
-          // No desktop, a geometria selecionada já respeita a base do título Portfólio e o rodapé.
+          // No desktop, rola até o fim real da página (rodapé inteiro).
+          // No mobile retrato, para em rawTargetTop para manter título e faixa equilibrados na tela.
           if (mobileLayout) {
-            const navBottom = document.querySelector('nav')?.getBoundingClientRect().bottom || navHeight;
-            const maxExtra = Math.max(0, expandedStickyTop - (navBottom + 12));
-            targetTop = Math.max(targetTop, Math.min(maxScroll, rawTargetTop + maxExtra));
+            targetTop = Math.min(maxScroll, rawTargetTop);
           } else {
             targetTop = maxScroll;
           }
