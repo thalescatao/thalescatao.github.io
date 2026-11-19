@@ -172,13 +172,6 @@
       background: var(--surface);
     }
 
-    .hero-tag {
-      grid-area: role;
-      justify-self: center;
-      align-self: start;
-      margin: 2px 0 0;
-    }
-
     .hero-actions {
       grid-area: actions;
       align-self: start;
@@ -186,6 +179,9 @@
     }
 
     .hero-tag {
+      grid-area: role;
+      justify-self: center;
+      align-self: start;
       display: inline-block;
       font-size: 12px;
       font-weight: 500;
@@ -195,7 +191,7 @@
       background: var(--accent-lt);
       padding: 4px 14px;
       border-radius: 999px;
-      margin-bottom: 0;
+      margin: 2px 0 0;
       width: fit-content;
       text-decoration: none;
     }
@@ -382,6 +378,49 @@
     }
 
     .portfolio-track::-webkit-scrollbar { display: none; }
+
+    /* ── Lively portfolio: edge mask fade, section swipe, image swipe, dots ── */
+    /* Same file, same structure — only additions for the portfolio strip. */
+    #portfolio { touch-action: pan-y; }
+    .portfolio-heading { touch-action: pan-y; }
+    .portfolio-sticky { touch-action: pan-y; }
+    .portfolio-scroll-stage { touch-action: pan-y; }
+
+    /* Edge fade — MUCH larger fade (200px). No overlay colour, so no banding.
+       The track itself fades via mask over a long distance.
+       The fade SIZE is animated in JS (see setupPortfolioEdgeFadesAndKeys),
+       not via @property — @property does not transition the mask on
+       Safari / some browsers, so it popped in out of nowhere. JS lerps
+       the size over ~1.8s, so it dissolves in slowly everywhere. */
+    .portfolio-track {
+      --portfolio-fade-left: 200px;
+      --portfolio-fade-right: 200px;
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--portfolio-fade-left), #000 calc(100% - var(--portfolio-fade-right)), transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0, #000 var(--portfolio-fade-left), #000 calc(100% - var(--portfolio-fade-right)), transparent 100%);
+    }
+    /* is-at-start / is-at-end are kept as state hooks for JS.
+       The actual fade size is set inline by JS so it can animate. */
+    @media (max-width: 768px) and (orientation: portrait) {
+      .portfolio-track {
+        --portfolio-fade-left: 0px;
+        --portfolio-fade-right: 0px;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+    }
+
+    /* Selected image: horizontal swipe changes the photo, not the track.
+       touch-action pan-y lets the browser keep vertical page scroll,
+       while horizontal moves stay with our JS. */
+    .portfolio-card.is-selected .portfolio-card-image {
+      touch-action: pan-y;
+      cursor: grab;
+    }
+    .portfolio-track.is-image-swiping .portfolio-card-image { cursor: grabbing; }
+    .portfolio-track.is-image-swiping .portfolio-card-image img {
+      transition: transform .12s ease-out, opacity .8s ease;
+    }
+    .portfolio-track.is-outside-dragging { cursor: grabbing; }
     .portfolio-track { cursor: grab; }
     .portfolio-track.is-dragging { cursor: grabbing; }
     .portfolio-track.is-dragging,
@@ -525,17 +564,30 @@
     .portfolio-feature-counter {
       position: absolute;
       z-index: 2;
-      right: 14px;
+      left: 50%;
+      right: auto;
       bottom: 14px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, .55);
-      color: #fff;
-      font-size: 12px;
-      line-height: 1.2;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0;
+      background: none;
       pointer-events: none;
+    }
+    .portfolio-feature-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .75);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .18);
+      transition: width .35s cubic-bezier(.16, 1, .3, 1), background .35s ease;
+    }
+    .portfolio-feature-dot.is-active {
+      width: 14px;
+      border-radius: 999px;
+      background: #fff;
     }
 
     .portfolio-feature-info {
@@ -787,28 +839,40 @@
         scroll-snap-type: x mandatory;
         padding: 0 12px;
       }
-      .portfolio-description {
-        display: none;
-      }
-
       .portfolio-feature,
       #portfolio.has-selection .portfolio-feature {
         display: none !important;
       }
+      #portfolio.has-selection .portfolio-card-image {
+        flex-shrink: 0;
+      }
       #portfolio.has-selection .portfolio-feature-arrow {
         top: 0;
         height: var(--portfolio-image-height, calc(var(--portfolio-card-width) / 1.5));
+        font-size: 22px;
+      }
+      #portfolio.has-selection .portfolio-feature-prev {
+        padding-left: 9px;
+      }
+      #portfolio.has-selection .portfolio-feature-next {
+        padding-right: 9px;
       }
       #portfolio.has-selection .portfolio-feature-counter {
-        top: var(--portfolio-counter-top, auto);
+        top: var(--portfolio-counter-top, calc(var(--portfolio-card-width) / 1.5 - 10px));
         bottom: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        gap: 5px;
       }
-      .portfolio-feature-info { width: 100%; min-width: 0; max-width: none; margin: 0; padding: 0; }
-      .portfolio-feature-info > * { max-width: 100%; }
-      .portfolio-feature-info p { overflow-wrap: anywhere; }
-      .portfolio-feature-info .project-tag { margin-bottom: 10px; }
-      .portfolio-feature-info h3 { margin-bottom: 10px; font-size: 26px; }
-      .portfolio-feature-info p { font-size: 14px; }
+      #portfolio.has-selection .portfolio-feature-dot {
+        width: 4px;
+        height: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .45);
+      }
+      #portfolio.has-selection .portfolio-feature-dot.is-active {
+        width: 11px;
+      }
       .portfolio-feature-link { max-width: 100%; margin-top: 14px; overflow-wrap: anywhere; }
       .portfolio-description {
         display: block;
@@ -916,7 +980,6 @@
       }
 
       .hero-main { height: 100%; }
-      html[lang="en"] .portfolio-description { max-width: 95ch; }
       .portfolio-track {
         transition: padding-left 1.8s cubic-bezier(.16, 1, .3, 1),
           padding-right 1.8s cubic-bezier(.16, 1, .3, 1);
@@ -925,8 +988,6 @@
         padding-left: max(24px, calc((100% - var(--portfolio-selected-card-width) - var(--portfolio-expanded-feature-width) - 12px) / 2));
         padding-right: max(24px, calc((100% - var(--portfolio-selected-card-width) - var(--portfolio-expanded-feature-width) - 12px) / 2));
       }
-      .portfolio-track { cursor: grab; }
-      .portfolio-track.is-dragging { cursor: grabbing; }
     }
 
     @media (max-height: 900px) {
@@ -1169,216 +1230,6 @@
       }
     }
 
-    body.modal-open {
-      overflow: hidden;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay[hidden] {
-      display: none !important;
-    }
-
-    .modal-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-container {
-      position: relative;
-      width: min(1380px, calc(100% - 48px));
-      max-height: calc(100vh - 48px);
-      background: var(--bg);
-      border: 0.5px solid var(--muted);
-      border-radius: 24px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transform: translateY(24px) scale(0.98);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-overlay.open .modal-container {
-      transform: translateY(0) scale(1);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 0.5px solid var(--muted);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .modal-close:hover {
-      background: var(--accent-lt);
-      color: var(--accent);
-      transform: scale(1.05);
-    }
-
-    .modal-content {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
-      min-height: 520px;
-      height: 100%;
-    }
-
-    @media (max-width: 860px) {
-      .modal-container {
-        width: calc(100% - 24px);
-        max-height: calc(100vh - 24px);
-        border-radius: 16px;
-      }
-
-      .modal-content {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: auto auto;
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: calc(100vh - 24px);
-      }
-
-      .modal-info-side { overflow-y: visible; }
-    }
-
-    .modal-gallery-side {
-      display: flex;
-      flex-direction: column;
-      background: #000;
-      position: relative;
-      min-width: 0;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .gallery-viewport {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3/2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .gallery-viewport img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      user-select: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .gallery-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: auto;
-      height: auto;
-      border: none;
-      background: transparent;
-      color: #fff;
-      font-size: 28px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.2s, transform 0.2s;
-      z-index: 5;
-      opacity: 0.75;
-      padding: 12px;
-    }
-
-    .gallery-nav:hover {
-      background: transparent;
-      opacity: 1;
-      transform: translateY(-50%) scale(1.15);
-    }
-
-    .prev-btn { left: 16px; }
-    .next-btn { right: 16px; }
-
-    .gallery-counter {
-      position: absolute;
-      bottom: 16px;
-      left: 16px;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 4px 10px;
-      border-radius: 999px;
-      z-index: 5;
-    }
-
-    .gallery-thumbs {
-      display: flex;
-      gap: 8px;
-      padding: 12px 16px;
-      background: var(--surface);
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .gallery-thumb-item {
-      width: 90px;
-      height: 60px;
-      border-radius: 6px;
-      overflow: hidden;
-      cursor: pointer;
-      opacity: 0.5;
-      border: 1px solid transparent;
-      background: transparent;
-      padding: 0;
-      flex-shrink: 0;
-      transition: opacity 0.2s, border-color 0.2s;
-    }
-
-    .gallery-thumb-item.active { opacity: 1; border-color: var(--accent); }
-    .gallery-thumb-item img { width: 100%; height: 100%; object-fit: cover; }
-
-    .modal-info-side {
-      padding: 36px 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      overflow-y: auto;
-    }
-
-    @media (max-width: 860px) {
-      .modal-info-side { padding: 24px; overflow-y: visible; }
-    }
-
-    .project-meta { margin-bottom: 12px; }
-
     .project-tag {
       font-size: 11px;
       font-weight: 600;
@@ -1388,18 +1239,6 @@
       background: var(--accent-lt);
       padding: 4px 10px;
       border-radius: 999px;
-    }
-
-    .project-detail-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: auto; }
-    .project-detail-desc p { margin-bottom: 12px; }
-    .project-action-row { margin-top: 32px; }
-
-    .project-action-row .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-      justify-content: center;
     }
 
     .hero-tag { animation: fadeUp .45s ease both; }
@@ -1459,42 +1298,6 @@
     </div>
   </section>
 
-  <div id="gallery-modal" class="modal-overlay" hidden aria-hidden="true" inert role="dialog" aria-modal="true"
-    aria-labelledby="project-detail-title" onclick="if(event.target === this) closeGallery()">
-    <div class="modal-container" tabindex="-1">
-      <button class="modal-close" type="button" onclick="closeGallery()" aria-label="Fechar galeria">&times;</button>
-
-      <div class="modal-content">
-        <div class="modal-gallery-side">
-          <div class="gallery-viewport">
-            <img id="gallery-active-img" src="" alt="">
-            <button class="gallery-nav prev-btn" type="button" onclick="prevSlide()"
-              aria-label="Slide anterior">&#10094;</button>
-            <button class="gallery-nav next-btn" type="button" onclick="nextSlide()"
-              aria-label="Próximo slide">&#10095;</button>
-            <div class="gallery-counter"><span id="current-slide-num">1</span> / <span id="total-slide-num">1</span>
-            </div>
-          </div>
-          <div class="gallery-thumbs" id="gallery-thumbs"></div>
-        </div>
-
-        <div class="modal-info-side">
-          <div class="project-meta">
-            <span class="project-tag" id="project-typology">Residencial</span>
-          </div>
-          <h2 class="project-detail-title" id="project-detail-title">Project Title</h2>
-          <div class="project-detail-desc" id="project-detail-desc">
-          </div>
-          <div class="project-action-row">
-            <a href="#" target="_blank" rel="noopener" class="btn-primary" id="project-behance-link">
-              <span>Ver no Behance</span> <i class="fa-brands fa-behance"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <footer><span data-k="footer">Feito com 🧡 &middot; &copy; 2026 Thales Catão</span></footer>
 
   <script>
@@ -1547,8 +1350,8 @@
       proj2: {
         behance: "https://www.behance.net/gallery/231638963/5-Bedroom-Christian-House",
         images: [
-          "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/55e49f231638963.688caea0f0eb1.jpg",
           "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/cf7ace231638963.688caea0f1427.jpg",
+          "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/55e49f231638963.688caea0f0eb1.jpg",
           "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/80cea2231638963.688caea192b30.jpg",
           "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/3e7327231638963.688caea192253.jpg"
         ],
@@ -1715,12 +1518,14 @@
           ? `${localized.title} architectural project by Thales Catão`
           : `Projeto de arquitetura ${localized.title} por Thales Catão`;
         const priority = index === 0 ? ' fetchpriority="high"' : '';
+        const rememberedIndex = portfolioImageIndexByProject[projectId] ?? 0;
+        const dotsHTML = project.images.map((_, i) => `<i class="portfolio-feature-dot${i === rememberedIndex ? ' is-active' : ''}" aria-hidden="true"></i>`).join('');
 
         return `
           <article class="portfolio-card" role="listitem" data-project-card="${projectId}">
             <button class="portfolio-card-image" type="button"
               onclick="selectPortfolioProject('${projectId}')" aria-label="${viewLabel}: ${localized.title}">
-              <img src="${project.images[0]}" alt="${altText}" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async" draggable="false"${priority}>
+              <img src="${project.images[rememberedIndex]}" alt="${altText}" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async" draggable="false"${priority}>
             </button>
             <button class="portfolio-feature-arrow portfolio-feature-prev" type="button" onclick="stepPortfolioImage(-1)" aria-label="${isEnglish ? 'Previous image' : 'Imagem anterior'}" hidden>
               <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
@@ -1728,7 +1533,7 @@
             <button class="portfolio-feature-arrow portfolio-feature-next" type="button" onclick="stepPortfolioImage(1)" aria-label="${isEnglish ? 'Next image' : 'Próxima imagem'}" hidden>
               <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
             </button>
-            <span class="portfolio-feature-counter" aria-live="polite" hidden>1 / ${project.images.length}</span>
+            <span class="portfolio-feature-counter" aria-live="polite" aria-label="${isEnglish ? 'Image ' + (rememberedIndex + 1) + ' of ' + project.images.length : 'Imagem ' + (rememberedIndex + 1) + ' de ' + project.images.length}" hidden>${dotsHTML}</span>
             <div class="portfolio-card-details" aria-label="${isEnglish ? 'Project details' : 'Detalhes do projeto'}">
               <span class="project-tag">${localized.typology}</span>
               <h3>${localized.title}</h3>
@@ -1959,7 +1764,7 @@
         const panelHeight = selected && !isMobile
           ? expandedPanelHeight
           : initialHeight + (expandedPanelHeight - initialHeight) * easedProgress;
-        const detailsProgress = isMobile && selected ? easedProgress : 0;
+
         if (suppressPortfolioDescriptionUntilTop && currentScrollY <= 2) {
           suppressPortfolioDescriptionUntilTop = false;
         }
@@ -1983,13 +1788,9 @@
         // altura do .hero variar durante a rolagem. Agora só muda em resize/orientação/idioma.
         if (isMobile) setCssVar(document.documentElement, '--portfolio-initial-height', `${initialHeight.toFixed(1)}px`);
         setCssVar(section, '--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
-        setCssVar(section, '--portfolio-arrow-top', `${(cardWidth / 3).toFixed(1)}px`);
         setCssVar(section, '--portfolio-image-height', `${(cardWidth / 1.5).toFixed(1)}px`);
-        setCssVar(section, '--portfolio-counter-top', `${(cardWidth / 1.5 - 38).toFixed(1)}px`);
+        setCssVar(section, '--portfolio-counter-top', `${(cardWidth / 1.5 - 10).toFixed(1)}px`); // dots sit 6px above bottom of image
         setCssVar(section, '--portfolio-description-opacity', descriptionOpacity.toFixed(3));
-        setCssVar(section, '--portfolio-details-progress', detailsProgress.toFixed(3));
-        setCssVar(section, '--portfolio-feature-visible-height', `${(mobileDetailsHeight * detailsProgress).toFixed(1)}px`);
-        setCssVar(section, '--portfolio-feature-visible-padding', `${(22 * detailsProgress).toFixed(1)}px`);
         if (isMobile) {
           const compactTop = viewportHeight - initialHeight;
           const mobileTop = compactTop + (expandedStickyTop - compactTop) * easedProgress;
@@ -2038,6 +1839,8 @@
 
     let activePortfolioProjectId = null;
     let activePortfolioImageIndex = 0;
+    // Remember the last image you left each project on — never reset to first.
+    const portfolioImageIndexByProject = {};
     let portfolioTrackCenterObserver = null;
     let portfolioSelectionAnimationTimer = 0;
     const PORTFOLIO_FEATURE_MS = 1500; // abrir/fechar a coluna (igual a --portfolio-feature-duration no CSS)
@@ -2208,8 +2011,15 @@
       document.getElementById('portfolio-feature-link').href = project.behance;
       document.getElementById('portfolio-feature-link-label').textContent = lang === 'en'
         ? 'View on Behance' : 'Ver no Behance';
-      card.querySelector('.portfolio-feature-counter').textContent =
-        `${activePortfolioImageIndex + 1} / ${project.images.length}`;
+      const counter = card.querySelector('.portfolio-feature-counter');
+      if (counter) {
+        counter.querySelectorAll('.portfolio-feature-dot').forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === activePortfolioImageIndex);
+        });
+        counter.setAttribute('aria-label', lang === 'en'
+          ? `Image ${activePortfolioImageIndex + 1} of ${project.images.length}`
+          : `Imagem ${activePortfolioImageIndex + 1} de ${project.images.length}`);
+      }
     }
 
     window.selectPortfolioProject = function (projectId, { preserveTrack = false } = {}) {
@@ -2233,7 +2043,7 @@
 
       resetPortfolioTrackGlide();
       activePortfolioProjectId = projectId;
-      activePortfolioImageIndex = 0;
+      activePortfolioImageIndex = portfolioImageIndexByProject[projectId] ?? 0;
       track.querySelectorAll('.portfolio-card').forEach(card => {
         const selected = card.dataset.projectCard === projectId;
         card.classList.toggle('is-selected', selected);
@@ -2322,8 +2132,10 @@
       programmaticPortfolioAlignment = false;
       window.clearTimeout(portfolioAlignmentTimer);
       const projectId = activePortfolioProjectId;
-      activePortfolioImageIndex = 0;
-      if (projectId) updatePortfolioFeature();
+      // Keep the last shown image — do not reset to first. The card keeps
+      // the image you left it on, and reopening (even after scrolling
+      // back to the top) restores it.
+      if (projectId) portfolioImageIndexByProject[projectId] = activePortfolioImageIndex;
       activePortfolioProjectId = null;
       section.classList.remove('has-selection');
       const card = document.querySelector(`[data-project-card="${projectId}"]`);
@@ -2478,7 +2290,6 @@
         const mobileFooterClearance = mobileLayout
           ? (keepSelection ? 16 : getMobilePortfolioDescriptionHeight(section) + 54)
           : Math.max(18, Math.ceil(desktopFooterSpace + 6));
-        const selectedTopLimit = navHeight + effectiveHeadingOffset + desktopHeadingHeight + 12;
         const availableHeight = Math.max(
           isShortDesktop ? 150 : 260,
           window.innerHeight - stickyTop - mobileFooterClearance
@@ -2609,6 +2420,7 @@
       if (!activePortfolioProjectId) return;
       const project = projectsData[activePortfolioProjectId];
       activePortfolioImageIndex = (activePortfolioImageIndex + direction + project.images.length) % project.images.length;
+      portfolioImageIndexByProject[activePortfolioProjectId] = activePortfolioImageIndex;
       updatePortfolioFeature();
     };
 
@@ -2793,8 +2605,11 @@
       };
 
       track.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'mouse') stopPortfolioTrackFollow();
         if (event.pointerType !== 'mouse' || event.button !== 0) return;
         if (event.target.closest('.portfolio-feature-arrow, a[href]')) return;
+        // Selected image has its own swipe (left/right = change photo), not track scroll.
+        if (event.target.closest('.portfolio-card.is-selected .portfolio-card-image')) return;
         cancelSnapAnimation();
         pointerId = event.pointerId;
         startX = event.clientX;
@@ -2850,8 +2665,7 @@
         track.classList.remove('is-dragging');
       };
 
-      // se a pessoa pegar o carrossel (mouse, toque ou rolagem horizontal), a animação automática sai do caminho
-      track.addEventListener('pointerdown', event => { if (event.pointerType === 'mouse') stopPortfolioTrackFollow(); });
+      // se a pessoa pegar o carrossel (toque ou rolagem horizontal), a animação automática sai do caminho
       track.addEventListener('touchstart', stopPortfolioTrackFollow, { passive: true });
       track.addEventListener('wheel', event => {
         if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) stopPortfolioTrackFollow();
@@ -2867,6 +2681,459 @@
     }
 
     setupPortfolioDrag();
+
+    /* ────────────────────────────────────────────────────────────────
+       LIVELY PORTFOLIO — additions only, same file / same data.
+       1) Edge drift on desktop — fluid, non-linear, subtle
+       2) Full-section swipe (heading / padding / sticky also drag track)
+       3) Swipe on selected image = change photo
+       4) Edge fades + keyboard (no progress bar, no wheel hijack)
+       All respect prefers-reduced-motion and pause when a project
+       is open, when dragging, or when an animation is running.
+       ──────────────────────────────────────────────────────────────── */
+
+    // 1) DESKTOP EDGE DRIFT — progressive, sub-pixel-smooth mouse steering.
+    // Calm dead zone around the center (central 32% of screen width = 0 speed),
+    // then a wide active zone spanning from 16% off-center to 96% toward either
+    // edge. A C1-continuous power curve (t^2.2) lifts off from 0 px/s with zero
+    // kink or step—whisper-slow near the center, ramping progressively into a
+    // lively, responsive glide toward the edges. A floating-point scroll
+    // accumulator prevents browser integer-pixel rounding from swallowing
+    // ultra-slow movement, and the rAF loop sleeps whenever idle.
+    function setupPortfolioEdgeDrift() {
+      const track = document.getElementById('portfolio-track');
+      const section = document.getElementById('portfolio');
+      if (!track || !section) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const mobilePortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)');
+      const DEAD_ZONE = 0.16; // |u| <= 0.16 (central 32%): completely still
+      const EDGE_FULL = 0.96; // reaches cruising speed just before screen bezel
+      const CURVE_EXP = 2.2;  // zero slope at DEAD_ZONE -> seamless onset from 0
+      const TAU_ACCEL = 0.12; // lively response when accelerating or steering
+      const TAU_DECEL = 0.22; // soft coasting settle when returning to center
+
+      let rawU = 0;           // -1 left edge, 0 center, +1 right edge
+      let hasMouse = false;
+      let smoothVel = 0;      // current velocity in px/s
+      let virtualScroll = track.scrollLeft;
+      let lastAppliedScroll = track.scrollLeft;
+      let rafId = 0;
+      let lastTime = 0;
+
+      const isPortfolioVisible = () => {
+        const tr = track.getBoundingClientRect();
+        return tr.bottom > 0 && tr.top < window.innerHeight;
+      };
+
+      const isPaused = () => !!(
+        mobilePortrait.matches ||
+        activePortfolioProjectId ||
+        track.classList.contains('is-dragging') ||
+        track.classList.contains('is-snapping') ||
+        track.classList.contains('is-image-swiping') ||
+        section.classList.contains('selection-animating')
+      );
+
+      const computeTargetVel = () => {
+        if (!hasMouse || isPaused() || !isPortfolioVisible()) return 0;
+        const mag = Math.abs(rawU);
+        if (mag <= DEAD_ZONE) return 0;
+        const t = Math.min(1, (mag - DEAD_ZONE) / (EDGE_FULL - DEAD_ZONE));
+        const maxSpeed = Math.max(240, Math.min(340, window.innerWidth * 0.21));
+        return Math.sign(rawU) * maxSpeed * Math.pow(t, CURVE_EXP);
+      };
+
+      const wake = () => {
+        if (rafId) return;
+        lastTime = performance.now();
+        virtualScroll = track.scrollLeft;
+        lastAppliedScroll = track.scrollLeft;
+        rafId = requestAnimationFrame(tick);
+      };
+
+      const tick = now => {
+        rafId = 0;
+        const dtSec = Math.min(0.05, Math.max(0.0001, (now - lastTime) / 1000));
+        lastTime = now;
+
+        const targetVel = computeTargetVel();
+        const slowing = Math.abs(targetVel) < Math.abs(smoothVel);
+        const tau = slowing ? TAU_DECEL : TAU_ACCEL;
+        const alpha = 1 - Math.exp(-dtSec / tau);
+        smoothVel += (targetVel - smoothVel) * alpha;
+        if (Math.abs(smoothVel) < 0.08 && Math.abs(targetVel) < 0.08) smoothVel = 0;
+
+        const drifting = !isPaused() && smoothVel !== 0;
+        track.classList.toggle('is-edge-drifting', drifting);
+
+        if (drifting) {
+          const max = Math.max(0, track.scrollWidth - track.clientWidth);
+          if (max > 0) {
+            // Resync floating-point accumulator if scrollLeft moved externally
+            if (Math.abs(track.scrollLeft - lastAppliedScroll) > 1.5) {
+              virtualScroll = track.scrollLeft;
+            }
+            const next = Math.min(max, Math.max(0, virtualScroll + smoothVel * dtSec));
+            if ((next <= 0 && smoothVel < 0) || (next >= max && smoothVel > 0)) {
+              virtualScroll = next;
+              smoothVel = 0;
+            } else {
+              stopPortfolioTrackFollow();
+              virtualScroll = next;
+            }
+            track.scrollLeft = virtualScroll;
+            lastAppliedScroll = track.scrollLeft;
+          }
+        } else if (isPaused()) {
+          smoothVel = 0;
+          virtualScroll = track.scrollLeft;
+          lastAppliedScroll = track.scrollLeft;
+        }
+
+        if (smoothVel !== 0 || targetVel !== 0) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          track.classList.remove('is-edge-drifting');
+        }
+      };
+
+      document.addEventListener('pointermove', event => {
+        if (event.pointerType !== 'mouse') return;
+        if (event.buttons !== 0) {
+          smoothVel = 0;
+          return;
+        }
+        hasMouse = true;
+        rawU = Math.max(-1, Math.min(1, (event.clientX / window.innerWidth - 0.5) * 2));
+        wake();
+      }, { passive: true });
+
+      document.addEventListener('pointerleave', () => {
+        hasMouse = false;
+        if (smoothVel !== 0) wake();
+      });
+
+      window.addEventListener('blur', () => {
+        hasMouse = false;
+        if (smoothVel !== 0) wake();
+      });
+
+      window.addEventListener('scroll', () => {
+        if (hasMouse) wake();
+      }, { passive: true });
+    }
+
+    // 2) OUTSIDE-TRACK SWIPE — horizontal drag/swipe anywhere outside the track
+    // (heading, sticky padding, or open space while the strip is visible) scrolls
+    // the portfolio strip. Vertical movement still scrolls the page normally.
+    function setupPortfolioSectionSwipe() {
+      const track = document.getElementById('portfolio-track');
+      if (!track) return;
+
+      const isPortfolioStripVisible = () => {
+        const tr = track.getBoundingClientRect();
+        return tr.bottom > 0 && tr.top < window.innerHeight;
+      };
+      const isInteractive = el => !!el.closest(
+        'a[href], button, input, textarea, select, [contenteditable], #portfolio-track'
+      );
+
+      // Mouse drag outside the track
+      let pointerId = null;
+      let startX = 0;
+      let startY = 0;
+      let startScrollLeft = 0;
+      let dragging = false;
+      let suppressClick = false;
+
+      document.addEventListener('pointerdown', event => {
+        if (event.pointerType !== 'mouse' || event.button !== 0) return;
+        if (isInteractive(event.target) || !isPortfolioStripVisible()) return;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        startScrollLeft = track.scrollLeft;
+        dragging = false;
+      });
+
+      document.addEventListener('pointermove', event => {
+        if (event.pointerId !== pointerId) return;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (!dragging) {
+          if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+            dragging = true;
+            track.classList.add('is-dragging', 'is-outside-dragging');
+            stopPortfolioTrackFollow();
+          } else if (Math.abs(dy) > 8) {
+            pointerId = null;
+            return;
+          } else return;
+        }
+        if (dragging) {
+          track.scrollLeft = startScrollLeft - dx;
+          event.preventDefault();
+        }
+      });
+
+      const finishPointer = event => {
+        if (event.pointerId !== pointerId) return;
+        const wasDragging = dragging;
+        pointerId = null;
+        dragging = false;
+        track.classList.remove('is-dragging', 'is-outside-dragging');
+        if (wasDragging) {
+          suppressClick = true;
+          setTimeout(() => { suppressClick = false; }, 0);
+        }
+      };
+      document.addEventListener('pointerup', finishPointer, { passive: true });
+      document.addEventListener('pointercancel', finishPointer, { passive: true });
+      document.addEventListener('click', event => {
+        if (!suppressClick) return;
+        if (event.target.closest('#portfolio-track')) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClick = false;
+      }, true);
+
+      // Touch swipe outside the track (uses touch events with passive: false for iOS Safari)
+      let touchId = null;
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchStartScroll = 0;
+      let touchDragging = false;
+
+      document.addEventListener('touchstart', event => {
+        if (event.touches.length !== 1) return;
+        if (isInteractive(event.target) || !isPortfolioStripVisible()) return;
+        touchId = event.touches[0].identifier;
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        touchStartScroll = track.scrollLeft;
+        touchDragging = false;
+      }, { passive: true });
+
+      document.addEventListener('touchmove', event => {
+        if (touchId === null || event.touches.length !== 1) return;
+        if (event.touches[0].identifier !== touchId) return;
+        const dx = event.touches[0].clientX - touchStartX;
+        const dy = event.touches[0].clientY - touchStartY;
+        if (!touchDragging) {
+          if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+            touchDragging = true;
+            track.classList.add('is-dragging', 'is-outside-dragging');
+            stopPortfolioTrackFollow();
+          } else if (Math.abs(dy) > 8) {
+            touchId = null;
+            return;
+          } else return;
+        }
+        if (touchDragging) {
+          track.scrollLeft = touchStartScroll - dx;
+          event.preventDefault();
+        }
+      }, { passive: false });
+
+      const finishTouch = () => {
+        touchId = null;
+        touchDragging = false;
+        track.classList.remove('is-dragging', 'is-outside-dragging');
+      };
+      document.addEventListener('touchend', finishTouch, { passive: true });
+      document.addEventListener('touchcancel', finishTouch, { passive: true });
+    }
+
+    // 3) SWIPE ON SELECTED IMAGE — left = next photo, right = previous photo.
+    // Works with mouse drag and touch swipe. A plain click still does nothing
+    // (project already open), a swipe changes the image.
+    function setupPortfolioSelectedImageSwipe() {
+      const track = document.getElementById('portfolio-track');
+      if (!track) return;
+
+      let pointerId = null;
+      let startX = 0;
+      let startY = 0;
+      let deltaX = 0;
+      let swiping = false;
+      let suppressClick = false;
+      let suppressTimer = 0;
+
+      const resetImageTransform = () => {
+        const img = track.querySelector('.portfolio-card.is-selected .portfolio-card-image img');
+        if (img) img.style.transform = '';
+      };
+
+      track.addEventListener('pointerdown', event => {
+        const btn = event.target.closest('.portfolio-card.is-selected .portfolio-card-image');
+        if (!btn) return;
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        deltaX = 0;
+        swiping = false;
+      });
+
+      track.addEventListener('pointermove', event => {
+        if (event.pointerId !== pointerId) return;
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (!swiping) {
+          if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+            swiping = true;
+            track.classList.add('is-image-swiping');
+            stopPortfolioTrackFollow();
+            try { track.setPointerCapture(event.pointerId); } catch (e) {}
+          } else if (Math.abs(dy) > 10) {
+            // Vertical — page scroll, cancel image swipe.
+            pointerId = null;
+            return;
+          } else return;
+        }
+        if (swiping) {
+          deltaX = dx;
+          const img = track.querySelector('.portfolio-card.is-selected .portfolio-card-image img');
+          if (img) img.style.transform = `translateX(${(dx * 0.18).toFixed(1)}px) scale(1.02)`;
+          event.preventDefault();
+        }
+      });
+
+      const finish = event => {
+        if (event.pointerId !== pointerId) return;
+        if (track.hasPointerCapture(event.pointerId)) {
+          try { track.releasePointerCapture(event.pointerId); } catch (e) {}
+        }
+        const wasSwiping = swiping;
+        const finalDelta = deltaX;
+        pointerId = null;
+        swiping = false;
+        deltaX = 0;
+        track.classList.remove('is-image-swiping');
+        resetImageTransform();
+        if (!wasSwiping) return;
+        suppressClick = true;
+        window.clearTimeout(suppressTimer);
+        suppressTimer = window.setTimeout(() => { suppressClick = false; }, 120);
+        const threshold = 50;
+        if (finalDelta < -threshold) window.stepPortfolioImage(1);
+        else if (finalDelta > threshold) window.stepPortfolioImage(-1);
+      };
+      track.addEventListener('pointerup', finish);
+      track.addEventListener('pointercancel', event => {
+        if (event.pointerId !== pointerId) return;
+        if (track.hasPointerCapture(event.pointerId)) {
+          try { track.releasePointerCapture(event.pointerId); } catch (e) {}
+        }
+        pointerId = null; swiping = false; deltaX = 0;
+        track.classList.remove('is-image-swiping');
+        resetImageTransform();
+      });
+      // Intercept the synthetic click at document capture phase: pointer capture
+      // (or dragging past the image edge) retargets the click to #portfolio-track
+      // or outside the card, which would otherwise trigger the outside-click close.
+      document.addEventListener('click', event => {
+        if (!suppressClick) return;
+        suppressClick = false;
+        window.clearTimeout(suppressTimer);
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
+    }
+
+    // 4) EDGE FADES + KEYBOARD — no progress bar, no wheel hijack.
+    // Wheel over the images now just scrolls the page, as before.
+    function setupPortfolioEdgeFadesAndKeys() {
+      const track = document.getElementById('portfolio-track');
+      const section = document.getElementById('portfolio');
+      if (!track || !section) return;
+
+      // JS-animated fade size — the fix for the pop.
+      // @property + CSS transition did not animate the mask on Safari,
+      // so the left fade went 0 -> 200px instantly once you scrolled
+      // past a little bit. Now we lerp the size in JS over ~1.8s:
+      // every frame we move ~3.5% of the way to the target, so it
+      // dissolves in slowly, never appears out of nowhere.
+      const FADE_MAX = 200;
+      let currentLeft = 0;
+      let currentRight = FADE_MAX;
+      let targetLeft = 0;
+      let targetRight = FADE_MAX;
+      let fadeRaf = 0;
+      let lastFadeTime = 0;
+      let fadeInitialized = false;
+
+      const animateFade = now => {
+        const dt = lastFadeTime ? Math.min(3, (now - lastFadeTime) / 16.667) : 1;
+        lastFadeTime = now;
+        const ease = 1 - Math.pow(0.965, dt); // ~3.5% per frame = very slow
+        currentLeft += (targetLeft - currentLeft) * ease;
+        currentRight += (targetRight - currentRight) * ease;
+        if (Math.abs(targetLeft - currentLeft) < 0.5) currentLeft = targetLeft;
+        if (Math.abs(targetRight - currentRight) < 0.5) currentRight = targetRight;
+        track.style.setProperty('--portfolio-fade-left', currentLeft.toFixed(1) + 'px');
+        track.style.setProperty('--portfolio-fade-right', currentRight.toFixed(1) + 'px');
+        if (currentLeft !== targetLeft || currentRight !== targetRight) {
+          fadeRaf = requestAnimationFrame(animateFade);
+        } else {
+          fadeRaf = 0; lastFadeTime = 0;
+        }
+      };
+
+      const updateEdges = () => {
+        const max = Math.max(0, track.scrollWidth - track.clientWidth);
+        const atStart = track.scrollLeft <= 1;
+        const atEnd = track.scrollLeft >= max - 1;
+        section.classList.toggle('is-at-start', atStart);
+        section.classList.toggle('is-at-end', atEnd);
+        targetLeft = atStart ? 0 : FADE_MAX;
+        targetRight = atEnd ? 0 : FADE_MAX;
+        if (max <= 1) { targetLeft = 0; targetRight = 0; }
+        if (!fadeInitialized) {
+          // First load: snap to the right values, no animation.
+          currentLeft = targetLeft;
+          currentRight = targetRight;
+          track.style.setProperty('--portfolio-fade-left', currentLeft.toFixed(1) + 'px');
+          track.style.setProperty('--portfolio-fade-right', currentRight.toFixed(1) + 'px');
+          fadeInitialized = true;
+          return;
+        }
+        if (!fadeRaf) { lastFadeTime = 0; fadeRaf = requestAnimationFrame(animateFade); }
+      };
+      track.addEventListener('scroll', updateEdges, { passive: true });
+      window.addEventListener('resize', updateEdges, { passive: true });
+      requestAnimationFrame(updateEdges);
+      setTimeout(updateEdges, 300);
+      window.addEventListener('load', updateEdges, { once: true });
+
+      // Keyboard: when no project is open, arrows scroll the track by one card.
+      // When a project IS open, the existing global handler steps the image.
+      track.addEventListener('keydown', event => {
+        if (activePortfolioProjectId) return;
+        const card = track.querySelector('.portfolio-card');
+        const step = (card ? card.getBoundingClientRect().width : track.clientWidth * 0.7) + 12;
+        if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          track.scrollBy({ left: step, behavior: 'smooth' });
+        } else if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          track.scrollBy({ left: -step, behavior: 'smooth' });
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          track.scrollTo({ left: 0, behavior: 'smooth' });
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+        }
+      });
+    }
+
+    setupPortfolioEdgeDrift();
+    setupPortfolioSectionSwipe();
+    setupPortfolioSelectedImageSwipe();
+    setupPortfolioEdgeFadesAndKeys();
+
 
     // A largura dos cards cresce com a rolagem vertical, mas o scrollLeft em pixels não acompanha:
     // o mesmo ponto da faixa passa a cair num projeto mais à esquerda. Depois de uma rolagem
@@ -2979,7 +3246,7 @@
           running = false;
           return;
         }
-        if (pointerActive || userMoved || activePortfolioProjectId || !focus) {
+        if (pointerActive || userMoved || activePortfolioProjectId || track.classList.contains('is-edge-drifting') || !focus) {
           focus = capture() || focus;
           rememberLayout();
           userMoved = false;
@@ -3099,273 +3366,11 @@
       }, { passive: true });
     })();
 
-    let activeProjectId = null;
-    let activeSlideIndex = 0;
-    let activeLang = 'pt';
-    let lastFocusedElement = null;
-
-    const modalFocusableSelector = [
-      'a[href]',
-      'button:not([disabled])',
-      '[tabindex]:not([tabindex="-1"])'
-    ].join(',');
-
-    window.openProject = function (e, projectId) {
-      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-      e.preventDefault();
-      lastFocusedElement = e.currentTarget || document.activeElement;
-
-      activeProjectId = projectId;
-      activeSlideIndex = 0;
-
-      // Determine current language
-      activeLang = document.documentElement.lang === 'en' ? 'en' : 'pt';
-
-      updateModalContent();
-
-      const modal = document.getElementById('gallery-modal');
-      modal.removeAttribute('hidden');
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      modal.removeAttribute('inert');
-      document.body.classList.add('modal-open');
-      document.querySelector('.modal-close')?.focus();
-
-      // Bind keyboard events
-      document.addEventListener('keydown', handleKeyDown);
-    };
-
-    window.closeGallery = function () {
-      const modal = document.getElementById('gallery-modal');
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-      modal.setAttribute('inert', '');
-      modal.setAttribute('hidden', '');
-      document.body.classList.remove('modal-open');
-
-      activeProjectId = null;
-      document.removeEventListener('keydown', handleKeyDown);
-
-      // Reset active image immediately to prevent flickering on next open
-      const activeImg = document.getElementById('gallery-active-img');
-      if (activeImg) {
-        activeImg.src = '';
-        activeImg.style.opacity = '0';
-      }
-
-      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-        lastFocusedElement.focus();
-      }
-      lastFocusedElement = null;
-    };
-
-    window.nextSlide = function () {
-      if (!activeProjectId) return;
-      const proj = projectsData[activeProjectId];
-      activeSlideIndex = (activeSlideIndex + 1) % proj.images.length;
-      updateSlide();
-    };
-
-    window.prevSlide = function () {
-      if (!activeProjectId) return;
-      const proj = projectsData[activeProjectId];
-      activeSlideIndex = (activeSlideIndex - 1 + proj.images.length) % proj.images.length;
-      updateSlide();
-    };
-
-    window.selectSlide = function (index) {
-      activeSlideIndex = index;
-      updateSlide();
-    };
-
-    function updateModalContent() {
-      if (!activeProjectId) return;
-      const proj = projectsData[activeProjectId];
-      const localization = proj[activeLang];
-
-      // Update details
-      document.getElementById('project-detail-title').innerText = localization.title;
-      document.getElementById('project-typology').innerText = localization.typology;
-      document.getElementById('project-detail-desc').innerHTML = localization.desc;
-      document.getElementById('project-behance-link').href = proj.behance;
-
-      // Translate Behance Button
-      const behanceBtnSpan = document.querySelector('#project-behance-link span');
-      if (behanceBtnSpan) {
-        behanceBtnSpan.innerText = activeLang === 'en' ? 'View on Behance' : 'Ver no Behance';
-      }
-
-      // Generate thumbnails
-      const thumbsContainer = document.getElementById('gallery-thumbs');
-      thumbsContainer.innerHTML = '';
-
-      if (proj.images.length <= 1) {
-        thumbsContainer.style.display = 'none';
-        document.querySelectorAll('.gallery-nav').forEach(btn => btn.style.display = 'none');
-        document.querySelector('.gallery-counter').style.display = 'none';
-      } else {
-        thumbsContainer.style.display = 'flex';
-        document.querySelectorAll('.gallery-nav').forEach(btn => btn.style.display = 'flex');
-        document.querySelector('.gallery-counter').style.display = 'block';
-
-        proj.images.forEach((imgSrc, index) => {
-          const thumb = document.createElement('button');
-          thumb.type = 'button';
-          thumb.className = `gallery-thumb-item ${index === activeSlideIndex ? 'active' : ''}`;
-          thumb.setAttribute('aria-label', activeLang === 'en'
-            ? `Show image ${index + 1} of ${proj.images.length}`
-            : `Mostrar imagem ${index + 1} de ${proj.images.length}`);
-          thumb.onclick = () => selectSlide(index);
-          thumb.innerHTML = `<img src="${imgSrc}" alt="${localization.title} - ${index + 1}" decoding="async">`;
-          thumbsContainer.appendChild(thumb);
-        });
-      }
-
-      updateSlide();
-    }
-
-    function updateSlide() {
-      if (!activeProjectId) return;
-      const proj = projectsData[activeProjectId];
-      const localization = proj[activeLang];
-
-      const activeImg = document.getElementById('gallery-active-img');
-      activeImg.style.opacity = '0';
-
-      setTimeout(() => {
-        activeImg.src = proj.images[activeSlideIndex];
-        const altText = activeLang === 'en'
-          ? `${localization.title} - Architectural Design - Image ${activeSlideIndex + 1} of ${proj.images.length}`
-          : `${localization.title} - Concepção Arquitetônica - Imagem ${activeSlideIndex + 1} de ${proj.images.length}`;
-        activeImg.setAttribute('alt', altText);
-        activeImg.style.opacity = '1';
-      }, 150);
-
-      // Update counters
-      document.getElementById('current-slide-num').innerText = activeSlideIndex + 1;
-      document.getElementById('total-slide-num').innerText = proj.images.length;
-
-      // Highlight thumbnail item
-      const thumbs = document.querySelectorAll('.gallery-thumb-item');
-      thumbs.forEach((thumb, index) => {
-        thumb.classList.toggle('active', index === activeSlideIndex);
-        thumb.setAttribute('aria-current', index === activeSlideIndex ? 'true' : 'false');
-      });
-
-      // Center current thumbnail
-      const activeThumb = thumbs[activeSlideIndex];
-      if (activeThumb) {
-        activeThumb.parentNode.scrollLeft = activeThumb.offsetLeft - activeThumb.parentNode.offsetWidth / 2 + activeThumb.offsetWidth / 2;
-      }
-    }
-
-    function handleKeyDown(e) {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closeGallery();
-        return;
-      }
-
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        nextSlide();
-        return;
-      }
-
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        prevSlide();
-        return;
-      }
-
-      if (e.key === 'Tab') {
-        trapModalFocus(e);
-      }
-    }
-
-    function trapModalFocus(e) {
-      const modal = document.getElementById('gallery-modal');
-      if (!modal?.classList.contains('open')) return;
-
-      const focusable = Array.from(modal.querySelectorAll(modalFocusableSelector))
-        .filter(el => el.offsetParent !== null || el === document.activeElement);
-
-      if (!focusable.length) {
-        e.preventDefault();
-        document.querySelector('.modal-container')?.focus();
-        return;
-      }
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-
-    // ── Touch-swipe support for gallery on mobile ──
-    (function () {
-      const viewport = document.querySelector('.gallery-viewport');
-      if (!viewport) return;
-
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let touchDeltaX = 0;
-      let isSwiping = false;
-
-      viewport.addEventListener('touchstart', function (e) {
-        if (!activeProjectId) return;
-        const touch = e.touches[0];
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
-        touchDeltaX = 0;
-        isSwiping = false;
-      }, { passive: true });
-
-      viewport.addEventListener('touchmove', function (e) {
-        if (!activeProjectId) return;
-        const touch = e.touches[0];
-        touchDeltaX = touch.clientX - touchStartX;
-        const deltaY = Math.abs(touch.clientY - touchStartY);
-
-        // If horizontal movement dominates, mark as swipe and prevent scroll
-        if (!isSwiping && Math.abs(touchDeltaX) > 10 && Math.abs(touchDeltaX) > deltaY) {
-          isSwiping = true;
-        }
-        if (isSwiping) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      viewport.addEventListener('touchend', function () {
-        if (!activeProjectId || !isSwiping) return;
-
-        const SWIPE_THRESHOLD = 50;
-        if (touchDeltaX < -SWIPE_THRESHOLD) {
-          nextSlide();
-        } else if (touchDeltaX > SWIPE_THRESHOLD) {
-          prevSlide();
-        }
-
-        touchDeltaX = 0;
-        isSwiping = false;
-      }, { passive: true });
-    })();
-
     // Bind dynamic language switcher page callback
     window.onLangChange = function (lang) {
-      activeLang = lang;
       renderPortfolioCards(lang);
       if (activePortfolioProjectId) updatePortfolioFeature();
       window.dispatchEvent(new Event('scroll'));
-      if (activeProjectId) {
-        updateModalContent();
-      }
     };
   </script>
   <script src="nav.js"></script>
