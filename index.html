@@ -2068,6 +2068,7 @@
         spawnLeavingPortfolioPanel(feature, section);
       }
 
+      cancelMobileTrackSnap();
       resetPortfolioTrackGlide();
       activePortfolioProjectId = projectId;
       activePortfolioImageIndex = portfolioImageIndexByProject[projectId] ?? 0;
@@ -2615,6 +2616,59 @@
       mobileTrackSnapFrameId = requestAnimationFrame(step);
     }
 
+    function coastMobileTrackMomentum(releaseVx) {
+      const track = document.getElementById('portfolio-track');
+      if (!track) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      // releaseVx is finger velocity in px/ms (negative finger = scroll right)
+      let scrollVel = Math.max(-4.5, Math.min(4.5, -releaseVx));
+      if (Math.abs(scrollVel) < 0.08) return;
+
+      cancelMobileTrackSnap();
+      const maxScrollLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+      if (maxScrollLeft <= 0) return;
+
+      const TAU_MS = 325;
+      const MIN_VEL = 0.015;
+      let virtualScroll = track.scrollLeft;
+      let lastAppliedScroll = track.scrollLeft;
+      let lastTime = performance.now();
+
+      track.classList.add('is-snapping');
+
+      const step = now => {
+        const dt = Math.min(50, Math.max(0.5, now - lastTime));
+        lastTime = now;
+
+        // Yield immediately if another scroll source took over the track
+        if (Math.abs(track.scrollLeft - lastAppliedScroll) > 1.5) {
+          mobileTrackSnapFrameId = 0;
+          track.classList.remove('is-snapping');
+          return;
+        }
+
+        // Exact frame-rate-independent integral of exponential deceleration
+        const decay = Math.exp(-dt / TAU_MS);
+        const delta = scrollVel * TAU_MS * (1 - decay);
+        scrollVel *= decay;
+
+        const next = Math.min(maxScrollLeft, Math.max(0, virtualScroll + delta));
+        virtualScroll = next;
+        track.scrollLeft = virtualScroll;
+        lastAppliedScroll = track.scrollLeft;
+
+        const hitEdge = (next <= 0 && scrollVel < 0) || (next >= maxScrollLeft && scrollVel > 0);
+        if (hitEdge || Math.abs(scrollVel) < MIN_VEL) {
+          mobileTrackSnapFrameId = 0;
+          track.classList.remove('is-snapping');
+          return;
+        }
+        mobileTrackSnapFrameId = requestAnimationFrame(step);
+      };
+
+      mobileTrackSnapFrameId = requestAnimationFrame(step);
+    }
+
     function setupPortfolioDrag() {
       const track = document.getElementById('portfolio-track');
       if (!track) return;
@@ -2690,9 +2744,15 @@
       };
 
       // se a pessoa pegar o carrossel (toque ou rolagem horizontal), a animação automática sai do caminho
-      track.addEventListener('touchstart', stopPortfolioTrackFollow, { passive: true });
+      track.addEventListener('touchstart', () => {
+        stopPortfolioTrackFollow();
+        cancelMobileTrackSnap();
+      }, { passive: true });
       track.addEventListener('wheel', event => {
-        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) stopPortfolioTrackFollow();
+        if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+          stopPortfolioTrackFollow();
+          cancelMobileTrackSnap();
+        }
       }, { passive: true });
       track.addEventListener('pointerup', finishDrag);
       track.addEventListener('pointercancel', finishDrag);
@@ -2985,8 +3045,9 @@
         const dt = now - touchLastTime;
         const dx = t.clientX - touchStartX;
         const dy = t.clientY - touchStartY;
-        if (dt > 0) {
-          touchVelocityX = touchVelocityX * 0.35 + ((t.clientX - touchLastX) / dt) * 0.65;
+        if (dt >= 2) {
+          const instantVx = Math.max(-5, Math.min(5, (t.clientX - touchLastX) / dt));
+          touchVelocityX = touchVelocityX * 0.4 + instantVx * 0.6;
           touchLastX = t.clientX;
           touchLastTime = now;
         }
@@ -3020,6 +3081,9 @@
             snapMobileTrackAfterDrag(touchStartScroll, totalDeltaX, releaseVx);
             return;
           }
+          track.classList.remove('is-dragging', 'is-outside-dragging');
+          coastMobileTrackMomentum(releaseVx);
+          return;
         }
         track.classList.remove('is-dragging', 'is-outside-dragging');
       };
