@@ -1248,6 +1248,36 @@
       }
     }
 
+    @media (orientation: landscape) and (max-height: 540px),
+           (orientation: landscape) and (pointer: coarse) and (max-height: 600px) {
+      .portfolio-feature-arrow {
+        font-size: 22px;
+      }
+
+      .portfolio-feature-prev {
+        padding-left: 9px;
+      }
+
+      .portfolio-feature-next {
+        padding-right: 9px;
+      }
+
+      .portfolio-feature-counter {
+        bottom: 6px;
+        gap: 5px;
+      }
+
+      .portfolio-feature-dot {
+        width: 4px;
+        height: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .45);
+      }
+
+      .portfolio-feature-dot.is-active {
+        width: 11px;
+      }
+    }
+
     .project-tag {
       font-size: 11px;
       font-weight: 600;
