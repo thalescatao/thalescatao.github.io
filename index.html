@@ -386,12 +386,12 @@
     .portfolio-sticky { touch-action: pan-y; }
     .portfolio-scroll-stage { touch-action: pan-y; }
 
-    /* Fade das bordas: máscara de 200px nas duas pontas do track, sem camada de cor por cima
+    /* Fade das bordas: máscara proporcional (12% da largura) nas duas pontas do track, sem camada de cor por cima
        (assim não há banding). O tamanho do fade é animado em JS (setupPortfolioEdgeFadesAndKeys)
        e não por @property, porque o Safari não faz transição da máscara. */
     .portfolio-track {
-      --portfolio-fade-left: 200px;
-      --portfolio-fade-right: 200px;
+      --portfolio-fade-left: 12%;
+      --portfolio-fade-right: 12%;
       -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--portfolio-fade-left), #000 calc(100% - var(--portfolio-fade-right)), transparent 100%);
       mask-image: linear-gradient(to right, transparent 0, #000 var(--portfolio-fade-left), #000 calc(100% - var(--portfolio-fade-right)), transparent 100%);
     }
@@ -399,8 +399,8 @@
        O tamanho real do fade é gravado inline pelo JS, para poder animar. */
     @media (max-width: 768px) and (orientation: portrait) {
       .portfolio-track {
-        --portfolio-fade-left: 0px;
-        --portfolio-fade-right: 0px;
+        --portfolio-fade-left: 0%;
+        --portfolio-fade-right: 0%;
         -webkit-mask-image: none;
         mask-image: none;
       }
@@ -454,6 +454,12 @@
 
     #portfolio.has-selection .portfolio-card {
       flex-basis: var(--portfolio-selected-card-width);
+    }
+
+    .portfolio-card-media {
+      position: relative;
+      width: 100%;
+      flex-shrink: 0;
     }
 
     .portfolio-card-image {
@@ -560,31 +566,55 @@
 
     .portfolio-feature-counter {
       position: absolute;
-      z-index: 2;
+      z-index: 3;
       left: 50%;
       right: auto;
-      bottom: 14px;
+      bottom: 3px;
       transform: translateX(-50%);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 0;
       padding: 0;
       background: none;
-      pointer-events: none;
     }
     .portfolio-feature-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 3px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .portfolio-feature-dot::after {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
       background: rgba(255, 255, 255, .75);
       box-shadow: 0 1px 4px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .18);
-      transition: width .35s cubic-bezier(.16, 1, .3, 1), background .35s ease;
+      transition: width .35s cubic-bezier(.16, 1, .3, 1), background .25s ease, transform .2s ease;
     }
-    .portfolio-feature-dot.is-active {
-      width: 14px;
-      border-radius: 999px;
+    @media (hover: hover) {
+      .portfolio-feature-dot:hover::after {
+        background: rgba(255, 255, 255, .95);
+        transform: scale(1.15);
+      }
+    }
+    .portfolio-feature-dot.is-active::after {
+      width: 15px;
       background: #fff;
+      transform: none;
+    }
+    .portfolio-feature-dot:focus-visible {
+      outline: none;
+    }
+    .portfolio-feature-dot:focus-visible::after {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     .portfolio-feature-info {
@@ -853,12 +883,7 @@
       #portfolio.has-selection .portfolio-feature {
         display: none !important;
       }
-      #portfolio.has-selection .portfolio-card-image {
-        flex-shrink: 0;
-      }
       #portfolio.has-selection .portfolio-feature-arrow {
-        top: 0;
-        height: var(--portfolio-image-height, calc(var(--portfolio-card-width) / 1.5));
         font-size: 22px;
       }
       #portfolio.has-selection .portfolio-feature-prev {
@@ -868,19 +893,17 @@
         padding-right: 9px;
       }
       #portfolio.has-selection .portfolio-feature-counter {
-        top: var(--portfolio-counter-top, calc(var(--portfolio-card-width) / 1.5 - 10px));
-        bottom: auto;
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        gap: 5px;
+        bottom: 0;
       }
       #portfolio.has-selection .portfolio-feature-dot {
+        padding: 6px 3px;
+      }
+      #portfolio.has-selection .portfolio-feature-dot::after {
         width: 4px;
         height: 4px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, .45);
       }
-      #portfolio.has-selection .portfolio-feature-dot.is-active {
+      #portfolio.has-selection .portfolio-feature-dot.is-active::after {
         width: 11px;
       }
       .portfolio-feature-link { max-width: 100%; margin-top: 14px; overflow-wrap: anywhere; }
@@ -1248,17 +1271,20 @@
       }
 
       .portfolio-feature-counter {
-        bottom: 6px;
-        gap: 5px;
+        bottom: 0;
       }
 
       .portfolio-feature-dot {
+        padding: 6px 3px;
+      }
+
+      .portfolio-feature-dot::after {
         width: 4px;
         height: 4px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, .45);
       }
 
-      .portfolio-feature-dot.is-active {
+      .portfolio-feature-dot.is-active::after {
         width: 11px;
       }
     }
@@ -1531,6 +1557,18 @@
           }
           card.querySelector('.portfolio-feature-prev')?.setAttribute('aria-label', isEnglish ? 'Previous image' : 'Imagem anterior');
           card.querySelector('.portfolio-feature-next')?.setAttribute('aria-label', isEnglish ? 'Next image' : 'Próxima imagem');
+          const rememberedIndex = portfolioImageIndexByProject[projectId] ?? 0;
+          const counter = card.querySelector('.portfolio-feature-counter');
+          if (counter) {
+            counter.setAttribute('aria-label', isEnglish
+              ? `Image ${rememberedIndex + 1} of ${project.images.length}`
+              : `Imagem ${rememberedIndex + 1} de ${project.images.length}`);
+            counter.querySelectorAll('.portfolio-feature-dot').forEach((dot, i) => {
+              dot.setAttribute('aria-label', isEnglish
+                ? `Go to image ${i + 1} of ${project.images.length}`
+                : `Ir para a imagem ${i + 1} de ${project.images.length}`);
+            });
+          }
           const details = card.querySelector('.portfolio-card-details');
           if (details) {
             details.setAttribute('aria-label', isEnglish ? 'Project details' : 'Detalhes do projeto');
@@ -1571,21 +1609,23 @@
           : `Projeto de arquitetura ${localized.title} por Thales Catão`;
         const priority = index === 0 ? ' fetchpriority="high"' : '';
         const rememberedIndex = portfolioImageIndexByProject[projectId] ?? 0;
-        const dotsHTML = project.images.map((_, i) => `<i class="portfolio-feature-dot${i === rememberedIndex ? ' is-active' : ''}" aria-hidden="true"></i>`).join('');
+        const dotsHTML = project.images.map((_, i) => `<button class="portfolio-feature-dot${i === rememberedIndex ? ' is-active' : ''}" type="button" onclick="goToPortfolioImage(${i})" aria-label="${isEnglish ? `Go to image ${i + 1} of ${project.images.length}` : `Ir para a imagem ${i + 1} de ${project.images.length}`}" aria-current="${i === rememberedIndex ? 'true' : 'false'}"></button>`).join('');
 
         return `
           <article class="portfolio-card" role="listitem" data-project-card="${projectId}">
-            <button class="portfolio-card-image" type="button"
-              onclick="selectPortfolioProject('${projectId}')" aria-label="${viewLabel}: ${localized.title}">
-              <img src="${project.images[rememberedIndex]}" alt="${altText}" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async" draggable="false"${priority}>
-            </button>
-            <button class="portfolio-feature-arrow portfolio-feature-prev" type="button" onclick="stepPortfolioImage(-1)" aria-label="${isEnglish ? 'Previous image' : 'Imagem anterior'}" hidden>
-              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-            </button>
-            <button class="portfolio-feature-arrow portfolio-feature-next" type="button" onclick="stepPortfolioImage(1)" aria-label="${isEnglish ? 'Next image' : 'Próxima imagem'}" hidden>
-              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-            </button>
-            <span class="portfolio-feature-counter" aria-live="polite" aria-label="${isEnglish ? 'Image ' + (rememberedIndex + 1) + ' of ' + project.images.length : 'Imagem ' + (rememberedIndex + 1) + ' de ' + project.images.length}" hidden>${dotsHTML}</span>
+            <div class="portfolio-card-media">
+              <button class="portfolio-card-image" type="button"
+                onclick="selectPortfolioProject('${projectId}')" aria-label="${viewLabel}: ${localized.title}">
+                <img src="${project.images[rememberedIndex]}" alt="${altText}" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async" draggable="false"${priority}>
+              </button>
+              <button class="portfolio-feature-arrow portfolio-feature-prev" type="button" onclick="stepPortfolioImage(-1)" aria-label="${isEnglish ? 'Previous image' : 'Imagem anterior'}" hidden>
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              </button>
+              <button class="portfolio-feature-arrow portfolio-feature-next" type="button" onclick="stepPortfolioImage(1)" aria-label="${isEnglish ? 'Next image' : 'Próxima imagem'}" hidden>
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+              </button>
+              <div class="portfolio-feature-counter" role="group" aria-label="${isEnglish ? 'Image ' + (rememberedIndex + 1) + ' of ' + project.images.length : 'Imagem ' + (rememberedIndex + 1) + ' de ' + project.images.length}" hidden>${dotsHTML}</div>
+            </div>
             <div class="portfolio-card-details" aria-label="${isEnglish ? 'Project details' : 'Detalhes do projeto'}">
               <span class="project-tag">${localized.typology}</span>
               <h3>${localized.title}</h3>
@@ -1849,8 +1889,6 @@
         // faria a altura do .hero variar durante a rolagem. Só muda em resize/orientação/idioma.
         if (isMobile) setCssVar(document.documentElement, '--portfolio-initial-height', `${initialHeight.toFixed(1)}px`);
         setCssVar(section, '--portfolio-card-width', `${cardWidth.toFixed(1)}px`);
-        setCssVar(section, '--portfolio-image-height', `${(cardWidth / 1.5).toFixed(1)}px`);
-        setCssVar(section, '--portfolio-counter-top', `${(cardWidth / 1.5 - 10).toFixed(1)}px`); // dots sit 6px above bottom of image
         setCssVar(section, '--portfolio-description-opacity', descriptionOpacity.toFixed(3));
         if (isMobile) {
           const compactTop = viewportHeight - initialHeight;
@@ -2075,7 +2113,9 @@
       const counter = card.querySelector('.portfolio-feature-counter');
       if (counter) {
         counter.querySelectorAll('.portfolio-feature-dot').forEach((dot, i) => {
-          dot.classList.toggle('is-active', i === activePortfolioImageIndex);
+          const active = i === activePortfolioImageIndex;
+          dot.classList.toggle('is-active', active);
+          dot.setAttribute('aria-current', active ? 'true' : 'false');
         });
         counter.setAttribute('aria-label', lang === 'en'
           ? `Image ${activePortfolioImageIndex + 1} of ${project.images.length}`
@@ -2479,6 +2519,15 @@
       updatePortfolioFeature();
     };
 
+    window.goToPortfolioImage = function (index) {
+      if (!activePortfolioProjectId) return;
+      const project = projectsData[activePortfolioProjectId];
+      if (index < 0 || index >= project.images.length || index === activePortfolioImageIndex) return;
+      activePortfolioImageIndex = index;
+      portfolioImageIndexByProject[activePortfolioProjectId] = activePortfolioImageIndex;
+      updatePortfolioFeature();
+    };
+
     document.addEventListener('keydown', event => {
       if (!activePortfolioProjectId || event.altKey || event.ctrlKey || event.metaKey) return;
       if (event.key === 'Escape') {
@@ -2719,7 +2768,7 @@
       track.addEventListener('pointerdown', event => {
         if (event.pointerType === 'mouse') stopPortfolioTrackFollow();
         if (event.pointerType !== 'mouse' || event.button !== 0) return;
-        if (event.target.closest('.portfolio-feature-arrow, a[href]')) return;
+        if (event.target.closest('.portfolio-feature-arrow, .portfolio-feature-counter, a[href]')) return;
         // Selected image has its own swipe (left/right = change photo), not track scroll.
         if (event.target.closest('.portfolio-card.is-selected .portfolio-card-image')) return;
         cancelMobileTrackSnap();
@@ -3230,7 +3279,7 @@
       // O tamanho do fade é interpolado em JS: a cada quadro anda ~3,5% do caminho até o alvo
       // (constante de tempo de ~0,5 s; ~1,4 s para chegar a 95%). A transição CSS da máscara
       // (@property) não anima no Safari, e o fade aparecia de repente.
-      const FADE_MAX = 200;
+      const FADE_MAX = 12; // percentage of track/viewport width
       let currentLeft = 0;
       let currentRight = FADE_MAX;
       let targetLeft = 0;
@@ -3245,10 +3294,10 @@
         const ease = 1 - Math.pow(0.965, dt); // ~3.5% per frame = very slow
         currentLeft += (targetLeft - currentLeft) * ease;
         currentRight += (targetRight - currentRight) * ease;
-        if (Math.abs(targetLeft - currentLeft) < 0.5) currentLeft = targetLeft;
-        if (Math.abs(targetRight - currentRight) < 0.5) currentRight = targetRight;
-        track.style.setProperty('--portfolio-fade-left', currentLeft.toFixed(1) + 'px');
-        track.style.setProperty('--portfolio-fade-right', currentRight.toFixed(1) + 'px');
+        if (Math.abs(targetLeft - currentLeft) < 0.03) currentLeft = targetLeft;
+        if (Math.abs(targetRight - currentRight) < 0.03) currentRight = targetRight;
+        track.style.setProperty('--portfolio-fade-left', currentLeft.toFixed(2) + '%');
+        track.style.setProperty('--portfolio-fade-right', currentRight.toFixed(2) + '%');
         if (currentLeft !== targetLeft || currentRight !== targetRight) {
           fadeRaf = requestAnimationFrame(animateFade);
         } else {
@@ -3269,8 +3318,8 @@
           // First load: snap to the right values, no animation.
           currentLeft = targetLeft;
           currentRight = targetRight;
-          track.style.setProperty('--portfolio-fade-left', currentLeft.toFixed(1) + 'px');
-          track.style.setProperty('--portfolio-fade-right', currentRight.toFixed(1) + 'px');
+          track.style.setProperty('--portfolio-fade-left', currentLeft.toFixed(2) + '%');
+          track.style.setProperty('--portfolio-fade-right', currentRight.toFixed(2) + '%');
           fadeInitialized = true;
           return;
         }
