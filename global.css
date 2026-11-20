@@ -1,11 +1,11 @@
 :root {
   --font-sans: 'DM Sans', sans-serif;
   --font-serif: 'Instrument Serif', serif;
-  --bg: #f5f2ee;
-  --surface: #fffdf8;
-  --text: #1a1916;
+  --bg: #f4f1ec;
+  --surface: #fcfaf7;
+  --text: #2b2824;
   --muted: #6b6660;
-  --accent: #EC8716;
+  --accent: #db740a;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
   --glass-bg: color-mix(in srgb, var(--surface) 67%, transparent);
   --glass-blur: blur(24px);
@@ -22,6 +22,7 @@
     --surface: #252321;
     --text: #d8d5c6;
     --muted: #948f87;
+    --accent: #ec8716;
     --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--bg));
   }
 }
@@ -31,14 +32,16 @@ html[data-theme="dark"] {
   --surface: #252321;
   --text: #d8d5c6;
   --muted: #948f87;
+  --accent: #ec8716;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--bg));
 }
 
 html[data-theme="light"] {
-  --bg: #f5f2ee;
-  --surface: #fffdf8;
-  --text: #1a1916;
+  --bg: #f4f1ec;
+  --surface: #fcfaf7;
+  --text: #2b2824;
   --muted: #6b6660;
+  --accent: #db740a;
   --accent-lt: color-mix(in srgb, var(--accent) 15%, var(--surface));
 }
 
@@ -470,13 +473,13 @@ nav::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: color-mix(in srgb, var(--surface) 75%, var(--muted) 25%);
+  color: var(--muted);
   font-size: 18px;
   transition: color 0.2s, transform 0.2s;
 }
 
 .theme-toggle-btn:hover {
-  color: color-mix(in srgb, var(--surface) 67%, var(--muted) 33%);
+  color: var(--text);
 }
 
 .theme-toggle-btn .icon-sun {

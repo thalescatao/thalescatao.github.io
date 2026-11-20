@@ -212,13 +212,20 @@
     const themeToggle = document.getElementById('theme-toggle');
 
     themeToggle?.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const currentTheme = document.documentElement.getAttribute('data-theme') || systemTheme;
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      try {
-        localStorage.setItem('siteTheme', newTheme);
-      } catch (e) { }
+      if (newTheme === systemTheme) {
+        document.documentElement.removeAttribute('data-theme');
+        try {
+          localStorage.removeItem('siteTheme');
+        } catch (e) { }
+      } else {
+        document.documentElement.setAttribute('data-theme', newTheme);
+        try {
+          localStorage.setItem('siteTheme', newTheme);
+        } catch (e) { }
+      }
     });
 
     mobileBtn?.addEventListener('click', e => {
