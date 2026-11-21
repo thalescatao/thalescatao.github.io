@@ -1,10 +1,43 @@
 (function () {
-  try {
-    const savedTheme = localStorage.getItem('siteTheme');
-    if (savedTheme === 'dark' || savedTheme === 'light') {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-  } catch (e) { }
+  const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  const getSystemTheme = () => (darkMedia.matches ? 'dark' : 'light');
+
+  function clearThemeOverride() {
+    document.documentElement.removeAttribute('data-theme');
+    try {
+      localStorage.removeItem('siteTheme');
+      localStorage.removeItem('siteThemeBase');
+    } catch (e) { }
+  }
+
+  function syncSavedThemeWithSystem() {
+    try {
+      const savedTheme = localStorage.getItem('siteTheme');
+      const savedBase = localStorage.getItem('siteThemeBase');
+      const systemTheme = getSystemTheme();
+      if (savedBase && savedBase !== systemTheme) {
+        clearThemeOverride();
+      } else if ((savedTheme === 'dark' || savedTheme === 'light') && savedTheme !== systemTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (savedTheme) {
+        clearThemeOverride();
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    } catch (e) { }
+  }
+
+  syncSavedThemeWithSystem();
+
+  if (typeof darkMedia.addEventListener === 'function') {
+    darkMedia.addEventListener('change', clearThemeOverride);
+  } else if (typeof darkMedia.addListener === 'function') {
+    darkMedia.addListener(clearThemeOverride);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') syncSavedThemeWithSystem();
+  });
 
   const isFile = window.location.protocol === 'file:';
   const normPath = window.location.pathname.replace(/\\/g, '/');
@@ -212,18 +245,16 @@
     const themeToggle = document.getElementById('theme-toggle');
 
     themeToggle?.addEventListener('click', () => {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const systemTheme = getSystemTheme();
       const currentTheme = document.documentElement.getAttribute('data-theme') || systemTheme;
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       if (newTheme === systemTheme) {
-        document.documentElement.removeAttribute('data-theme');
-        try {
-          localStorage.removeItem('siteTheme');
-        } catch (e) { }
+        clearThemeOverride();
       } else {
         document.documentElement.setAttribute('data-theme', newTheme);
         try {
           localStorage.setItem('siteTheme', newTheme);
+          localStorage.setItem('siteThemeBase', systemTheme);
         } catch (e) { }
       }
     });
