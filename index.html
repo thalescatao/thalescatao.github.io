@@ -119,7 +119,14 @@
   <script>
     try {
       var t = localStorage.getItem('siteTheme');
-      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+      var base = localStorage.getItem('siteThemeBase');
+      var os = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (base && base !== os) {
+        localStorage.removeItem('siteTheme');
+        localStorage.removeItem('siteThemeBase');
+      } else if ((t === 'dark' || t === 'light') && t !== os) {
+        document.documentElement.setAttribute('data-theme', t);
+      }
     } catch (e) { }
   </script>
   <link rel="stylesheet" href="global.css" />
@@ -355,11 +362,13 @@
       height: auto;
       padding: 0 24px;
       overflow-x: auto;
+      overflow-y: hidden;
       overflow-anchor: none;
       scrollbar-width: none;
       overscroll-behavior-x: contain;
+      overscroll-behavior-y: auto;
+      touch-action: pan-x pan-y;
       user-select: none;
-      -webkit-overflow-scrolling: touch;
     }
 
     .portfolio-description {
@@ -852,6 +861,7 @@
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         scroll-snap-align: center;
+        scroll-snap-stop: always;
         scrollbar-width: thin;
       }
       #portfolio.has-selection .portfolio-card-details {
@@ -1823,8 +1833,8 @@
           ? expandedCardWidth
           : Math.max(110, Math.min(isShortDesktop ? 280 : 340, (rawInitialHeight - 16) * 1.5));
         const initialHeight = isMobile
-          ? Math.max(viewportHeight * .28, expandedCardWidth / 1.5 + 16)
-          : Math.max(rawInitialHeight, initialCardWidth / 1.5 + 16);
+          ? Math.max(viewportHeight * .28, expandedCardWidth / 1.5 + 18)
+          : Math.max(rawInitialHeight, initialCardWidth / 1.5 + 18);
         const selectedCardWidth = isMobile
           ? expandedCardWidth
           : isShortDesktop
@@ -2677,6 +2687,7 @@
           targetIndex = Math.max(0, startIndex - 1);
         }
       }
+      targetIndex = Math.max(0, Math.min(cards.length - 1, Math.max(startIndex - 1, Math.min(startIndex + 1, targetIndex))));
 
       const targetCard = cards[targetIndex];
       const cardRect = targetCard.getBoundingClientRect();
@@ -3158,7 +3169,7 @@
           touchLastTime = now;
         }
         if (!touchDragging) {
-          if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+          if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5) {
             touchDragging = true;
             track.classList.add('is-dragging', 'is-outside-dragging');
             stopPortfolioTrackFollow();
