@@ -65,7 +65,14 @@
   <script>
     try {
       var t = localStorage.getItem('siteTheme');
-      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+      var base = localStorage.getItem('siteThemeBase');
+      var os = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (base && base !== os) {
+        localStorage.removeItem('siteTheme');
+        localStorage.removeItem('siteThemeBase');
+      } else if ((t === 'dark' || t === 'light') && t !== os) {
+        document.documentElement.setAttribute('data-theme', t);
+      }
     } catch (e) { }
   </script>
   <link rel="stylesheet" href="../global.css" />
