@@ -1387,6 +1387,7 @@
         'proj1': 'Concrete House', 'proj2': '5 Bedroom Christian House',
         'proj3': '4 Bedroom Modular House', 'proj4': 'Guest House',
         'proj5': 'Gym', 'proj6': 'Tiny Cabin',
+        'proj7': 'Technical Drawings',
         'port.desc': 'Projetos de concepção autoral, com partido arquitetônico claro, centrados na experiência humana, modularidade de construção, modelagem BIM e renderização impactante.'
       },
       en: {
@@ -1397,6 +1398,7 @@
         'proj1': 'Concrete House', 'proj2': '5 Bedroom Christian House',
         'proj3': '4 Bedroom Modular House', 'proj4': 'Guest House',
         'proj5': 'Gym', 'proj6': 'Tiny Cabin',
+        'proj7': 'Technical Drawings',
         'port.desc': 'Authorial architectural projects with a clear design concept, centered on the human experience, construction modularity, BIM modeling, poetic and impactful visualization.'
       }
     };
@@ -1543,10 +1545,28 @@
           typology: "Residential / Minimalist",
           desc: "<p>Self-sufficient minimalist cabin designed for maximum spatial efficiency and integration with the surrounding natural landscape. The modular construction combines lightweight timber framing, prefabricated panels, and expansive glazing, offering thermal comfort and visual connection to the forest.</p>"
         }
+      },
+      proj7: {
+        behance: "https://www.behance.net/gallery/258985599/Technical-Drawings",
+        images: [
+          "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/600951258985599.6b06160312702.png",
+          "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/3b03b4258985599.6b06160312b1b.png",
+          "https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/7ba437258985599.6b06160312ebf.png"
+        ],
+        pt: {
+          title: "Technical Drawings",
+          typology: "Documentação",
+          desc: "<p>Coleção de pranchas técnicas e projetos de aprovação desenvolvidos em ArchiCAD, sem foco em renderizações chamativas, mas na clareza gráfica, diagramação e organização precisa da informação arquitetônica para leitura e impressão.</p>"
+        },
+        en: {
+          title: "Technical Drawings",
+          typology: "Documentation",
+          desc: "<p>A collection of technical sheets and permit drawings developed in ArchiCAD that skip pretty renderings to focus on graphic clarity, page layout, and the precise organization of architectural information for reading and print.</p>"
+        }
       }
     };
 
-    const portfolioProjectOrder = ['proj1', 'proj2', 'proj3', 'proj4', 'proj5', 'proj6'];
+    const portfolioProjectOrder = ['proj1', 'proj2', 'proj3', 'proj4', 'proj5', 'proj6', 'proj7'];
 
     function renderPortfolioCards(lang) {
       const track = document.getElementById('portfolio-track');
