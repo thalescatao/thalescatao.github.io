@@ -450,7 +450,7 @@
       min-width: 0;
       position: relative;
       overflow: hidden;
-      border-radius: 14px;
+      border-radius: 15px;
       background: var(--surface);
       box-shadow: none;
       transition: flex-basis 1.8s cubic-bezier(.16, 1, .3, 1);
@@ -476,16 +476,21 @@
     .portfolio-card-media {
       position: relative;
       width: 100%;
-      flex-shrink: 0;
+      aspect-ratio: 3 / 2;
+      flex: 0 0 auto;
+      overflow: hidden;
+      border-radius: inherit;
     }
 
     .portfolio-card-image {
       position: relative;
       display: block;
       width: 100%;
+      height: 100%;
       aspect-ratio: 3 / 2;
       padding: 0;
       border: 0;
+      border-radius: inherit;
       overflow: hidden;
       background: var(--surface);
       cursor: pointer;
@@ -796,15 +801,15 @@
         --portfolio-mobile-top: calc(100svh - var(--portfolio-height));
         --portfolio-description-opacity: 0;
         scroll-margin-top: calc(var(--nav-height) + var(--portfolio-heading-offset));
-        padding-bottom: 48px;
+        padding-bottom: 0;
       }
 
       .portfolio-heading {
         position: sticky;
-        top: var(--portfolio-mobile-heading-top, max(calc(var(--nav-height) + 16px), calc(var(--portfolio-mobile-top) - 52px)));
+        top: var(--portfolio-mobile-heading-top, max(calc(var(--nav-height) + 12px), calc(var(--portfolio-mobile-top) - 54px)));
         z-index: 5;
         padding-top: 6px;
-        padding-bottom: 14px;
+        padding-bottom: 12px;
         margin-bottom: 0;
         background: transparent;
       }
@@ -816,7 +821,7 @@
         min-height: 0;
         display: flex;
         flex-direction: column;
-        padding: 8px 0;
+        padding: 9px 0;
         overflow: visible;
         transition: none;
       }
@@ -856,13 +861,19 @@
         flex: 0 0 var(--portfolio-card-width);
         flex-direction: column;
         width: var(--portfolio-card-width);
-        max-height: calc(100svh - var(--nav-height) - 18px);
+        max-height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         scroll-snap-align: center;
         scroll-snap-stop: always;
-        scrollbar-width: thin;
+        scrollbar-width: none;
+      }
+      #portfolio.has-selection .portfolio-card::-webkit-scrollbar {
+        display: none;
+      }
+      #portfolio.has-selection.selection-animating .portfolio-card {
+        overflow-y: hidden;
       }
       #portfolio.has-selection .portfolio-card-details {
         display: block;
@@ -927,7 +938,7 @@
       .portfolio-feature-link { max-width: 100%; margin-top: 14px; overflow-wrap: anywhere; }
       .portfolio-description {
         display: block;
-        top: calc(100% + clamp(24px, 5svh, 44px));
+        top: calc(100% + clamp(18px, 3.5svh, 30px));
         bottom: auto;
         width: calc(100% - 36px);
         max-width: 360px;
@@ -1716,16 +1727,51 @@
       return headingHeight + 20;
     }
 
-    function getMobileSelectedStickyTop(section, viewportHeight, navHeight, expandedPanelHeight) {
-      const headingHeight = section?.querySelector('.portfolio-heading')?.getBoundingClientRect().height || 52;
-      const headingGap = 12;
-      const usableHeight = viewportHeight - navHeight;
-      const freeSpace = usableHeight - (headingHeight + headingGap + expandedPanelHeight);
-      if (freeSpace >= 30) {
-        const topMargin = Math.round(freeSpace * 0.48);
-        return navHeight + topMargin + headingHeight + headingGap;
+    function getMobilePortfolioLayout(section, viewportHeight, navHeight, selected) {
+      const footerEl = document.querySelector('footer');
+      const footerHeight = footerEl ? footerEl.getBoundingClientRect().height : 36;
+      const headingHeight = section?.querySelector('.portfolio-heading')?.getBoundingClientRect().height || 48;
+      const descHeight = getMobilePortfolioDescriptionHeight(section);
+      const headingGap = 6;
+      const descGap = Math.round(Math.min(30, Math.max(18, viewportHeight * 0.035)));
+      const panelPadding = selected ? 21 : 24;
+      const usableHeight = Math.max(240, viewportHeight - navHeight - footerHeight);
+      const baseCardWidth = Math.max(120, Math.min(520, window.innerWidth * 0.86));
+
+      if (!selected) {
+        const maxUnselectedImageH = Math.max(
+          120,
+          usableHeight - headingHeight - headingGap - panelPadding - descGap - descHeight - 24
+        );
+        const cardWidth = Math.max(120, Math.min(baseCardWidth, maxUnselectedImageH * 1.5));
+        const panelHeight = cardWidth / 1.5 + panelPadding;
+        const groupHeight = headingHeight + headingGap + panelHeight + descGap + descHeight;
+        const freeSpace = Math.max(0, usableHeight - groupHeight);
+        const topMargin = Math.round(freeSpace * 0.44);
+        const stickyTop = navHeight + topMargin + headingHeight + headingGap;
+        return { cardWidth, panelHeight, stickyTop, canShowHeading: true, headingGap, panelPadding };
       }
-      return Math.max(navHeight + 12, viewportHeight - expandedPanelHeight - 15);
+
+      const maxSelectedPanelH = Math.max(240, usableHeight - 12);
+      let cardWidth = baseCardWidth;
+      let detailsHeight = getMobilePortfolioDetailsHeight(cardWidth);
+      if (cardWidth / 1.5 + panelPadding + detailsHeight > maxSelectedPanelH) {
+        const fittedWidth = Math.max(
+          240,
+          Math.min(baseCardWidth, (maxSelectedPanelH - panelPadding - detailsHeight) * 1.5)
+        );
+        if (fittedWidth < cardWidth - 1) {
+          cardWidth = fittedWidth;
+          detailsHeight = getMobilePortfolioDetailsHeight(cardWidth);
+        }
+      }
+      const panelHeight = Math.min(maxSelectedPanelH, cardWidth / 1.5 + panelPadding + detailsHeight);
+      const freeWithHeading = usableHeight - (headingHeight + headingGap + panelHeight);
+      const canShowHeading = freeWithHeading >= 24;
+      const stickyTop = canShowHeading
+        ? navHeight + Math.round(freeWithHeading * 0.48) + headingHeight + headingGap
+        : navHeight + Math.max(6, Math.round(Math.max(0, usableHeight - panelHeight) * 0.5));
+      return { cardWidth, panelHeight, stickyTop, canShowHeading, headingGap, panelPadding };
     }
 
     function getMobilePortfolioDescriptionHeight(section) {
@@ -1824,25 +1870,26 @@
           removeCssVar(section, '--portfolio-header-space');
         }
         const headingStickyTop = navHeight + headingOffset;
-        const mobileHeaderClearance = isMobile ? getMobilePortfolioHeaderClearance(section) : 0;
-        const stickyTop = isMobile
-          ? (selected ? navHeight + 8 : Math.max(navHeight + headerSpace, navHeight + 24 + mobileHeaderClearance))
-          : navHeight + headerSpace;
+        const mobilePlan = isMobile ? getMobilePortfolioLayout(section, viewportHeight, navHeight, selected) : null;
+        const mobileUnselectedPlan = isMobile && selected
+          ? getMobilePortfolioLayout(section, viewportHeight, navHeight, false)
+          : mobilePlan;
+        const stickyTop = isMobile ? mobilePlan.stickyTop : navHeight + headerSpace;
         const mobileFooterClearance = isMobile
-          ? (selected ? 16 : getMobilePortfolioDescriptionHeight(section) + 54)
+          ? 18
           : Math.max(18, Math.ceil(desktopFooterSpace + 6));
         const availableHeight = Math.max(
           isShortDesktop ? 150 : 260,
           viewportHeight - stickyTop - mobileFooterClearance
         );
-        const panelPadding = (isMobile && selected) ? 16 : (isShortDesktop ? 24 : 32);
+        const panelPadding = isMobile ? mobilePlan.panelPadding : (isShortDesktop ? 24 : 32);
         const unselectedStickyTop = navHeight + unselectedHeaderSpace;
         const shortDesktopTargetHeight = Math.min(
           viewportHeight * .45,
           viewportHeight - unselectedStickyTop - mobileFooterClearance - 12
         );
         const expandedCardWidth = isMobile
-          ? Math.max(120, Math.min(520, window.innerWidth * .86, (availableHeight - 32) * 1.5))
+          ? mobileUnselectedPlan.cardWidth
           : isShortDesktop
             ? Math.max(120, Math.min(520, window.innerWidth * .40, (shortDesktopTargetHeight - panelPadding) * 1.5))
             : Math.max(120, Math.min(600, window.innerWidth * .43, (availableHeight - 40) * 1.5));
@@ -1850,13 +1897,13 @@
         const stageRect = stage.getBoundingClientRect();
         const stageTop = window.scrollY + stageRect.top;
         const initialCardWidth = isMobile
-          ? expandedCardWidth
+          ? mobileUnselectedPlan.cardWidth
           : Math.max(110, Math.min(isShortDesktop ? 280 : 340, (rawInitialHeight - 16) * 1.5));
         const initialHeight = isMobile
-          ? Math.max(viewportHeight * .28, expandedCardWidth / 1.5 + 18)
+          ? Math.max(viewportHeight * .28, mobileUnselectedPlan.cardWidth / 1.5 + 24)
           : Math.max(rawInitialHeight, initialCardWidth / 1.5 + 18);
         const selectedCardWidth = isMobile
-          ? expandedCardWidth
+          ? mobilePlan.cardWidth
           : isShortDesktop
             ? Math.max(120, Math.min(
                 window.innerWidth * .54,
@@ -1876,24 +1923,13 @@
         } else {
           removeCssVar(section, '--portfolio-selected-card-width');
         }
-        const mobileDetailsHeight = isMobile && selected ? getMobilePortfolioDetailsHeight(expandedCardWidth) : 0;
         const expandedPanelHeight = isMobile
-          ? Math.min(
-              availableHeight,
-              (selected ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding + mobileDetailsHeight
-            )
+          ? mobilePlan.panelHeight
           : (selected ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding;
-        const expandedStickyTop = isMobile
-          ? (selected
-              ? getMobileSelectedStickyTop(section, viewportHeight, navHeight, expandedPanelHeight)
-              : Math.max(stickyTop, Math.min(
-                  viewportHeight - expandedPanelHeight - mobileFooterClearance,
-                  Math.round(viewportHeight / 3 - expandedPanelHeight / 2)
-                )))
-          : stickyTop;
+        const expandedStickyTop = isMobile ? mobilePlan.stickyTop : stickyTop;
         const rawScrollRange = stageTop + stage.offsetHeight - expandedStickyTop - expandedPanelHeight;
         const maxPageScroll = Math.max(1, document.documentElement.scrollHeight - viewportHeight);
-        const scrollRange = Math.max(1, isMobile ? rawScrollRange : Math.min(maxPageScroll, rawScrollRange));
+        const scrollRange = Math.max(1, Math.min(maxPageScroll, rawScrollRange));
         const progress = Math.min(1, Math.max(0, window.scrollY / scrollRange));
         const easedProgress = selected && section.classList.contains('selection-animating')
           ? 1
@@ -1909,8 +1945,8 @@
           stageRect.top <= unselectedStickyTop + 2 &&
           stageRect.bottom >= stickyTop + expandedPanelHeight - 2 &&
           descClearOfHeading;
-        const cardTargetWidth = selected && !isMobile ? selectedCardWidth : expandedCardWidth;
-        const cardWidth = selected && !isMobile
+        const cardTargetWidth = selected ? selectedCardWidth : expandedCardWidth;
+        const cardWidth = selected
           ? selectedCardWidth
           : initialCardWidth + (cardTargetWidth - initialCardWidth) * easedProgress;
         const panelHeight = selected && !isMobile
@@ -1950,18 +1986,22 @@
           if (stickyPanel && heading) {
             const panelTop = stickyPanel.getBoundingClientRect().top;
             const headingHeight = heading.getBoundingClientRect().height;
-            const headingTop = Math.max(navHeight + 15, panelTop - headingHeight - 12);
+            const headingTop = Math.max(navHeight + 12, panelTop - headingHeight - mobilePlan.headingGap);
             setCssVar(section, '--portfolio-mobile-heading-top', `${headingTop.toFixed(1)}px`);
           }
         }
 
-        // Se o painel subir por baixo do título "Portfólio" (fim da página), o título some suavemente.
+        // Se o painel subir por baixo do título "Portfólio" (fim da página), ou não houver folga no mobile selecionado, o título some suavemente.
         const headingEl = section.querySelector('.portfolio-heading');
         const panelEl = section.querySelector('.portfolio-sticky');
         if (headingEl && panelEl) {
-          const overlap = headingEl.getBoundingClientRect().bottom - panelEl.getBoundingClientRect().top;
-          const headingOpacity = Math.min(1, Math.max(0, 1 - overlap / 24));
-          setCssVar(section, '--portfolio-heading-opacity', headingOpacity.toFixed(2));
+          if (isMobile && selected && !mobilePlan.canShowHeading) {
+            setCssVar(section, '--portfolio-heading-opacity', '0');
+          } else {
+            const overlap = headingEl.getBoundingClientRect().bottom - panelEl.getBoundingClientRect().top;
+            const headingOpacity = Math.min(1, Math.max(0, 1 - overlap / 24));
+            setCssVar(section, '--portfolio-heading-opacity', headingOpacity.toFixed(2));
+          }
         }
         if (section.classList.contains('selection-animating') && !animationFrame) {
           animationFrame = requestAnimationFrame(update);
@@ -2200,6 +2240,7 @@
       track.querySelectorAll('.portfolio-card').forEach(card => {
         const selected = card.dataset.projectCard === projectId;
         card.classList.toggle('is-selected', selected);
+        card.scrollTop = 0;
         card.querySelectorAll('.portfolio-feature-arrow, .portfolio-feature-counter').forEach(control => { control.hidden = !selected; });
       });
       section.classList.add('has-selection');
@@ -2434,30 +2475,30 @@
           section.style.removeProperty('--portfolio-heading-offset');
           section.style.removeProperty('--portfolio-header-space');
         }
-        const mobileHeaderClearance = mobileLayout ? getMobilePortfolioHeaderClearance(section) : 0;
-        const stickyTop = mobileLayout
-          ? (keepSelection ? navHeight + 8 : Math.max(navHeight + headerSpace, navHeight + 24 + mobileHeaderClearance))
-          : navHeight + headerSpace;
+        const mobilePlan = mobileLayout
+          ? getMobilePortfolioLayout(section, stableViewportHeight(), navHeight, keepSelection)
+          : null;
+        const stickyTop = mobileLayout ? mobilePlan.stickyTop : navHeight + headerSpace;
         const mobileFooterClearance = mobileLayout
-          ? (keepSelection ? 16 : getMobilePortfolioDescriptionHeight(section) + 54)
+          ? 18
           : Math.max(18, Math.ceil(desktopFooterSpace + 6));
         const availableHeight = Math.max(
           isShortDesktop ? 150 : 260,
           stableViewportHeight() - stickyTop - mobileFooterClearance
         );
-        const panelPadding = (mobileLayout && keepSelection) ? 16 : (isShortDesktop ? 24 : 32);
+        const panelPadding = mobileLayout ? mobilePlan.panelPadding : (isShortDesktop ? 24 : 32);
         const unselectedStickyTop = navHeight + unselectedHeaderSpace;
         const shortDesktopTargetHeight = Math.min(
           stableViewportHeight() * .45,
           stableViewportHeight() - unselectedStickyTop - mobileFooterClearance - 12
         );
         const expandedCardWidth = mobileLayout
-          ? Math.max(120, Math.min(520, window.innerWidth * .86, (availableHeight - 32) * 1.5))
+          ? mobilePlan.cardWidth
           : isShortDesktop
             ? Math.max(120, Math.min(520, window.innerWidth * .40, (shortDesktopTargetHeight - panelPadding) * 1.5))
             : Math.max(120, Math.min(600, window.innerWidth * .43, (availableHeight - 40) * 1.5));
         const selectedCardWidth = mobileLayout
-          ? expandedCardWidth
+          ? mobilePlan.cardWidth
           : isShortDesktop
             ? Math.max(120, Math.min(
                 window.innerWidth * .54,
@@ -2472,34 +2513,17 @@
                 (stableViewportHeight() - 328) * 1.5,
                 window.innerWidth - 380
               ));
-        const mobileDetailsHeight = mobileLayout && keepSelection ? getMobilePortfolioDetailsHeight(expandedCardWidth) : 0;
         const expandedPanelHeight = mobileLayout
-          ? Math.min(
-              availableHeight,
-              (keepSelection ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding + mobileDetailsHeight
-            )
+          ? mobilePlan.panelHeight
           : (keepSelection ? selectedCardWidth : expandedCardWidth) / 1.5 + panelPadding;
-        const expandedStickyTop = mobileLayout
-          ? (keepSelection
-              ? getMobileSelectedStickyTop(section, stableViewportHeight(), navHeight, expandedPanelHeight)
-              : Math.max(stickyTop, Math.min(
-                  stableViewportHeight() - expandedPanelHeight - mobileFooterClearance,
-                  Math.round(stableViewportHeight() / 3 - expandedPanelHeight / 2)
-                )))
-          : stickyTop;
+        const expandedStickyTop = mobileLayout ? mobilePlan.stickyTop : stickyTop;
         const stageTop = window.scrollY + stage.getBoundingClientRect().top;
         const maxScroll = Math.max(0, document.documentElement.scrollHeight - stableViewportHeight());
         const rawTargetTop = stageTop + stage.offsetHeight - expandedStickyTop - expandedPanelHeight;
-        targetTop = mobileLayout ? rawTargetTop : Math.min(maxScroll, rawTargetTop);
+        targetTop = Math.min(maxScroll, rawTargetTop);
 
         if (keepSelection) {
-          // No desktop, rola até o fim real da página (rodapé inteiro).
-          // No mobile retrato, para em rawTargetTop para manter título e faixa equilibrados na tela.
-          if (mobileLayout) {
-            targetTop = Math.min(maxScroll, rawTargetTop);
-          } else {
-            targetTop = maxScroll;
-          }
+          targetTop = maxScroll;
         }
       }
       if (keepSelection) {
